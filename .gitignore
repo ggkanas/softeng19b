@@ -3,8 +3,12 @@
 *~
 \#*\#
 *.bak
+*.bak_*
 *.backup
 .*.sw[a-z]
+*.lck
+.~lock.*
+bonus_diagrams.vpp
 
 # Mac OS specific
 
