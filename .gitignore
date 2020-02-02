@@ -8,6 +8,7 @@
 .*.sw[a-z]
 *.lck
 .~lock.*
+*.odt
 bonus_diagrams.vpp
 
 # Mac OS specific
