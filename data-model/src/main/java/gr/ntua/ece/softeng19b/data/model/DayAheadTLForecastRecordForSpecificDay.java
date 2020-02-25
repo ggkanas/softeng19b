@@ -39,7 +39,7 @@ public class DayAheadTLForecastRecordForSpecificDay extends AbstractEntsoeRecord
         this.UpdateTime = UpdateTime;
     }
 
-    public void setDayAheadTotalLoadForecastValue(double actualTotalLoadForecastValue) {
-        this.actualTotalLoadForecastValue = actualTotalLoadForecastValue;
+    public void setDayAheadTotalLoadForecastValue(double DayAheadTotalLoadForecastValue) {
+        this.DayAheadTotalLoadForecastValue = DayAheadTotalLoadForecastValue;
     }
 }
