@@ -6,6 +6,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.lang;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -72,9 +75,29 @@ public class DataAccess {
 
     public int addActualTotalLoadRecord(String[] dataLine) {
 
+            Object[] sqlParams = new Object[] {
+                Integer.parseInt(dataLine[0]),
+                Timestamp.ValueOf(dataLine[1]),
+                Timestamp.ValueOf(dataLine[2]),
+                Long.parseLong(dataLine[3]),
+                dataLine[4],
+                Integer.parseInt(dataLine[5]),
+                Integer.parseInt(dataLine[6]),
+                Integer.parseInt(dataLine[7]),
+                Timestamp.ValueOf(dataLine[8]),
+                dataLine[9],
+                Timestamp.ValueOf(dataLine[10]),
+                new BigDecimal(dataLine[11]),
+                Integer.parseInt(dataLine[12]),
+                Integer.parseInt(dataLine[13]),
+                Integer.parseInt(dataLine[14]),
+                Integer.parseInt(dataLine[15]),
+                dataLine[16]
+            };
+
         String sqlQuery = "insert into ActualTotalLoad () values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
-            return jdbcTemplate.update(sqlQuery, dataLine);
+            return jdbcTemplate.update(sqlQuery, sqlParams);
         }
         catch(Exception e) {
             throw new DataAccessException(e.getMessage(), e);

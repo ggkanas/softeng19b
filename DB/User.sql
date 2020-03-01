@@ -4,7 +4,7 @@ CREATE TABLE User (
     Email               varchar(255),
     Password            varchar(255) NOT NULL,
     RequestsPerDayQuota int(11) NOT NULL,
-    Period              timestamp(6) NOT NULL,
+    Period              datetime(6) NOT NULL,
     RemainingRequests   int(11) NOT NULL,
     Token               char(32),
     CONSTRAINT PK_User
