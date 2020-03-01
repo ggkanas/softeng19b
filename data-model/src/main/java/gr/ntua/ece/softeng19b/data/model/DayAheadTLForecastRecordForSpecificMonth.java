@@ -5,7 +5,7 @@ public class DayAheadTLForecastRecordForSpecificMonth extends AbstractEntsoeReco
     private int month;
     private double dayAheadTotalLoadForecastByDayValue;
 
-    public DayAheadTotalLoadForecastRecordForSpecificMonth() {
+    public DayAheadTLFRecordForSpecificMonth() {
         super(DataSet.monthAheadTotalLoadByDay);
     }
 
@@ -23,6 +23,6 @@ public class DayAheadTLForecastRecordForSpecificMonth extends AbstractEntsoeReco
 
 
     public void setDayAheadTLForecastByDayValue(double dayAheadTLForecastByDayValueValue) {
-        this.dayAheadTLForecastByDayValue = dayAheadTLForecastByDayValue;
+        this.dayAheadTotalLoadForecastByDayValue = dayAheadTotalLoadForecastByDayValue;
     }
 }
