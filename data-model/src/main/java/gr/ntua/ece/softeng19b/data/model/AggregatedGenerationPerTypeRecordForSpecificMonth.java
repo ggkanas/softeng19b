@@ -1,6 +1,6 @@
 package gr.ntua.ece.softeng19b.data.model;
 
-public class AggregatedGenerationPerTypeRecordForSpecificMonth extends AbstractEntsoeRecord {
+public class AGPerTypeRecordForSpecificMonth extends AbstractEntsoeRecord {
 
     private int month;
     private double actualGenerationOutputByDayValue;
@@ -18,11 +18,11 @@ public class AggregatedGenerationPerTypeRecordForSpecificMonth extends AbstractE
         this.productionType = productionType;
     }    
     
-   public double actualGenerationOutputByDayValue() {
+   public double getActualGenerationOutputByDayValue() {
         return actualGenerationOutputByDayValue;
     }
   
-    public void setAggregatedGenerationPerTypeRecordForSpecificMonth (double actualGenerationOutputByDayValue) {
+    public void setActualGenerationOutputByDayValue (double actualGenerationOutputByDayValue) {
         this.actualGenerationOutputByDayValue = actualGenerationOutputByDayValue;
     }
 }
