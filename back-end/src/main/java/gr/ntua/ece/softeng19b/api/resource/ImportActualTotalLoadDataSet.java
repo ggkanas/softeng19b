@@ -1,8 +1,18 @@
 package gr.ntua.ece.softeng19b.api.resource;
 
+import gr.ntua.ece.softeng19b.conf.Configuration;
+import gr.ntua.ece.softeng19b.data.DataAccess;
+import gr.ntua.ece.softeng19b.data.model.User;
+import gr.ntua.ece.softeng19b.api.AuthenticationService;
+import gr.ntua.ece.softeng19b.api.representation;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ResourceException;
+import org.restlet.util.Series;
 
 public class ImportActualTotalLoadDataSet extends EnergyResource {
 
@@ -13,8 +23,14 @@ public class ImportActualTotalLoadDataSet extends EnergyResource {
 
         Form form = new form(entity);
 
-        if (!dataAccess.checkToken(form.getFirstValue("X-OBSERVATORY-AUTH"))) //to be confirmed
+        Series headers = (Series) getRequestAttributes().get("org.restlet.http.headers");
+        String token = headers.getFirstValue("X-OBSERVATORY-AUTH"); //to be confirmed
+
+        if (!dataAccess.checkToken(token))
             throw new ResourceException(Status.CLIENT_ERROR_UNAUTHORIZED);
+
+        //if (!dataAccess.checkToken(form.getFirstValue("X-OBSERVATORY-AUTH"))) //to be confirmed
+        //    throw new ResourceException(Status.CLIENT_ERROR_UNAUTHORIZED);
 
         String csvFile = form.getFirstValue("file");
         int totalRecordsInFile = 0;
@@ -39,9 +55,11 @@ public class ImportActualTotalLoadDataSet extends EnergyResource {
 
         int totalRecordsInDatabase = dataAccess.getTotalRecordsInDatabase("ActualTotalLoad");
 
-        Format format = parseFormat(getQueryValue("format"));
+        Map<String, Object> map = new HashMap<>();
+        map.put("totalRecordsInFile", totalRecordsInFile);
+        map.put("totalRecordsImported", totalRecordsImported);
+        map.put("totalRecordsInDatabase", totalRecordsInDatabase);
 
-        return format.generateRepresentation(new ImportRecordData(totalRecordsInFile,
-            totalRecordsImported, totalRecordsInDataBase));
+        return JsonMapRepresentation(map);
     }
 }

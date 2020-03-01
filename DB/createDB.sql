@@ -16,4 +16,4 @@ GRANT ALL PRIVILEGES ON * . * TO 'softeng'@'localhost';
 
 INSERT INTO User
 (Username, Email, Password, RequestsPerDayQuota, Period, RemainingRequests)
-VALUES('admin', null, 'nimda', -1, CURRENT_TIMESTAMP(), -1);
+VALUES('admin', null, '321nimda', -1, CURRENT_TIMESTAMP(), -1);

@@ -52,7 +52,7 @@ public class DataAccess {
 
     public void createToken(String token, String username) throws DataAccessException {
         try {
-            jdbcTemplate.update("Update User SET Token='"+ token +"' WHERE Username='"+ username +"'");
+            jdbcTemplate.update("UPDATE User SET Token='"+ token +"' WHERE Username='"+ username +"'");
         }
         catch(Exception e) {
             throw new DataAccessException(e.getMessage(), e);
@@ -67,6 +67,15 @@ public class DataAccess {
             return jdbcTemplate.query("SELECT * FROM User WHERE Token = ?", sqlParams, (ResultSet rs, int rowNum) -> {
                 return (rowNum > 0);
             });
+        }
+        catch(Exception e) {
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    public void destroyToken(String token) throws DataAccessException {
+        try {
+            jdbcTemplate.update("DELETE FROM User WHERE Token='"+ token +"'");
         }
         catch(Exception e) {
             throw new DataAccessException(e.getMessage(), e);
@@ -678,4 +687,47 @@ public class DataAccess {
       }
     }
 
+    public int deleteATL() {
+        try {
+            return jdbcTemplate.update("DELETE FROM ActualTotalLoad", (ResultSet rs, int rowNum) -> {
+                return rowNum;
+            });
+        }
+        catch(Exception e) {
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    public int deleteAGPT() {
+        try {
+            return jdbcTemplate.update("DELETE FROM AggregatedGenerationPerType", (ResultSet rs, int rowNum) -> {
+                return rowNum;
+            });
+        }
+        catch(Exception e) {
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    public int deleteDATLF() {
+        try {
+            return jdbcTemplate.update("DELETE FROM DayAheadTotalLoadForecast", (ResultSet rs, int rowNum) -> {
+                return rowNum;
+            });
+        }
+        catch(Exception e) {
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    public int deleteUsers() {
+        try {
+            return jdbcTemplate.update("DELETE FROM User WHERE Username != 'admin'", (ResultSet rs, int rowNum) -> {
+                return rowNum;
+            });
+        }
+        catch(Exception e) {
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
 }

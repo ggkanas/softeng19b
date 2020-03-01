@@ -17,22 +17,6 @@ import java.util.function.Consumer;
 public enum Format implements RepresentationGenerator {
     JSON {
 
-        public Representation generateRepresentation(ImportRecordData result) {
-    return new CustomJsonRepresentation( (JsonWriter w) -> {
-        try {
-            w.beginArray(); // [
-            w.beginObject(); // {
-            w.name("totalRecordsInFile").value(result.getTotalRecordsInFile());
-            w.name("totalRecordsImported").value(result.getTotalRecordsImported());
-            w.name("totalRecordsInDatabase").value(result.getTotalRecordsInDatabase());
-            w.endObject(); // }
-            w.flush();
-            w.endArray(); // ]
-        } catch (IOException e) {
-            throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
-        }
-    });
-}
         public Representation generateRepresentation(List<ATLRecordForSpecificDay> result) {
     return new CustomJsonRepresentation( (JsonWriter w) -> {
         try {
