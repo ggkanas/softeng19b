@@ -2,7 +2,7 @@ package gr.ntua.ece.softeng19b.data.model;
 
 import java.sql.Timestamp;
 
-public class DayAheadTotalLoadForecastRecordForSpecificDay extends AbstractEntsoeRecord {
+public class DayAheadTLFRecordForSpecificDay extends AbstractEntsoeRecord {
 
     private int day;
     private Timestamp dateTime; 
