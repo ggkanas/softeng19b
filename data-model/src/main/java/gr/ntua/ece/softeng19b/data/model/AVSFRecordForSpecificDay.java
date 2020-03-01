@@ -1,5 +1,7 @@
 package gr.ntua.ece.softeng19b.data.model;
 
+import java.sql.Timestamp;
+
 public class AVSFRecordForSpecificDay extends AbstractEntsoeRecord {
 
   private int day;
