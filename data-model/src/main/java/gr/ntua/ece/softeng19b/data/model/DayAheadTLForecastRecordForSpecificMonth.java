@@ -3,7 +3,7 @@ package gr.ntua.ece.softeng19b.data.model;
 public class DayAheadTLForecastRecordForSpecificMonth extends AbstractEntsoeRecord {
 
     private int month;
-    private double monthAheadTotalLoadForecastByDayValue;
+    private double dayAheadTotalLoadForecastByDayValue;
 
     public DayAheadTotalLoadForecastRecordForSpecificMonth() {
         super(DataSet.monthAheadTotalLoadByDay);
@@ -18,11 +18,11 @@ public class DayAheadTLForecastRecordForSpecificMonth extends AbstractEntsoeReco
     }
 
     public double getDayAheadTLForecastByDayValue() {
-        return DayAheadTLForecastByDayValue;
+        return dayAheadTLForecastByDayValue;
     }
 
 
-    public void setDayAheadTLForecastByDayValue(double DayAheadTLForecastByDayValueValue) {
-        this.DayAheadTLForecastByDayValue = DayAheadTLForecastByDayValue;
+    public void setDayAheadTLForecastByDayValue(double dayAheadTLForecastByDayValueValue) {
+        this.dayAheadTLForecastByDayValue = dayAheadTLForecastByDayValue;
     }
 }
