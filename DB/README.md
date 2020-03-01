@@ -1,0 +1,1 @@
+To set up the database run "SOURCE createDB.sql;" using the mysql client. If you're not using the client and can't use the SOURCE command or anything similar, manually run all the scripts in the order shown in createDB.sql.
