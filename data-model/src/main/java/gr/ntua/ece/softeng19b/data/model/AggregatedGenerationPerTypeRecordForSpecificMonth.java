@@ -4,11 +4,20 @@ public class AggregatedGenerationPerTypeRecordForSpecificMonth extends AbstractE
 
     private int month;
     private double actualGenerationOutputByDayValue;
-
+    private String productionType;
+    
     public AggregatedGenerationPerTypeRecordForSpecificMonth() {
         super(DataSet.actualGenerationOutputByDay);
     }
    
+    public String getProductionType() {
+        return productionType;
+    }
+    
+    public void setProductionType(String productionType) {
+        this.productionType = productionType;
+    }    
+    
    public double actualGenerationOutputByDayValue() {
         return actualGenerationOutputByDayValue;
     }
