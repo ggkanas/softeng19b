@@ -6,13 +6,13 @@ public class AggregatedGenerationPerTypeRecordForSpecificMonth extends AbstractE
     private double actualGenerationOutputByDayValue;
 
     public AggregatedGenerationPerTypeRecordForSpecificMonth() {
-        super(DataSet.actualGenerationOutputByDay);
+        super(DataSet.AggregatedGenerationPerType);
     }
-   
+
    public double actualGenerationOutputByDayValue() {
         return actualGenerationOutputByDayValue;
     }
-  
+
     public void setAggregatedGenerationPerTypeRecordForSpecificMonth (double actualGenerationOutputByDayValue) {
         this.actualGenerationOutputByDayValue = actualGenerationOutputByDayValue;
     }

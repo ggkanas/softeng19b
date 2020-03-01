@@ -8,7 +8,7 @@ public class AGPerTypeRecordForSpecificDay extends AbstractEntsoeRecord {
     private DateTime UpdateTime;
 
     public AGPerTypeRecordForSpecificDay() {
-        super(DataSet.ActualGenerationOutput);
+        super(DataSet.AggregatedGenerationPerType);
     }
 
     public int getDay() {

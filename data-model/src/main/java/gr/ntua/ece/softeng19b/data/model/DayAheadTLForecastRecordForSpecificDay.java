@@ -3,12 +3,12 @@ package gr.ntua.ece.softeng19b.data.model;
 public class DayAheadTLForecastRecordForSpecificDay extends AbstractEntsoeRecord {
 
     private int day;
-    private DateTime dateTime; 
+    private DateTime dateTime;
     private double dayAheadTotalLoadValue;
     private DateTime UpdateTime;
 
     public DayAheadTotalLoadForecastRecordForSpecificDay() {
-        super(DataSet.dayAheadTotalLoad);
+        super(DataSet.DayAheadTotalLoad);
     }
 
     public int getDay() {

@@ -6,13 +6,13 @@ public class AggregatedGenerationPerTypeRecordForSpecificYear extends AbstractEn
     private double actualGenerationOutputByMonthValue;
 
     public AggregatedGenerationPerTypeRecordForSpecificYear () {
-        super(DataSet.actualGenerationOutputByMonth);
+        super(DataSet.AggregatedGenerationPerType);
     }
-   
+
    public double actualGenerationOutputByMonthValue() {
         return actualGenerationOutputByMonthValue;
     }
-  
+
     public void setAggregatedGenerationPerTypeRecordForSpecificYear (double actualGenerationOutputByMonthValue) {
         this.actualGenerationOutputByMonthValue = actualGenerationOutputByMonthValue;
     }

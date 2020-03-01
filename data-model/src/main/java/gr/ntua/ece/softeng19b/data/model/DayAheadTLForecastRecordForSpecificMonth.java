@@ -6,7 +6,7 @@ public class DayAheadTLForecastRecordForSpecificMonth extends AbstractEntsoeReco
     private double monthAheadTotalLoadForecastByDayValue;
 
     public DayAheadTotalLoadForecastRecordForSpecificMonth() {
-        super(DataSet.monthAheadTotalLoadByDay);
+        super(DataSet.DayAheadTotalLoad);
     }
 
     public int getMonth() {
