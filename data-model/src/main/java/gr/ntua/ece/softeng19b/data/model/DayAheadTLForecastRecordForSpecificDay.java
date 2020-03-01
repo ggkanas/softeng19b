@@ -1,11 +1,13 @@
 package gr.ntua.ece.softeng19b.data.model;
 
-public class DayAheadTLForecastRecordForSpecificDay extends AbstractEntsoeRecord {
+import java.sql.Timestamp;
+
+public class DayAheadTotalLoadForecastRecordForSpecificDay extends AbstractEntsoeRecord {
 
     private int day;
-    private DateTime dateTime; 
+    private Timestamp dateTime; 
     private double dayAheadTotalLoadValue;
-    private DateTime UpdateTime;
+    private Timestamp updateTime;
 
     public DayAheadTotalLoadForecastRecordForSpecificDay() {
         super(DataSet.dayAheadTotalLoad);
@@ -32,14 +34,14 @@ public class DayAheadTLForecastRecordForSpecificDay extends AbstractEntsoeRecord
     }
 
     public DateTime getUpdateTime() {
-        return UpdateTime;
+        return updateTime;
     }
 
-    public void setUpdateTime(DateTime UpdateTime) {
-        this.UpdateTime = UpdateTime;
+    public void setUpdateTime(DateTime updateTime) {
+        this.updateTime = updateTime;
     }
 
-    public void setDayAheadTotalLoadForecastValue(double DayAheadTotalLoadForecastValue) {
-        this.DayAheadTotalLoadForecastValue = DayAheadTotalLoadForecastValue;
+    public void setDayAheadTotalLoadForecastValue(double dayAheadTotalLoadForecastValue) {
+        this.dayAheadTotalLoadForecastValue = dayAheadTotalLoadForecastValue;
     }
 }
