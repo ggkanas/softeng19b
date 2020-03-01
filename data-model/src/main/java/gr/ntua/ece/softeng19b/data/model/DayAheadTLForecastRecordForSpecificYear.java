@@ -5,7 +5,7 @@ public class DayAheadTLFRecordForSpecificYear extends AbstractEntsoeRecord {
     private int year;
     private double dayAheadTotalLoadForecastByMonthValue;
 
-    public DayAheadTotalLoadForecastRecordForSpecificYear() {
+    public DayAheadTLFRecordForSpecificYear() {
         super(DataSet.YearAheadTotalLoadByDay);
     }
 
