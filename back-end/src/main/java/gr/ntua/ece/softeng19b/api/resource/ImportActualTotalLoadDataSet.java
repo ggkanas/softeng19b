@@ -6,11 +6,42 @@ import org.restlet.resource.ResourceException;
 
 public class ImportActualTotalLoadDataSet extends EnergyResource {
 
+    private final DataAccess dataAccess = Configuration.getInstance().getDataAccess();
+
     @Override
     protected Representation post(Representation entity) throws ResourceException {
-        // Import dataset
-        // Use the Restlet's FileUpload extension, as demonstrated here:
-        // https://restlet.talend.com/documentation/user-guide/2.4/extensions/fileupload
-        throw new ResourceException(Status.SERVER_ERROR_NOT_IMPLEMENTED);
+
+        Form form = new form(entity);
+
+        if (!dataAccess.checkToken(form.getFirstValue("X-OBSERVATORY-AUTH"))) //to be confirmed
+            throw new ResourceException(Status.CLIENT_ERROR_UNAUTHORIZED);
+
+        String csvFile = form.getFirstValue("file");
+        int totalRecordsInFile = 0;
+        int totalRecordsImported = 0;
+
+        BufferedReader br = null;
+        String line = "";
+        String csvSplitBy = ",";
+
+        br = new BufferedReader(new FileReader(csvFile));
+
+        line = br.readLine();
+        String[] dataLine = line.split(csvSplitBy);
+
+        while((line = br.readLine()) != null) {
+          totalRecordsInFile = totalRecordsInFile + 1;
+          String[] dataLine = line.split(csvSplitBy);
+
+          if(dataAccess.AddActualTotalLoadRecord(dataLine) == 1) totalRecordsImported = totalRecordsImported + 1;
+          else break;
+        }
+
+        int totalRecordsInDatabase = dataAccess.getTotalRecordsInDatabase("ActualTotalLoad");
+
+        Format format = parseFormat(getQueryValue("format"));
+
+        return format.generateRepresentation(new ImportRecordData(totalRecordsInFile,
+            totalRecordsImported, totalRecordsInDataBase));
     }
 }

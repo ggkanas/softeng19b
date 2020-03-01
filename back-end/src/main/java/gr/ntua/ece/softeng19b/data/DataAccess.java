@@ -47,49 +47,612 @@ public class DataAccess {
         }
     }
 
-
-    public List<ATLRecordForSpecificDay> fetchActualDataLoadForSpecificDate(String areaName,
-                                                                                        String resolution,
-                                                                                        LocalDate date)
-            throws DataAccessException {
-
-        Integer year = date.getYear();
-        Integer month = date.getMonthValue();
-        Integer day = date.getDayOfMonth();
-
-        Object[] sqlParams = new Object[] {
-                areaName,
-                resolution,
-                year,
-                month,
-                day
-        };
-
-        //TODO: Insert a valid SQL query
-        String sqlQuery = "select AreaName, AreaTypeCodeText, MapCodeText, ResolutionCodeText, Year, Month, Day, DateTime, TotalLoadValue, UpdateTime
-        from ActualTotalLoad as ATL, MapCode as MC, AreadTypeCode as ATC,
-        ResolutionCode as RC where ATL.MapCodeId = MC.Id && ATL.AreaTypeCodeId = ATC.Id && ATL.ResolutionCodeId = RC.Id" +
-                          "AreaName = ? and ResolutionCodeText = ? and Year = ? and Month = ? and Day = ?";
-
+    public void createToken(String token, String username) throws DataAccessException {
         try {
-            return jdbcTemplate.query(sqlQuery, sqlParams, (ResultSet rs, int rowNum) -> {
-                ATLRecordForSpecificDay dataLoad = new ATLRecordForSpecificDay();
-                dataLoad.setAreaName(rs.getString(1)); //get the string located at the 1st column of the result set
-                dataLoad.setAreaTypeCode(rs.getString(2));
-                dataLoad.setMapCode(rs.getString(3));
-                dataLoad.setResolutionCode(rs.getString(4));
-                dataLoad.setYear(rs.getInt(5)); //get the int located at the 2nd column of the result set
-                dataLoad.setMonth(rs.getInt(6));
-                dataLoad.setDay(rs.getInt(7));
-                dataLoad.setDateTime(new DateTime(rs.getTimestamp(8).getTime());
-                dataLoad.setActualTotalLoadValue(rs.getDouble(9));
-                dataLoad.setUpdateTime(new DateTime(rs.getTimestamp(10).getTime()));
-                return dataLoad;
+            jdbcTemplate.update("Update User SET Token='"+ token +"' WHERE Username='"+ username +"'");
+        }
+        catch(Exception e) {
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    public boolean checkToken(String token) throws DataAccessException {
+        Object[] sqlParams = new Object[] {
+            token
+        };
+        try {
+            return jdbcTemplate.query("SELECT * FROM User WHERE Token = ?", sqlParams, (ResultSet rs, int rowNum) -> {
+                return (rowNum > 0);
             });
         }
         catch(Exception e) {
             throw new DataAccessException(e.getMessage(), e);
         }
+    }
+
+    public int addActualTotalLoadRecord(String[] dataLine) {
+
+        String sqlQuery = "insert into ActualTotalLoad () values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            return jdbcTemplate.update(sqlQuery, dataLine);
+        }
+        catch(Exception e) {
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    public int getTotalRecordsInDatabase(String dataset) {
+        String sqlQuery = "SELECT * FROM " + dataset;
+        try {
+            return jdbcTemplate.query(sqlQuery, (ResultSet rs, int rowNum) -> {
+                return rowNum;
+            });
+        }
+        catch(Exception e) {
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    public User addUser(String username, String password, String email, Integer requestsPerDayQuotas) {
+
+            TransactionTemplate transactionTemplate = new TransactionTemplate(tm);
+            transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+
+            long id = transactionTemplate.execute((TransactionStatus status) -> {
+
+                //Create the new user record using a prepared statement
+                GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+                int rowCount = jdbcTemplate.update((Connection con) -> {
+                    PreparedStatement ps = con.prepareStatement(
+                        "insert into user(username, password, email, quotas) values(?, ?, ?, ?)",
+                        Statement.RETURN_GENERATED_KEYS
+                    );
+                    ps.setString(1, username);
+                    ps.setString(2, password);
+                    ps.setString(3, email);
+                    ps.setInteger(4, requestPerDayQuotas); //ελπίζω να υπάρχει αυτό
+                    return ps;
+                }, keyHolder);
+
+                if (rowCount != 1) {
+                    throw new RuntimeException("New user not inserted");
+                }
+
+                long newId = keyHolder.getKey().longValue();
+
+                return newId;
+            });
+
+            //New row has been added
+            User user = new User(
+                id,
+                username,
+                password,
+                email,
+                requestsPerDayQuotas
+            );
+
+            return user;
+        }
+
+    public List<ATLRecordForSpecificDay> fetchActualTotalLoadForSpecificDate(String areaName, String resolution, LocalDate date)
+          throws DataAccessException {
+
+            Integer year = date.getYear();
+            Integer month = date.getMonthValue();
+            Integer day = date.getDayOfMonth();
+
+            Object[] sqlParams = new Object[] {
+                    areaName,
+                    resolution,
+                    year,
+                    month,
+                    day
+            };
+
+            String sqlQuery = "select AreaName, AreaTypeCodeText, MapCodeText, ResolutionCodeText, Year, Month, Day, DateTime, TotalLoadValue, UpdateTime
+            from ActualTotalLoad as ATL, MapCode as MC, AreadTypeCode as ATC,
+            ResolutionCode as RC where ATL.MapCodeId = MC.Id && ATL.AreaTypeCodeId = ATC.Id && ATL.ResolutionCodeId = RC.Id && " +
+                              "AreaName = ? && ResolutionCodeText = ? && Year = ? && Month = ? && Day = ?";
+
+            try {
+                return jdbcTemplate.query(sqlQuery, sqlParams, (ResultSet rs, int rowNum) -> {
+                    ATLRecordForSpecificDay dataLoad = new ATLRecordForSpecificDay();
+                    dataLoad.setAreaName(rs.getString(1)); //get the string located at the 1st column of the result set
+                    dataLoad.setAreaTypeCode(rs.getString(2));
+                    dataLoad.setMapCode(rs.getString(3));
+                    dataLoad.setResolutionCode(rs.getString(4));
+                    dataLoad.setYear(rs.getInt(5)); //get the int located at the 2nd column of the result set
+                    dataLoad.setMonth(rs.getInt(6));
+                    dataLoad.setDay(rs.getInt(7));
+                    dataLoad.setDateTime(new DateTime(rs.getTimestamp(8).getTime());
+                    dataLoad.setActualTotalLoadValue(rs.getDouble(9));
+                    dataLoad.setUpdateTime(new DateTime(rs.getTimestamp(10).getTime()));
+                    return dataLoad;
+                });
+            }
+            catch(Exception e) {
+                throw new DataAccessException(e.getMessage(), e);
+            }
+        }
+
+    public List<ATLRecordForSpecificMonth> fetchActualTotalLoadForSpecificMonth(String areaName, String resolution, YearMonth yearMonth)
+
+    throws DataAccessException {
+      Integer year = yearMonth.getYear();
+      Integer month = yearMonth.getMonthValue();
+
+    Object[] sqlParams = new Object[] {
+      areaName,
+      resolution,
+      year,
+      month
+    };
+
+    String sqlQuery = "select AreaName, AreaTypeCodeText, MapCodeText, ResolutionCodeText, Year, Month, Day, sum(TotalLoadValue)
+    from ActualTotalLoad as ATL, MapCode as MC, AreaTypeCode as ATC,
+    ResolutionCode as RC where ATL.MapCodeId = MC.Id && ATL.AreaTypeCodeId = ATC.Id && ATL.ResolutionCodeId = RC.Id && " +
+    "AreaName = ? && ResolutionCodeText = ? && Year = ? && Month = ? group by Day";
+
+
+    try {
+      return jdbcTemplate.query(sqlQuery, sqlParams, (ResultSet rs, int rowNum) -> {
+        ATLRecordForSpecificMonth dataLoad = new ATLRecordForSpecificMonth();
+        dataLoad.setAreaName(rs.getString(1));
+        dataLoad.setAreaTypeCode(rs.getString(2));
+        dataLoad.setMapCode(rs.getString(3));
+        dataLoad.setResolutionCode(rs.getString(4));
+        dataLoad.setYear(rs.getInt(5));
+        dataLoad.setMonth(rs.getInt(6));
+        dataLoad.setDay(rs.getInt(7));
+        dataLoad.setActualTotalLoadValueByDayValue(rs.getDouble(9));
+        return dataLoad;
+      });
+    }
+    catch(Exception e) {
+      throw new DataAccessException(e.getMessage(), e);
+    }
+    }
+
+    public List<ATLRecordForSpecificYear> fetchActualTotalLoadForSpecificYear(String areaName, String resolution, Integer year)
+
+    throws DataAccessException {
+      //Integer year = date.getYear();
+
+    Object[] sqlParams = new Object[] {
+      areaName,
+      resolution,
+      year
+    };
+
+    String sqlQuery = "select AreaName, AreaTypeCodeText, MapCodeText, ResolutionCodeText, Year, Month, sum(TotalLoadValue)
+    from ActualTotalLoad as ATL, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC
+    where ATL.MapCodeId = MC.Id && ATL.AreaTypeCodeId = ATC.Id && ATL.ResolutionCodeId = RC.Id &&" +
+    "AreaName = ? && ResolutionCodetext = ? && Year = ? + group by Month";
+
+    try {
+      return jdbcTemplate.query(sqlQuery, sqlParams, (ResultSet rs, int rowNum) -> {
+        ATLRecordForSpecificYear dataLoad = new ATLRecordForSpecificYear();
+        dataLoad.setAreaName(rs.getString(1));
+        dataLoad.setAreaTypeCode(rs.getString(2));
+        dataLoad.setMapCode(rs.getString(3));
+        dataLoad.setResolutionCode(rs.getString(4));
+        dataLoad.setYear(rs.getInt(5));
+        dataLoad.setMonth(rs.getInt(6));
+        dataLoad.setActualTotalLoadValueByMonthValue(rs.getDouble(7));
+        return dataLoad;
+      });
+    }
+    catch(Exception e) {
+      throw new DataAccessException(e.getMessage(), e);
+    }
+
+
+    public List<AGPerTypeRecordForSpecificDay> fetchAggregatedGenerationPerTypeForSpecificDate(String areaName, String productionType, String resolution, LocalDate date)
+
+    throws DataAccessException {
+      Integer year = date.getYear();
+      Integer month = date.getMonthValue();
+      Integer day = date.getDayOfMonth();
+
+      if(productionType == "AllTypes") {
+        Object[] sqlParams = new Object[] {
+          areaName,
+          resolution,
+          year,
+          month,
+          day
+        };
+
+        String sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText,
+        Year, Month, Day, DateTime, ProductionTypeText, ActualGenerationOutput, UpdateTime from
+        AggregatedGenerationPerType as AGPT, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, ProductionType as PT where
+        AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PC.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
+        "AreaName = ? && ResolutionCodeText = ? && Year = ? && Month = ? and Day = ? group by ProductionTypeText";
+      }
+      else {
+        Object[] sqlParams = new Object[] {
+          areaName,
+          resolution,
+          productionType,
+          year,
+          month,
+          day
+        };
+
+        String sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText,
+        Year, Month, Day, DateTime, ProductionTypeText, ActualGenerationOutput, UpdateTime from
+        AggregatedGenerationPerType as AGPT, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, ProductionType as PT where
+        AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PC.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
+        "AreaName = ? && ResolutionCodeText = ? && ProductionTypeText = ? && Year = ? && Month = ? and Day = ?";
+      }
+
+      try {
+          return jdbcTemplate.query(sqlQuery, sqlParams, (ResultSet rs, int rowNum) -> {
+              AGPerTypeRecordForSpecificDay dataLoad = new AGPerTypeRecordForSpecificDay();
+              dataLoad.setAreaName(rs.getString(1));
+              dataLoad.setAreaTypeCode(rs.getString(2));
+              dataLoad.setMapCode(rs.getString(3));
+              dataLoad.setResolutionCode(rs.getString(4));
+              dataLoad.setYear(rs.getInt(5));
+              dataLoad.setMonth(rs.getInt(6));
+              dataLoad.setDay(rs.getInt(7));
+              dataLoad.setDateTime(new DateTime(rs.getTimestamp(8).getTime());
+              dataLoad.setProductionType(rs.getString(9));
+              dataLoad.setActualGenerationOutputValue(rs.getDouble(10));
+              dataLoad.setUpdateTime(new DateTime(rs.getTimestamp(11).getTime()));
+              return dataLoad;
+          });
+      }
+      catch(Exception e) {
+          throw new DataAccessException(e.getMessage(), e);
+      }
+    }
+
+    public List<AGPerTypeRecordForSpecificMonth> fetchAggregatedGenerationPerTypeForSpecificMonth(String areaName, String productionType, String resolution, YearMonth yearMonth)
+
+    throws DataAccessException {
+      Integer year = yearMonth.getYear();
+      Integer month = yearMonth.getMonthValue();
+
+      if(productionType == "AllTypes") {
+        Object[] sqlParams = new Object[] {
+          areaName,
+          resolution,
+          year,
+          month
+        };
+
+        String sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText,
+        Year, Month, Day, ProductionTypeText, sum(ActualGenerationOutput) from
+        AggregatedGenerationPerType as AGPT, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, ProductionType as PT where
+        AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PC.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
+        "AreaName = ? && ResolutionCodeText = ? && Year = ? && Month = ? group by ProductionTypeText, Day";
+      }
+      else {
+        Object[] sqlParams = new Object[] {
+          areaName,
+          resolution,
+          productionType,
+          year,
+          month
+        };
+
+        String sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText,
+        Year, Month, Day, ProductionTypeText, sum(ActualGenerationOutput) from
+        AggregatedGenerationPerType as AGPT, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, ProductionType as PT where
+        AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PC.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
+        "AreaName = ? && ResolutionCodeText = ? && ProductionTypeText = ? && Year = ? && Month = ? group by Day";
+      }
+
+      try {
+          return jdbcTemplate.query(sqlQuery, sqlParams, (ResultSet rs, int rowNum) -> {
+              AGPerTypeRecordForSpecificMonth dataLoad = new AGPerTypeRecordForSpecificMonth();
+              dataLoad.setAreaName(rs.getString(1));
+              dataLoad.setAreaTypeCode(rs.getString(2));
+              dataLoad.setMapCode(rs.getString(3));
+              dataLoad.setResolutionCode(rs.getString(4));
+              dataLoad.setYear(rs.getInt(5));
+              dataLoad.setMonth(rs.getInt(6));
+              dataLoad.setDay(rs.getInt(7));
+              dataLoad.setProductionType(rs.getString(8));
+              dataLoad.setActualGenerationOutputByDayValue(rs.getDouble(9));
+              return dataLoad;
+          });
+      }
+      catch(Exception e) {
+          throw new DataAccessException(e.getMessage(), e);
+      }
+    }
+
+    public List<AGPerTypeRecordForSpecificYear> fetchAggregatedGenerationPerTypeForSpecificYear(String areaName, String productionType, String resolution, Integer year)
+
+    throws DataAccessException {
+      //Integer year = date.getYear();
+
+      if(productionType == "AllTypes") {
+        Object[] sqlParams = new Object[] {
+          areaName,
+          resolution,
+          year
+        };
+
+        String sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText,
+        Year, Month, Day, ProductionTypeText, sum(ActualGenerationOutput) from
+        AggregatedGenerationPerType as AGPT, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, ProductionType as PT where
+        AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PC.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
+        "AreaName = ? && ResolutionCodeText = ? && Year = ? group by ProductionTypeText, Month";
+      }
+      else {
+        Object[] sqlParams = new Object[] {
+          areaName,
+          resolution,
+          productionType,
+          year
+        };
+
+        String sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText,
+        Year, Month, Day, ProductionTypeText, sum(ActualGenerationOutput) from
+        AggregatedGenerationPerType as AGPT, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, ProductionType as PT where
+        AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PC.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
+        "AreaName = ? && ResolutionCodeText = ? && ProductionTypeText = ? && Year = ? group by Month";
+      }
+
+      try {
+          return jdbcTemplate.query(sqlQuery, sqlParams, (ResultSet rs, int rowNum) -> {
+              AGPerTypeRecordForSpecificYear dataLoad = new AGPerTypeRecordForSpecificYear();
+              dataLoad.setAreaName(rs.getString(1));
+              dataLoad.setAreaTypeCode(rs.getString(2));
+              dataLoad.setMapCode(rs.getString(3));
+              dataLoad.setResolutionCode(rs.getString(4));
+              dataLoad.setYear(rs.getInt(5));
+              dataLoad.setMonth(rs.getInt(6));
+              dataLoad.setDay(rs.getInt(7));
+              dataLoad.setProductionType(rs.getString(8));
+              dataLoad.setActualGenerationOutputByMonthValue(rs.getDouble(9));
+              return dataLoad;
+          });
+      }
+      catch(Exception e) {
+          throw new DataAccessException(e.getMessage(), e);
+      }
+    }
+
+    public List<DayAheadTLFRecordForSpecificDay> fetchDayAheadTotalLoadForecastForSpecificDate(String areaName, String resolution, LocalDate date)
+
+    throws DataAccessException {
+      Integer year = date.getYear();
+      Integer month = date.getMonthValue();
+      Integer day = date.getDayOfMonth();
+
+      Object[] sqlParams = new Object[] {
+              areaName,
+              resolution,
+              year,
+              month,
+              day
+      };
+
+      String sqlQuery = "select AreaName, AreaTypeCodeText, MapCodeText, ResolutionCodeText, Year,
+      Month, Day, DateTime, TotalLoadValue, UpdateTime from
+      DayAheadTotalLoadForecast as DATLF, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC where
+      DATLF.AreaTypeCodeId = ATC.Id && DATLF.MapCodeId = MC.Id && DATLF.ResolutionCodeId = RC.Id &&
+      AreaName = ? && ResolutionCodeText = ? Year = ? && Month = ? && Day = ?";
+
+      try {
+          return jdbcTemplate.query(sqlQuery, sqlParams, (ResultSet rs, int rowNum) -> {
+              DayAheadTLFRecordForSpecificDay dataLoad = new DayAheadTLFRecordForSpecificDay();
+              dataLoad.setAreaName(rs.getString(1)); //get the string located at the 1st column of the result set
+              dataLoad.setAreaTypeCode(rs.getString(2));
+              dataLoad.setMapCode(rs.getString(3));
+              dataLoad.setResolutionCode(rs.getString(4));
+              dataLoad.setYear(rs.getInt(5)); //get the int located at the 2nd column of the result set
+              dataLoad.setMonth(rs.getInt(6));
+              dataLoad.setDay(rs.getInt(7));
+              dataLoad.setDateTime(new DateTime(rs.getTimestamp(8).getTime());
+              dataLoad.setDayAheadTotalLoadForecastValue(rs.getDouble(9));
+              dataLoad.setUpdateTime(new DateTime(rs.getTimestamp(10).getTime()));
+              return dataLoad;
+          });
+      }
+      catch(Exception e) {
+          throw new DataAccessException(e.getMessage(), e);
+      }
+    }
+
+    public List<DayAheadTLFRecordForSpecificMonth> fetchDayAheadTotalLoadForecastForSpecificMonth(String areaName, String resolution, YearMonth yearMonth)
+
+    throws DataAccessException {
+      Integer year = yearMonth.getYear();
+      Integer month = yearMonth.getMonthValue();
+
+      Object[] sqlParams = new Object[] {
+              areaName,
+              resolution,
+              year,
+              month
+      };
+
+      String sqlQuery = "select AreaName, AreaTypeCodeText, MapCodeText, ResolutionCodeText, Year,
+      Month, Day, sum(TotalLoadValue) from
+      DayAheadTotalLoadForecast as DATLF, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC where
+      DATLF.AreaTypeCodeId = ATC.Id && DATLF.MapCodeId = MC.Id && DATLF.ResolutionCodeId = RC.Id &&
+      AreaName = ? && ResolutionCodeText = ? Year = ? && Month = ? group by Day";
+
+      try {
+          return jdbcTemplate.query(sqlQuery, sqlParams, (ResultSet rs, int rowNum) -> {
+              DayAheadTLFRecordForSpecificMonth dataLoad = new DayAheadTLFRecordForSpecificMonth();
+              dataLoad.setAreaName(rs.getString(1)); //get the string located at the 1st column of the result set
+              dataLoad.setAreaTypeCode(rs.getString(2));
+              dataLoad.setMapCode(rs.getString(3));
+              dataLoad.setResolutionCode(rs.getString(4));
+              dataLoad.setYear(rs.getInt(5)); //get the int located at the 2nd column of the result set
+              dataLoad.setMonth(rs.getInt(6));
+              dataLoad.setDay(rs.getInt(7));
+              dataLoad.setDayAheadTotalLoadForecastByDayValue(rs.getDouble(8));
+              return dataLoad;
+          });
+      }
+      catch(Exception e) {
+          throw new DataAccessException(e.getMessage(), e);
+      }
+    }
+
+    public List<DayAheadTLFRecordForSpecificYear> fetchDayAheadTotalLoadForecastForSpecificYear(String areaName, String resolution, Integer year)
+
+    throws DataAccessException {
+      //Integer year = date.getYear();
+
+      Object[] sqlParams = new Object[] {
+              areaName,
+              resolution,
+              year
+      };
+
+      String sqlQuery = "select AreaName, AreaTypeCodeText, MapCodeText, ResolutionCodeText, Year,
+      Month, Day, sum(TotalLoadValue) from
+      DayAheadTotalLoadForecast as DATLF, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC where
+      DATLF.AreaTypeCodeId = ATC.Id && DATLF.MapCodeId = MC.Id && DATLF.ResolutionCodeId = RC.Id &&
+      AreaName = ? && ResolutionCodeText = ? Year = ? group by Month";
+
+      try {
+          return jdbcTemplate.query(sqlQuery, sqlParams, (ResultSet rs, int rowNum) -> {
+              DayAheadTLFRecordForSpecificYear dataLoad = new DayAheadTLFRecordForSpecificYear();
+              dataLoad.setAreaName(rs.getString(1)); //get the string located at the 1st column of the result set
+              dataLoad.setAreaTypeCode(rs.getString(2));
+              dataLoad.setMapCode(rs.getString(3));
+              dataLoad.setResolutionCode(rs.getString(4));
+              dataLoad.setYear(rs.getInt(5)); //get the int located at the 2nd column of the result set
+              dataLoad.setMonth(rs.getInt(6));
+              dataLoad.setDay(rs.getInt(7));
+              dataLoad.setDayAheadTotalLoadForecastByMonthValue(rs.getDouble(8));
+              return dataLoad;
+          });
+      }
+      catch(Exception e) {
+          throw new DataAccessException(e.getMessage(), e);
+      }
+    }
+
+    public List<AVSFRecordForSpecificDay> fetchActualTotalLoadVsDayAheadTotalLoadForecastForSpecificDate(String areaName, String resolution, LocalDate date)
+
+    throws DataAccessException {
+
+      Integer year = date.getYear();
+      Integer month = date.getMonthValue();
+      Integer day = date.getDayOfMonth();
+
+      Object[] sqlParams = new Object[] {
+              areaName,
+              resolution,
+              year,
+              month,
+              day
+      };
+
+      String sqlQuery = "select AreaName, AreaTypeCodeText, MapCodeText, ResolutionCodeText, Year, Month, Day, DateTime, ATL.TotalLoadValue, DATLF.TotalLoadValue
+      from ActualTotalLoad as ATL, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, DayAheadTotalLoadForecast as DATLF where" +
+      "ATL.AreaTypeCodeId = ATC.Id && DATLF.AreaTypeCodeId = ATC.Id && ATL.MapCodeId = MC.Id && DATLF.MapCodeId = MC.Id && ATL.ResolutionCodeId = RC.Id &&
+      DATLF.ResolutionCodeId = RC.Id && ATL.AreaName = ? && ATL.ResolutionCodeText = ? && ATL.Year = ? && ATL.Month = ? and ATL.Day = ? &&
+      ATL.AreaName = DATLF.AreaName && ATL.ResolutionCodeText = DATLF.ResolutionCodeText && ATL.Year = DATLF.Year && ATL.Month = DATLF.Month and ATL.Day = DATLF.Day?"
+
+      try {
+          return jdbcTemplate.query(sqlQuery, sqlParams, (ResultSet rs, int rowNum) -> {
+              AVSFRecordForSpecificDay dataLoad = new AVSFRecordForSpecificDay();
+              dataLoad.setAreaName(rs.getString(1)); //get the string located at the 1st column of the result set
+              dataLoad.setAreaTypeCode(rs.getString(2));
+              dataLoad.setMapCode(rs.getString(3));
+              dataLoad.setResolutionCode(rs.getString(4));
+              dataLoad.setYear(rs.getInt(5)); //get the int located at the 2nd column of the result set
+              dataLoad.setMonth(rs.getInt(6));
+              dataLoad.setDay(rs.getInt(7));
+              dataLoad.setDateTime(new DateTime(rs.getTimestamp(8).getTime());
+              dataLoad.setActualTotalLoadValue(rs.getDouble(9));
+              dataLoad.setDayAheadTotalLoadForecastValue(rs.getDouble(10));
+              return dataLoad;
+          });
+      }
+      catch(Exception e) {
+          throw new DataAccessException(e.getMessage(), e);
+      }
+    }
+
+    public List<AVSFRecordForSpecificMonth> fetchActualTotalLoadVsDayAheadTotalLoadForecastForSpecificMonth(String areaName, String resolution, YearMonth yearMonth)
+
+    throws DataAccessException {
+      Integer year = yearMonth.getYear();
+      Integer month = yearMonth.getMonthValue();
+
+      Object[] sqlParams = new Object[] {
+              areaName,
+              resolution,
+              year,
+              month
+      };
+
+      String sqlQuery = "select AreaName, AreaTypeCodeText, MapCodeText, ResolutionCodeText, Year, Month, Day, sum(ATL.TotalLoadValue), sum(DATLF.TotalLoadValue)
+      from ActualTotalLoad as ATL, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, DayAheadTotalLoadForecast as DATLF where" +
+      "ATL.AreaTypeCodeId = ATC.Id && DATLF.AreaTypeCodeId = ATC.Id && ATL.MapCodeId = MC.Id && DATLF.MapCodeId = MC.Id && ATL.ResolutionCodeId = RC.Id &&
+      DATLF.ResolutionCodeId = RC.Id && ATL.AreaName = ? && ATL.ResolutionCodeText = ? && ATL.Year = ? && ATL.Month = ?  &&
+      ATL.AreaName = DATLF.AreaName && ATL.ResolutionCodeText = DATLF.ResolutionCodeText && ATL.Year = DATLF.Year && ATL.Month = DATLF.Month group by Day"
+
+      try {
+          return jdbcTemplate.query(sqlQuery, sqlParams, (ResultSet rs, int rowNum) -> {
+              AVSFRecordForSpecificMonth dataLoad = new AVSFRecordForSpecificMonth();
+              dataLoad.setAreaName(rs.getString(1)); //get the string located at the 1st column of the result set
+              dataLoad.setAreaTypeCode(rs.getString(2));
+              dataLoad.setMapCode(rs.getString(3));
+              dataLoad.setResolutionCode(rs.getString(4));
+              dataLoad.setYear(rs.getInt(5)); //get the int located at the 2nd column of the result set
+              dataLoad.setMonth(rs.getInt(6));
+              dataLoad.setDay(rs.getInt(7));
+              dataLoad.setDateTime(new DateTime(rs.getTimestamp(8).getTime());
+              dataLoad.setActualTotalLoadByDayValue(rs.getDouble(9));
+              dataLoad.setDayAheadTotalLoadForecastByDayValue(rs.getDouble(10));
+              return dataLoad;
+          });
+      }
+      catch(Exception e) {
+          throw new DataAccessException(e.getMessage(), e);
+      }
+    }
+
+    public List<AVSFRecordForSpecificYear> fetchActualTotalLoadVsDayAheadTotalLoadForecastForSpecificYear(String areaName, String resolution, Integer year)
+
+    throws DataAccessException {
+      //Integer year = date.getYear();
+
+      Object[] sqlParams = new Object[] {
+              areaName,
+              resolution,
+              year
+      };
+
+      String sqlQuery = "select AreaName, AreaTypeCodeText, MapCodeText, ResolutionCodeText, Year, Month, Day, sum(ATL.TotalLoadValue), sum(DATLF.TotalLoadValue)
+      from ActualTotalLoad as ATL, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, DayAheadTotalLoadForecast as DATLF where" +
+      "ATL.AreaTypeCodeId = ATC.Id && DATLF.AreaTypeCodeId = ATC.Id && ATL.MapCodeId = MC.Id && DATLF.MapCodeId = MC.Id && ATL.ResolutionCodeId = RC.Id &&
+      DATLF.ResolutionCodeId = RC.Id && ATL.AreaName = ? && ATL.ResolutionCodeText = ? && ATL.Year = ? &&
+      ATL.AreaName = DATLF.AreaName && ATL.ResolutionCodeText = DATLF.ResolutionCodeText && ATL.Year = DATLF.Year group by Month"
+
+      try {
+          return jdbcTemplate.query(sqlQuery, sqlParams, (ResultSet rs, int rowNum) -> {
+              AVSFRecordForSpecificYear dataLoad = new AVSFRecordForSpecificYear();
+              dataLoad.setAreaName(rs.getString(1)); //get the string located at the 1st column of the result set
+              dataLoad.setAreaTypeCode(rs.getString(2));
+              dataLoad.setMapCode(rs.getString(3));
+              dataLoad.setResolutionCode(rs.getString(4));
+              dataLoad.setYear(rs.getInt(5)); //get the int located at the 2nd column of the result set
+              dataLoad.setMonth(rs.getInt(6));
+              dataLoad.setDay(rs.getInt(7));
+              dataLoad.setDateTime(new DateTime(rs.getTimestamp(8).getTime());
+              dataLoad.setActualTotalLoadByMonthValue(rs.getDouble(9));
+              dataLoad.setDayAheadTotalLoadForecastByMonthValue(rs.getDouble(10));
+              return dataLoad;
+          });
+      }
+      catch(Exception e) {
+          throw new DataAccessException(e.getMessage(), e);
+      }
     }
 
 }
