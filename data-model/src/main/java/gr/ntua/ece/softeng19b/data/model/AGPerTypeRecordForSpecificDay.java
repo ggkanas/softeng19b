@@ -6,11 +6,20 @@ public class AGPerTypeRecordForSpecificDay extends AbstractEntsoeRecord {
     private DateTime dateTime; //*** NEW ***
     private double actualGenerationOutputValue;
     private DateTime UpdateTime;
+    private String productionType;
 
     public AGPerTypeRecordForSpecificDay() {
         super(DataSet.ActualGenerationOutput);
     }
 
+    public String getProductionType() {
+        return productionType;
+    }
+    
+    public void setProductionType(String productionType) {
+        this.productionType = productionType;
+    }
+    
     public int getDay() {
         return day;
     }
