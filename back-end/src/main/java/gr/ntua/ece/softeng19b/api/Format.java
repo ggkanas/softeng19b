@@ -113,11 +113,11 @@ public Representation generateRepresentation(List<ATLRecordForSpecificDay> resul
     });
 }
 
-public Representation generateRepresentation(List<AGPTRecordForSpecificDay> result) {
+public Representation generateRepresentation(List<AGPerTypeRecordForSpecificDay> result) {
     return new CustomJsonRepresentation( (JsonWriter w) -> {
         try {
             w.beginArray(); // [
-            for(AGPTRecordForSpecificDay rec: result) {
+            for(AGPerTypeRecordForSpecificDay rec: result) {
                 w.beginObject(); // {
                 w.name("Source").value("entso-e");
                 w.name("DataSet").value("ActualTotalLoad");
@@ -142,11 +142,11 @@ public Representation generateRepresentation(List<AGPTRecordForSpecificDay> resu
     });
 }
 
-public Representation generateRepresentation(List<AGPTRecordForSpecificMonth> result) {
+public Representation generateRepresentation(List<AGPerTypeRecordForSpecificMonth> result) {
     return new CustomJsonRepresentation( (JsonWriter w) -> {
         try {
             w.beginArray(); // [
-            for(AGPTRecordForSpecificMonth rec: result) {
+            for(AGPerTypeRecordForSpecificMonth rec: result) {
                 w.beginObject(); // {
                 w.name("Source").value("entso-e");
                 w.name("DataSet").value("ActualTotalLoad");
@@ -169,11 +169,11 @@ public Representation generateRepresentation(List<AGPTRecordForSpecificMonth> re
     });
 }
 
-public Representation generateRepresentation(List<AGPTRecordForSpecificYear> result) {
+public Representation generateRepresentation(List<AGPerTypeRecordForSpecificYear> result) {
     return new CustomJsonRepresentation( (JsonWriter w) -> {
         try {
             w.beginArray(); // [
-            for(AGPTRecordForSpecificYear rec: result) {
+            for(AGPerTypeRecordForSpecificYear rec: result) {
                 w.beginObject(); // {
                 w.name("Source").value("entso-e");
                 w.name("DataSet").value("ActualTotalLoad");
@@ -196,11 +196,11 @@ public Representation generateRepresentation(List<AGPTRecordForSpecificYear> res
     });
 }
 
-public Representation generateRepresentation(List<DATLFRecordForSpecificDay> result) {
+public Representation generateRepresentation(List<DayAheadTLFRecordForSpecificDay> result) {
     return new CustomJsonRepresentation( (JsonWriter w) -> {
         try {
             w.beginArray(); // [
-            for(DATLFRecordForSpecificDay rec: result) {
+            for(DayAheadTLFRecordForSpecificDay rec: result) {
                 w.beginObject(); // {
                 w.name("Source").value("entso-e");
                 w.name("DataSet").value("ActualTotalLoad");
@@ -224,11 +224,11 @@ public Representation generateRepresentation(List<DATLFRecordForSpecificDay> res
     });
 }
 
-public Representation generateRepresentation(List<DATLFRecordForSpecificMonth> result) {
+public Representation generateRepresentation(List<DayAheadTLFRecordForSpecificMonth> result) {
     return new CustomJsonRepresentation( (JsonWriter w) -> {
         try {
             w.beginArray(); // [
-            for(DATLFRecordForSpecificMonth rec: result) {
+            for(DayAheadTLFRecordForSpecificMonth rec: result) {
                 w.beginObject(); // {
                 w.name("Source").value("entso-e");
                 w.name("DataSet").value("ActualTotalLoad");
@@ -250,11 +250,11 @@ public Representation generateRepresentation(List<DATLFRecordForSpecificMonth> r
     });
 }
 
-public Representation generateRepresentation(List<DATLFRecordForSpecificYear> result) {
+public Representation generateRepresentation(List<DayAheadTLFRecordForSpecificYear> result) {
     return new CustomJsonRepresentation( (JsonWriter w) -> {
         try {
             w.beginArray(); // [
-            for(DATLFRecordForSpecificYear rec: result) {
+            for(DayAheadTLFRecordForSpecificYear rec: result) {
                 w.beginObject(); // {
                 w.name("Source").value("entso-e");
                 w.name("DataSet").value("ActualTotalLoad");
