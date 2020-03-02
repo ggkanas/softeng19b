@@ -4,15 +4,47 @@ import gr.ntua.ece.softeng19b.conf.Configuration;
 import gr.ntua.ece.softeng19b.data.DataAccess;
 import gr.ntua.ece.softeng19b.data.model.User;
 import gr.ntua.ece.softeng19b.api.AuthenticationService;
-import gr.ntua.ece.softeng19b.api.representation;
+import gr.ntua.ece.softeng19b.api.representation.*;
+
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.restlet.data.Status;
+import org.restlet.util.Series;
+import org.restlet.data.Form;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ResourceException;
 import org.restlet.util.Series;
+import java.io.BufferedReader;
+import java.io.FileReader;
+
+import com.google.gson.Gson;
+import org.restlet.data.MediaType;
+import org.restlet.representation.WriterRepresentation;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Map;
+
+/**
+ * A generic json representation of a java.util.Map object.
+ */
+ class JsonMapRepresentation extends WriterRepresentation {
+
+    private final Map<String, Object> map;
+
+    public JsonMapRepresentation(Map<String, Object> map) {
+        super(MediaType.APPLICATION_JSON);
+        this.map = map;
+    }
+
+    @Override
+    public void write(Writer writer) throws IOException {
+        Gson gson = new Gson();
+        writer.write(gson.toJson(map));
+    }
+}
 
 public class ImportActualTotalLoadDataSet extends EnergyResource {
 
@@ -21,7 +53,7 @@ public class ImportActualTotalLoadDataSet extends EnergyResource {
     @Override
     protected Representation post(Representation entity) throws ResourceException {
 
-        Form form = new form(entity);
+        Form form = new Form(entity);
 
         Series headers = (Series) getRequestAttributes().get("org.restlet.http.headers");
         String token = headers.getFirstValue("X-OBSERVATORY-AUTH"); //to be confirmed
@@ -43,7 +75,7 @@ public class ImportActualTotalLoadDataSet extends EnergyResource {
         br = new BufferedReader(new FileReader(csvFile));
 
         line = br.readLine();
-        String[] dataLine = line.split(csvSplitBy);
+         line.split(csvSplitBy);
 
         while((line = br.readLine()) != null) {
           totalRecordsInFile = totalRecordsInFile + 1;

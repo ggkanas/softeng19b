@@ -6,6 +6,8 @@ import gr.ntua.ece.softeng19b.data.model.User;
 import gr.ntua.ece.softeng19b.data.DataAccess;
 
 import org.restlet.data.Status;
+import org.restlet.util.Series;
+import org.restlet.data.Form;
 import org.restlet.representation.Representation;
 import org.restlet.representation.EmptyRepresentation;
 import org.restlet.resource.ResourceException;

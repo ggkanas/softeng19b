@@ -1,4 +1,4 @@
-package gr.ntua.ece.softeng19b.api;
+package gr.ntua.ece.softeng19b.api.resource;
 
 import gr.ntua.ece.softeng19b.conf.Configuration;
 import gr.ntua.ece.softeng19b.data.DataAccess;

@@ -4,7 +4,7 @@ import gr.ntua.ece.softeng19b.conf.Configuration;
 import gr.ntua.ece.softeng19b.data.DataAccess;
 
 import java.util.Optional;
-import java.security.secureRandom;
+import java.security.SecureRandom;
 import java.util.Base64;
 
 public final class AuthenticationService {

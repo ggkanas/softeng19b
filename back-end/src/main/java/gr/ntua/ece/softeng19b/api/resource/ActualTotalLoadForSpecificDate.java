@@ -5,6 +5,7 @@ import gr.ntua.ece.softeng19b.conf.Configuration;
 import gr.ntua.ece.softeng19b.data.model.ATLRecordForSpecificDay;
 import gr.ntua.ece.softeng19b.data.DataAccess;
 import org.restlet.data.Status;
+import org.restlet.util.Series;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ResourceException;
 
@@ -14,7 +15,7 @@ import java.util.List;
 /**
  * The Restlet resource that deals with the /ActualDataLoad/... payloads.
  */
-public class ActualTotalLoadForSpecificDay extends EnergyResource {
+public class ActualTotalLoadForSpecificDate extends EnergyResource {
 
     private final DataAccess dataAccess = Configuration.getInstance().getDataAccess();
 
