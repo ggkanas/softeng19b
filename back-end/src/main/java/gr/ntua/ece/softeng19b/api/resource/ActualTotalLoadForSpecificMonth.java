@@ -2,7 +2,7 @@ package gr.ntua.ece.softeng19b.api.resource;
 
 import gr.ntua.ece.softeng19b.api.Format;
 import gr.ntua.ece.softeng19b.conf.Configuration;
-import gr.ntua.ece.softeng19b.data.model.ATLRecordForSpecificDay;
+import gr.ntua.ece.softeng19b.data.model.ATLRecordForSpecificMonth;
 import gr.ntua.ece.softeng19b.data.DataAccess;
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
@@ -21,6 +21,17 @@ public class ActualTotalLoadForSpecificMonth extends EnergyResource {
     @Override
     protected Representation get() throws ResourceException {
 
+        Series headers = (Series) getRequestAttributes().get("org.restlet.http.headers");
+        String token = headers.getFirstValue("X-OBSERVATORY-AUTH"); //to be confirmed
+
+        if (!dataAccess.checkToken(token))
+            throw new ResourceException(Status.CLIENT_ERROR_UNAUTHORIZED);
+
+        if (!dataAccess.hasRemaining(token))
+            throw new ResourceException(Status.CLIENT_ERROR_PAYMENT_REQUIRED);
+        dataAccess.changeRemaining(token);        
+        
+        
         //Read the mandatory URI attributes
         String areaName = getMandatoryAttribute("AreaName", "AreaName is missing");
         String resolution = getMandatoryAttribute("Resolution", "Resolution is missing");
@@ -28,7 +39,7 @@ public class ActualTotalLoadForSpecificMonth extends EnergyResource {
         //Read the optional date attribute
         String dateParam = getAttributeDecoded("month");
 
-        YearMonth month = YearMonth.parse(dateParam);
+        YearMonth yearMonth = YearMonth.parse(dateParam);
 
         //Read the format query parameter
         Format format = parseFormat(getQueryValue("format"));
@@ -38,7 +49,7 @@ public class ActualTotalLoadForSpecificMonth extends EnergyResource {
             List<ATLRecordForSpecificMonth> result = dataAccess.fetchActualDataLoadForSpecificMonth(
                     areaName,
                     resolution,
-                    month
+                    yearMonth
             );
             return format.generateRepresentation(result);
         } catch (Exception e) {
