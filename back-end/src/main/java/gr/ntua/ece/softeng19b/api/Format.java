@@ -72,11 +72,11 @@ public Representation generateRepresentation(List<ATLRecordForSpecificMonth> res
     });
 }
 
-public Representation generateRepresentation(List<ATLRecordForSpecificDay> result) {
+public Representation generateRepresentation(List<ATLRecordForSpecificYear> result) {
     return new CustomJsonRepresentation( (JsonWriter w) -> {
         try {
             w.beginArray(); // [
-            for(ATLRecordForSpecificDay rec: result) {
+            for(ATLRecordForSpecificYear rec: result) {
                 w.beginObject(); // {
                 w.name("Source").value(rec.getSource());
                 w.name("DataSet").value(rec.getDataSet());
@@ -86,7 +86,6 @@ public Representation generateRepresentation(List<ATLRecordForSpecificDay> resul
                 w.name("ResolutionCode").value(rec.getResolutionCode());
                 w.name("Year").value(rec.getYear());
                 w.name("Month").value(rec.getMonth());
-                w.name("Day").value(rec.getDay());
                 w.name("ActualTotalLoadByMonthValue").value(rec.getActualTotalLoadByMonthValue());
                 w.endObject(); // }
                 w.flush();
@@ -249,7 +248,6 @@ public Representation generateRepresentation(List<DayAheadTLForecastRecordForSpe
                 w.name("ResolutionCode").value(rec.getResolutionCode());
                 w.name("Year").value(rec.getYear());
                 w.name("Month").value(rec.getMonth());
-                w.name("Day").value(rec.getDay());
                 w.name("DayAheadTotalLoadForecastByMonthValue").value(rec.getDayAheadTotalLoadForecastByMonthValue());
                 w.endObject(); // }
                 w.flush();
@@ -330,7 +328,6 @@ public Representation generateRepresentation(List<AVSFRecordForSpecificYear> res
                 w.name("ResolutionCode").value(rec.getResolutionCode());
                 w.name("Year").value(rec.getYear());
                 w.name("Month").value(rec.getMonth());
-                w.name("Day").value(rec.getDay());
                 w.name("DayAheadTotalLoadForecastByMonthValue").value(rec.getDayAheadTotalLoadForecastByMonthValue());
                 w.name("ActualTotalLoadByMonthValue").value(rec.getActualTotalLoadByMonthValue());
                 w.endObject(); // }
