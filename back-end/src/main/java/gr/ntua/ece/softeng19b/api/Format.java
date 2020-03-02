@@ -33,9 +33,9 @@ public enum Format implements RepresentationGenerator {
                 w.name("Year").value(rec.getYear());
                 w.name("Month").value(rec.getMonth());
                 w.name("Day").value(rec.getDay());
-                w.name("DateTimeUTC").value(rec.getDateTime());
+                w.name("DateTimeUTC").value(rec.getDateTime().toString());
                 w.name("ActualTotalLoadValue").value(rec.getActualTotalLoadValue());
-                w.name("UpdateTime").value(rec.getUpdateTime());
+                w.name("UpdateTime").value(rec.getUpdateTime().toString());
                 w.endObject(); // }
                 w.flush();
             }
@@ -112,10 +112,10 @@ public Representation generateRepresentation2a(List<AGPerTypeRecordForSpecificDa
                 w.name("Year").value(rec.getYear());
                 w.name("Month").value(rec.getMonth());
                 w.name("Day").value(rec.getDay());
-                w.name("DateTimeUTC").value(rec.getDateTime());
+                w.name("DateTimeUTC").value(rec.getDateTime().toString());
                 w.name("ProductionType").value(rec.getProductionType());
                 w.name("ActualGenerationOutputValue").value(rec.getActualGenerationOutputValue());
-                w.name("UpdateTimeUTC").value(rec.getUpdateTime());
+                w.name("UpdateTimeUTC").value(rec.getUpdateTime().toString());
                 w.endObject(); // }
                 w.flush();
             }
@@ -167,7 +167,6 @@ public Representation generateRepresentation2c(List<AGPerTypeRecordForSpecificYe
                 w.name("ResolutionCode").value(rec.getResolutionCode());
                 w.name("Year").value(rec.getYear());
                 w.name("Month").value(rec.getMonth());
-                w.name("Day").value(rec.getDay());
                 w.name("ProductionType").value(rec.getProductionType());
                 w.name("ActualGenerationOutputByMonthValue").value(rec.getActualGenerationOutputByMonthValue());
                 w.endObject(); // }
@@ -195,9 +194,9 @@ public Representation generateRepresentation3a(List<DayAheadTLForecastRecordForS
                 w.name("Year").value(rec.getYear());
                 w.name("Month").value(rec.getMonth());
                 w.name("Day").value(rec.getDay());
-                w.name("DateTimeUTC").value(rec.getDateTime());
+                w.name("DateTimeUTC").value(rec.getDateTime().toString());
                 w.name("DayAheadTotalLoadForecastValue").value(rec.getDayAheadTotalLoadForecastValue());
-                w.name("UpdateTime").value(rec.getUpdateTime());
+                w.name("UpdateTime").value(rec.getUpdateTime().toString());
                 w.endObject(); // }
                 w.flush();
             }
@@ -223,7 +222,7 @@ public Representation generateRepresentation3b(List<DayAheadTLForecastRecordForS
                 w.name("Year").value(rec.getYear());
                 w.name("Month").value(rec.getMonth());
                 w.name("Day").value(rec.getDay());
-                w.name("DayAheadTotalLoadForecastByDayValue").value(rec.getDayAheadTotalLoadForecastByDayValue());
+                w.name("DayAheadTotalLoadForecastByDayValue").value(rec.getDayAheadTLForecastByDayValue());
                 w.endObject(); // }
                 w.flush();
             }
@@ -274,7 +273,7 @@ public Representation generateRepresentation4a(List<AVSFRecordForSpecificDay> re
                 w.name("Year").value(rec.getYear());
                 w.name("Month").value(rec.getMonth());
                 w.name("Day").value(rec.getDay());
-                w.name("DateTimeUTC").value(rec.getDateTime());
+                w.name("DateTimeUTC").value(rec.getDateTime().toString());
                 w.name("DayAheadTotalLoadForecastValue").value(rec.getDayAheadTotalLoadForecastValue());
                 w.name("ActualTotalLoadValue").value(rec.getActualTotalLoadValue());
                 w.endObject(); // }
@@ -359,12 +358,12 @@ public Representation generateRepresentation4c(List<AVSFRecordForSpecificYear> r
                                 rec.getAreaTypeCode(),
                                 rec.getMapCode(),
                                 rec.getResolutionCode(),
-                                rec.getYear(),
-                                rec.getMonth(),
-                                rec.getDay(),
-                                rec.getDateTime(),
-                                rec.getActualTotalLoadValue(),
-                                rec.getUpdateTime()
+                                (new Integer(rec.getYear())).toString(),
+                                (new Integer(rec.getMonth())).toString(),
+                                (new Integer(rec.getDay())).toString(),
+                                rec.getDateTime().toString(),
+                                (new Double(rec.getActualTotalLoadValue())).toString(),
+                                rec.getUpdateTime().toString()
                             };
                             w.writeRecord(values);
                             w.flush();
@@ -392,10 +391,10 @@ public Representation generateRepresentation1b(List<ATLRecordForSpecificMonth> r
                         rec.getAreaTypeCode(),
                         rec.getMapCode(),
                         rec.getResolutionCode(),
-                        rec.getYear(),
-                        rec.getMonth(),
-                        rec.getDay(),
-                        rec.getActualTotalLoadByDayValue(),
+                        (new Integer(rec.getYear())).toString(),
+                        (new Integer(rec.getMonth())).toString(),
+                        (new Integer(rec.getDay())).toString(),
+                        (new Double(rec.getActualTotalLoadByDayValue())).toString()
                     };
                     w.writeRecord(values);
                     w.flush();
@@ -423,9 +422,9 @@ public Representation generateRepresentation1c(List<ATLRecordForSpecificYear> re
                         rec.getAreaTypeCode(),
                         rec.getMapCode(),
                         rec.getResolutionCode(),
-                        rec.getYear(),
-                        rec.getMonth(),
-                        rec.getActualTotalLoadByMonthValue(),
+                        (new Integer(rec.getYear())).toString(),
+                        (new Integer(rec.getMonth())).toString(),
+                        (new Double(rec.getActualTotalLoadByMonthValue())).toString()
                     };
                     w.writeRecord(values);
                     w.flush();
@@ -453,13 +452,13 @@ public Representation generateRepresentation2a(List<AGPerTypeRecordForSpecificDa
                         rec.getAreaTypeCode(),
                         rec.getMapCode(),
                         rec.getResolutionCode(),
-                        rec.getYear(),
-                        rec.getMonth(),
-                        rec.getDay(),
-                        rec.getDateTime(),
+                        (new Integer(rec.getYear())).toString(),
+                        (new Integer(rec.getMonth())).toString(),
+                        (new Integer(rec.getDay())).toString(),
+                        rec.getDateTime().toString(),
                         rec.getProductionType(),
-                        rec.getActualGenerationOutputValue(),
-                        rec.getUpdateTime()
+                        (new Double(rec.getActualGenerationOutputValue())).toString(),
+                        rec.getUpdateTime().toString()
                     };
                     w.writeRecord(values);
                     w.flush();
@@ -487,11 +486,11 @@ public Representation generateRepresentation2b(List<AGPerTypeRecordForSpecificMo
                         rec.getAreaTypeCode(),
                         rec.getMapCode(),
                         rec.getResolutionCode(),
-                        rec.getYear(),
-                        rec.getMonth(),
-                        rec.getDay(),
+                        (new Integer(rec.getYear())).toString(),
+                        (new Integer(rec.getMonth())).toString(),
+                        (new Integer(rec.getDay())).toString(),
                         rec.getProductionType(),
-                        rec.getActualGenerationOutputByDayValue(),
+                        (new Double(rec.getActualGenerationOutputByDayValue())).toString()
                     };
                     w.writeRecord(values);
                     w.flush();
@@ -508,7 +507,7 @@ public Representation generateRepresentation2c(List<AGPerTypeRecordForSpecificYe
         try {
             StringBuilder sb = new StringBuilder();
             String[] headers = {"Source","DataSet","AreaName","AreaTypeCode","MapCode","ResolutionCode",
-                "Year","Month","Day","ProductionType", "ActualGenerationOutputByMonthValue"};
+                "Year","Month","ProductionType", "ActualGenerationOutputByMonthValue"};
             w.writeRecord(headers);
 
                 for(AGPerTypeRecordForSpecificYear rec: result) {
@@ -519,11 +518,10 @@ public Representation generateRepresentation2c(List<AGPerTypeRecordForSpecificYe
                         rec.getAreaTypeCode(),
                         rec.getMapCode(),
                         rec.getResolutionCode(),
-                        rec.getYear(),
-                        rec.getMonth(),
-                        rec.getDay(),
+                        (new Integer(rec.getYear())).toString(),
+                        (new Integer(rec.getMonth())).toString(),
                         rec.getProductionType(),
-                        rec.getActualGenerationOutputByMonthValue(),
+                        (new Double(rec.getActualGenerationOutputByMonthValue())).toString()
                     };
                     w.writeRecord(values);
                     w.flush();
@@ -551,12 +549,12 @@ public Representation generateRepresentation3a(List<DayAheadTLForecastRecordForS
                         rec.getAreaTypeCode(),
                         rec.getMapCode(),
                         rec.getResolutionCode(),
-                        rec.getYear(),
-                        rec.getMonth(),
-                        rec.getDay(),
-                        rec.getDateTime(),
-                        rec.getDayAheadTotalLoadForecastValue(),
-                        rec.getUpdateTime()
+                        (new Integer(rec.getYear())).toString(),
+                        (new Integer(rec.getMonth())).toString(),
+                        (new Integer(rec.getDay())).toString(),
+                        rec.getDateTime().toString(),
+                        (new Double(rec.getDayAheadTotalLoadForecastValue())).toString(),
+                        rec.getUpdateTime().toString()
                     };
                     w.writeRecord(values);
                     w.flush();
@@ -584,10 +582,10 @@ public Representation generateRepresentation3b(List<DayAheadTLForecastRecordForS
                         rec.getAreaTypeCode(),
                         rec.getMapCode(),
                         rec.getResolutionCode(),
-                        rec.getYear(),
-                        rec.getMonth(),
-                        rec.getDay(),
-                        rec.getDayAheadTotalLoadForecastByDayValue(),
+                        (new Integer(rec.getYear())).toString(),
+                        (new Integer(rec.getMonth())).toString(),
+                        (new Integer(rec.getDay())).toString(),
+                        (new Double(rec.getDayAheadTLForecastByDayValue())).toString()
                     };
                     w.writeRecord(values);
                     w.flush();
@@ -615,9 +613,9 @@ public Representation generateRepresentation3c(List<DayAheadTLForecastRecordForS
                         rec.getAreaTypeCode(),
                         rec.getMapCode(),
                         rec.getResolutionCode(),
-                        rec.getYear(),
-                        rec.getMonth(),
-                        rec.getDayAheadTotalLoadForecastByMonthValue(),
+                        (new Integer(rec.getYear())).toString(),
+                        (new Integer(rec.getMonth())).toString(),
+                        (new Double(rec.getDayAheadTotalLoadForecastByMonthValue())).toString()
                     };
                     w.writeRecord(values);
                     w.flush();
@@ -645,12 +643,12 @@ public Representation generateRepresentation4a(List<AVSFRecordForSpecificDay> re
                         rec.getAreaTypeCode(),
                         rec.getMapCode(),
                         rec.getResolutionCode(),
-                        rec.getYear(),
-                        rec.getMonth(),
-                        rec.getDay(),
-                        rec.getDateTime(),
-                        rec.getDayAheadTotalLoadForecastValue(),
-                        rec.getActualTotalLoadValue()
+                        (new Integer(rec.getYear())).toString(),
+                        (new Integer(rec.getMonth())).toString(),
+                        (new Integer(rec.getDay())).toString(),
+                        rec.getDateTime().toString(),
+                        (new Double(rec.getDayAheadTotalLoadForecastValue())).toString(),
+                        (new Double(rec.getActualTotalLoadValue())).toString()
                     };
                     w.writeRecord(values);
                     w.flush();
@@ -678,11 +676,11 @@ public Representation generateRepresentation4b(List<AVSFRecordForSpecificMonth> 
                         rec.getAreaTypeCode(),
                         rec.getMapCode(),
                         rec.getResolutionCode(),
-                        rec.getYear(),
-                        rec.getMonth(),
-                        rec.getDay(),
-                        rec.getDayAheadTotalLoadForecastByDayValue(),
-                        rec.getActualTotalLoadByDayValue()
+                        (new Integer(rec.getYear())).toString(),
+                        (new Integer(rec.getMonth())).toString(),
+                        (new Integer(rec.getDay())).toString(),
+                        (new Double(rec.getDayAheadTotalLoadForecastByDayValue())).toString(),
+                        (new Double(rec.getActualTotalLoadByDayValue())).toString()
                     };
                     w.writeRecord(values);
                     w.flush();
@@ -710,10 +708,10 @@ public Representation generateRepresentation4c(List<AVSFRecordForSpecificYear> r
                         rec.getAreaTypeCode(),
                         rec.getMapCode(),
                         rec.getResolutionCode(),
-                        rec.getYear(),
-                        rec.getMonth(),
-                        rec.getDayAheadTotalLoadForecastByMonthValue(),
-                        rec.getActualTotalLoadByMonthValue()
+                        (new Integer(rec.getYear())).toString(),
+                        (new Integer(rec.getMonth())).toString(),
+                        (new Double(rec.getDayAheadTotalLoadForecastByMonthValue())).toString(),
+                        (new Double(rec.getActualTotalLoadByMonthValue())).toString()
                     };
                     w.writeRecord(values);
                     w.flush();

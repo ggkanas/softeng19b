@@ -29,14 +29,17 @@ public class Reset extends EnergyResource {
         Series headers = (Series) getRequestAttributes().get("org.restlet.http.headers");
         String token = headers.getFirstValue(AUTHENTICATION_HEADER);
 
-        if (!dataAccess.checkToken(token))
-            throw new ResourceException(Status.CLIENT_ERROR_UNAUTHORIZED);
+        try {
+            if (!dataAccess.checkToken(token))
+                throw new ResourceException(Status.CLIENT_ERROR_UNAUTHORIZED);
 
-        dataAccess.deleteATL();
-        dataAccess.deleteAGPT();
-        dataAccess.deleteDATLF();
-        dataAccess.deleteUsers();
-
+                dataAccess.deleteATL();
+                dataAccess.deleteAGPT();
+                dataAccess.deleteDATLF();
+                dataAccess.deleteUsers();
+        } catch (Exception e) {
+            throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e.getMessage(), e);
+        }
         Map<String, Object> map = new HashMap<>();
         map.put("status", "ok");
 

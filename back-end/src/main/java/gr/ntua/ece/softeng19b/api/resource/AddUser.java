@@ -22,11 +22,16 @@ public class AddUser extends EnergyResource {
         Series headers = (Series) getRequestAttributes().get("org.restlet.http.headers");
         String token = headers.getFirstValue("X-OBSERVATORY-AUTH"); //to be confirmed
 
+
+        try {
         if (!dataAccess.checkToken(token))
             throw new ResourceException(Status.CLIENT_ERROR_UNAUTHORIZED);
 
         if(!dataAccess.isAdmin(token)) {
             throw new ResourceException(Status.CLIENT_ERROR_UNAUTHORIZED);
+        }
+        } catch (Exception e) {
+            throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e.getMessage(), e);
         }
 
         Form form = new Form(entity);
@@ -37,9 +42,12 @@ public class AddUser extends EnergyResource {
         user.setRequestsPerDayQuota(Integer.parseInt(form.getFirstValue("quotas")));
 
         // πρ΄έπει να προστεθεί και έλεγχος για τον χρ΄ήστη
+        try {
+            dataAccess.addUser(user);
+        } catch (Exception e) {
+            throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e.getMessage(), e);
+        }
 
-        dataAccess.addUser(user);
-
-        return new EmptyRepresantation();
+        return new EmptyRepresentation();
     }
 }

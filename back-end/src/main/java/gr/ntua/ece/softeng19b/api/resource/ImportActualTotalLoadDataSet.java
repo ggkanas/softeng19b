@@ -17,7 +17,7 @@ import org.restlet.representation.Representation;
 import org.restlet.resource.ResourceException;
 import org.restlet.util.Series;
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.StringReader;
 
 import com.google.gson.Gson;
 import org.restlet.data.MediaType;
@@ -57,9 +57,12 @@ public class ImportActualTotalLoadDataSet extends EnergyResource {
 
         Series headers = (Series) getRequestAttributes().get("org.restlet.http.headers");
         String token = headers.getFirstValue("X-OBSERVATORY-AUTH"); //to be confirmed
-
-        if (!dataAccess.checkToken(token))
-            throw new ResourceException(Status.CLIENT_ERROR_UNAUTHORIZED);
+        try {
+            if (!dataAccess.checkToken(token))
+                throw new ResourceException(Status.CLIENT_ERROR_UNAUTHORIZED);
+            } catch (Exception e) {
+                throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e.getMessage(), e);
+            }
 
         //if (!dataAccess.checkToken(form.getFirstValue("X-OBSERVATORY-AUTH"))) //to be confirmed
         //    throw new ResourceException(Status.CLIENT_ERROR_UNAUTHORIZED);
@@ -71,27 +74,30 @@ public class ImportActualTotalLoadDataSet extends EnergyResource {
         BufferedReader br = null;
         String line = "";
         String csvSplitBy = ",";
+        int totalRecordsInDatabase;
 
-        br = new BufferedReader(new FileReader(csvFile));
+        br = new BufferedReader(new StringReader(csvFile));
+        try {
+            line = br.readLine();
+            line.split(csvSplitBy);
+            while((line = br.readLine()) != null) {
+                totalRecordsInFile = totalRecordsInFile + 1;
+                String[] dataLine = line.split(csvSplitBy);
 
-        line = br.readLine();
-         line.split(csvSplitBy);
+                if(dataAccess.addActualTotalLoadRecord(dataLine) == 1) totalRecordsImported = totalRecordsImported + 1;
+                else break;
+            }
 
-        while((line = br.readLine()) != null) {
-          totalRecordsInFile = totalRecordsInFile + 1;
-          String[] dataLine = line.split(csvSplitBy);
-
-          if(dataAccess.addActualTotalLoadRecord(dataLine) == 1) totalRecordsImported = totalRecordsImported + 1;
-          else break;
+            totalRecordsInDatabase = dataAccess.getTotalRecordsInDatabase("ActualTotalLoad");
+        } catch (Exception e) {
+            throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e.getMessage(), e);
         }
-
-        int totalRecordsInDatabase = dataAccess.getTotalRecordsInDatabase("ActualTotalLoad");
 
         Map<String, Object> map = new HashMap<>();
         map.put("totalRecordsInFile", totalRecordsInFile);
         map.put("totalRecordsImported", totalRecordsImported);
         map.put("totalRecordsInDatabase", totalRecordsInDatabase);
 
-        return JsonMapRepresentation(map);
+        return new JsonMapRepresentation(map);
     }
 }

@@ -3,7 +3,11 @@ package gr.ntua.ece.softeng19b.api;
 import gr.ntua.ece.softeng19b.api.resource.*;
 import org.restlet.Application;
 import org.restlet.Restlet;
+import org.restlet.data.Method;
 import org.restlet.routing.Router;
+import org.restlet.engine.application.CorsFilter;
+
+import java.util.Set;
 
 public class RestfulApp extends Application {
 

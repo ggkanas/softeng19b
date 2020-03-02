@@ -17,6 +17,7 @@ import java.util.Calendar;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.restlet.resource.ResourceException;
 import java.time.YearMonth;
+import java.util.Optional;
 
 public class DataAccess {
 
@@ -56,7 +57,7 @@ public class DataAccess {
         }
     }
 
-    public boolean isAdmin(String token) {
+    public boolean isAdmin(String token) throws DataAccessException {
         Object[] sqlParams = new Object[] {
             token
         };
@@ -102,7 +103,7 @@ public class DataAccess {
         }
     }
 
-    public boolean hasRemaining(String token) {
+    public boolean hasRemaining(String token) throws DataAccessException {
         Calendar cal = Calendar.getInstance();
         Object[] sqlParams = new Object[] {
             token
@@ -121,7 +122,7 @@ public class DataAccess {
         }
     }
 
-    public void changeRemaining(String token) {
+    public void changeRemaining(String token) throws DataAccessException {
         Calendar cal = Calendar.getInstance();
         Object[] sqlParams = new Object[] {
             token
@@ -133,7 +134,7 @@ public class DataAccess {
                 cal.setTime(date);
                 cal.add(Calendar.DAY_OF_MONTH, -1);
                 Date newDate = cal.getTime();
-                return (rs.getΤimestamp(1).after(new Timestamp(newDate.getTime())));
+                return (rs.getTimestamp(1).after(new Timestamp(newDate.getTime())));
             });
         }
         catch(Exception e) {
@@ -160,7 +161,7 @@ public class DataAccess {
         }
     }
 
-    public int addActualTotalLoadRecord(String[] dataLine) {
+    public int addActualTotalLoadRecord(String[] dataLine) throws DataAccessException {
 
                 Object[] sqlParams = new Object[] {
                     Integer.parseInt(dataLine[0]),
@@ -191,7 +192,7 @@ public class DataAccess {
             }
         }
 
-    public int addAggregatedGenerationPerType(String[] dataLine) {
+    public int addAggregatedGenerationPerType(String[] dataLine) throws DataAccessException {
 
                 Object[] sqlParams = new Object[] {
                     Integer.parseInt(dataLine[0]),
@@ -224,7 +225,7 @@ public class DataAccess {
             }
         }
 
-        public int addDayAheadTotalLoadForecast(String[] dataLine) {
+        public int addDayAheadTotalLoadForecast(String[] dataLine) throws DataAccessException {
 
                 Object[] sqlParams = new Object[] {
                     Integer.parseInt(dataLine[0]),
@@ -255,7 +256,7 @@ public class DataAccess {
             }
         }
 
-    public int getTotalRecordsInDatabase(String dataset) {
+    public int getTotalRecordsInDatabase(String dataset) throws DataAccessException {
         String sqlQuery = "SELECT COUNT(*) FROM " + dataset;
         try {
             return jdbcTemplate.queryForObject(sqlQuery, (ResultSet rs, int rowNum) -> {
@@ -267,11 +268,11 @@ public class DataAccess {
         }
     }
 
-    public User getUser(String username) throws DataAccessException, ResourceException {
+    public Optional<User> getUser(String username) throws DataAccessException, ResourceException {
         String sqlQuery = "select * from User where User.Username = ?";
 
         try {
-            return jdbcTemplate.queryForObject(sqlQuery, new Object[] { username }, (ResultSet rs, int rownum) ->
+            return Optional.of(jdbcTemplate.queryForObject(sqlQuery, new Object[] { username }, (ResultSet rs, int rownum) ->
           new User(
           rs.getString(2),
           rs.getString(3),
@@ -280,9 +281,9 @@ public class DataAccess {
           rs.getTimestamp(6),
           rs.getInt(7),
           rs.getString(8))
-          );
+          ));
         } catch(EmptyResultDataAccessException e) {
-            throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN);
+            return Optional.empty();
         } catch(Exception e) {
             throw new DataAccessException(e.getMessage(), e);
         }
@@ -298,7 +299,7 @@ public class DataAccess {
 
     }
 
-    public int addUser(User user) {
+    public int addUser(User user) throws DataAccessException {
         Object[] sqlParams = new Object[] {
             user.getUsername(),
             user.getEmail(),
@@ -808,9 +809,7 @@ public class DataAccess {
       }
     }
 
-    public List<AVSFRecordForSpecificYear> fetchActualTotalLoadVsDayAheadTotalLoadForecastForSpecificYear(String areaName, String resolution, Integer year)
-
-    throws DataAccessException {
+    public List<AVSFRecordForSpecificYear> fetchActualTotalLoadVsDayAheadTotalLoadForecastForSpecificYear(String areaName, String resolution, Integer year) throws DataAccessException {
       //Integer year = date.getYear();
 
       Object[] sqlParams = new Object[] {
@@ -844,7 +843,7 @@ public class DataAccess {
       }
     }
 
-    public int deleteATL() {
+    public int deleteATL() throws DataAccessException {
         try {
             return jdbcTemplate.update("DELETE FROM ActualTotalLoad");
         }
@@ -853,7 +852,7 @@ public class DataAccess {
         }
     }
 
-    public int deleteAGPT() {
+    public int deleteAGPT() throws DataAccessException {
         try {
             return jdbcTemplate.update("DELETE FROM AggregatedGenerationPerType");
         }
@@ -862,7 +861,7 @@ public class DataAccess {
         }
     }
 
-    public int deleteDATLF() {
+    public int deleteDATLF() throws DataAccessException {
         try {
             return jdbcTemplate.update("DELETE FROM DayAheadTotalLoadForecast");
         }
@@ -871,7 +870,7 @@ public class DataAccess {
         }
     }
 
-    public int deleteUsers() {
+    public int deleteUsers() throws DataAccessException {
         try {
             return jdbcTemplate.update("DELETE FROM User WHERE Username != 'admin'");
         }

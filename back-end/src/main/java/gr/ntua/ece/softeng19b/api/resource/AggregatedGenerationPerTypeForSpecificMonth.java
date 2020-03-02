@@ -26,13 +26,17 @@ public class AggregatedGenerationPerTypeForSpecificMonth extends EnergyResource 
         Series headers = (Series) getRequestAttributes().get("org.restlet.http.headers");
         String token = headers.getFirstValue("X-OBSERVATORY-AUTH"); //to be confirmed
 
+        try {
         if (!dataAccess.checkToken(token))
             throw new ResourceException(Status.CLIENT_ERROR_UNAUTHORIZED);
 
         if (!dataAccess.hasRemaining(token))
             throw new ResourceException(Status.CLIENT_ERROR_PAYMENT_REQUIRED);
         dataAccess.changeRemaining(token);
-
+        } catch (Exception e) {
+            throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e.getMessage(), e);
+        }
+        
         //Read the mandatory URI attributes
         String areaName = getMandatoryAttribute("AreaName", "AreaName is missing");
         String productionType = getMandatoryAttribute("ProductionType", "ProductionType is missing");

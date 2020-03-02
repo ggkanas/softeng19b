@@ -28,21 +28,25 @@ public class Login extends EnergyResource {
 
         String username = form.getFirstValue("username");
         String password = form.getFirstValue("password");
-
-        Optional<User> optional = dataAccess.getUserName(username);
+        try {
+        Optional<User> optional = dataAccess.getUser(username);
         User user = optional.orElseThrow(() -> new ResourceException(Status.CLIENT_ERROR_NOT_FOUND, "User: " + username + " not found")); //ίσως το exception να πρέπει να έχει άλλη μορφή
 
         if (!user.getPassword().equals(password))
           throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "Invalid password");
-
+        String token;
         do {
-            String token = AuthenticationService.createToken();
-        } while (checkToken(token));
+            token = AuthenticationService.createToken();
+        } while (dataAccess.checkToken(token));
         dataAccess.createToken(token, username);
 
         Map<String, Object> map = new HashMap<>();
         map.put("token", token);
 
+
         return new JsonMapRepresentation(map);
+        } catch (Exception e) {
+            throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e.getMessage(), e);
+        }
     }
 }

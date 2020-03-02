@@ -27,10 +27,13 @@ public class Logout extends EnergyResource {
         Series headers = (Series) getRequestAttributes().get("org.restlet.http.headers");
         String token = headers.getFirstValue(AUTHENTICATION_HEADER);
 
-        if (!dataAccess.checkToken(token))
-            throw new ResourceException(Status.CLIENT_ERROR_UNAUTHORIZED);
-
-        dataAccess.destroyToken(token);
+        try {
+            if (!dataAccess.checkToken(token))
+                throw new ResourceException(Status.CLIENT_ERROR_UNAUTHORIZED);
+            dataAccess.destroyToken(token);
+        } catch (Exception e) {
+            throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e.getMessage(), e);
+        }
 
 
         return new EmptyRepresentation();
