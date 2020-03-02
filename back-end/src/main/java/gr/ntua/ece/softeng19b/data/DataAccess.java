@@ -1,16 +1,39 @@
 package gr.ntua.ece.softeng19b.data;
 
-import gr.ntua.ece.softeng19b.data.model.ATLRecordForSpecificDay;
+import gr.ntua.ece.softeng19b.data.model.*;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.lang;
+import java.lang.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Calendar;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.restlet.resource.ResourceException;
+import org.springframework.jdbc.core.RowMapper;
+
+private class UserRowMapper implements RowMapper<User> {
+
+    @Override
+    public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+        User user = new User(
+        rs.getString(2),
+        rs.getString(3),
+        rs.getString(4),
+        rs.getInt(5),
+        rs.getTimestamp(6),
+        rs.getInt(7),
+        rs.getString(8))
+        );
+        return user;
+
+    }
+}
 
 public class DataAccess {
 
@@ -75,10 +98,66 @@ public class DataAccess {
 
     public void destroyToken(String token) throws DataAccessException {
         try {
-            jdbcTemplate.update("DELETE FROM User WHERE Token='"+ token +"'");
+            jdbcTemplate.update("UPDATE User SET Token=null WHERE Token='"+ token +"'");
         }
         catch(Exception e) {
             throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    public boolean hasRemaining(String token) {
+        Calendar cal = Calendar.getInstance();
+        Object[] sqlParams = new Object[] {
+            token
+        };
+        try {
+            return jdbcTemplate.queryForObject("SELECT RemainingRequests, Period FROM User WHERE Token = ?", sqlParams, (ResultSet rs, int rowNum) -> {
+                cal.setTime(date);
+                cal.add(Calendar.DAY_OF_MONTH, -1);
+                Date newDate = cal.getTime();
+                return (rs.getInt(1) <> 0 || rs.getTimestamp(2).before(new Timestamp(newDate.getTime())));
+            });
+        }
+        catch(Exception e) {
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    public void changeRemaining(String token) {
+        Calendar cal = Calendar.getInstance();
+        Object[] sqlParams = new Object[] {
+            token
+        };
+        boolean notExpired;
+        try {
+            notExpired = jdbcTemplate.queryForObject("SELECT Period FROM User WHERE Token = ?", sqlParams, (ResultSet rs, int rowNum) -> {
+                cal.setTime(date);
+                cal.add(Calendar.DAY_OF_MONTH, -1);
+                Date newDate = cal.getTime();
+                return (rs.getΤimestamp(1).after(new Timestamp(newDate.getTime())));
+            });
+        }
+        catch(Exception e) {
+            throw new DataAccessException(e.getMessage(), e);
+        }
+
+        if (notExpired) {
+            String sqlQuery = "UPDATE User SET PERIOD=CURRENT_TIMESTAMP(), RemainingRequests=RequestsPerDayQuota-1 WHERE Token = ?";
+            try {
+                notExpired = jdbcTemplate.update(sqlQuery, sqlParams);
+            }
+            catch(Exception e) {
+                throw new DataAccessException(e.getMessage(), e);
+            }
+        }
+        else {
+            String sqlQuery = "UPDATE User SET RemainingRequests=RemainingRequests-1 WHERE Token = ?";
+            try {
+                notExpired = jdbcTemplate.update(sqlQuery, sqlParams);
+            }
+            catch(Exception e) {
+                throw new DataAccessException(e.getMessage(), e);
+            }
         }
     }
 
@@ -185,6 +264,18 @@ public class DataAccess {
             });
         }
         catch(Exception e) {
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    public User getUser(String username) throws DataAccessException, ResourceException {
+        sqlQuery = "select * from User where User.Username = ?"
+
+        try {
+            return jdbcTemplate.queryForObject(sqlQuery, new Object[] { username }, new UserRowMapper());
+        } catch(EmptyResultDataAccessException e) {
+            throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN);
+        } catch(Exception e) {
             throw new DataAccessException(e.getMessage(), e);
         }
     }

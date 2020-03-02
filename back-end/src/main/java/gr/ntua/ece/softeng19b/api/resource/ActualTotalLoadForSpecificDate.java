@@ -21,6 +21,18 @@ public class ActualTotalLoadForSpecificDate extends EnergyResource {
     @Override
     protected Representation get() throws ResourceException {
 
+
+        Series headers = (Series) getRequestAttributes().get("org.restlet.http.headers");
+        String token = headers.getFirstValue("X-OBSERVATORY-AUTH"); //to be confirmed
+
+        if (!dataAccess.checkToken(token))
+            throw new ResourceException(Status.CLIENT_ERROR_UNAUTHORIZED);
+
+        if (!dataAccess.hasRemaining(token))
+            throw new ResourceException(Status.CLIENT_ERROR_PAYMENT_REQUIRED);
+        dataAccess.changeRemaining(token);
+
+
         //Read the mandatory URI attributes
         String areaName = getMandatoryAttribute("AreaName", "AreaName is missing");
         String resolution = getMandatoryAttribute("Resolution", "Resolution is missing");
@@ -30,7 +42,10 @@ public class ActualTotalLoadForSpecificDate extends EnergyResource {
 
         //Use the EnergyResource.parseXXX methods to parse the dates and implement the required business logic
         //For the sake of this example, we hard-code a date
-        LocalDate date = LocalDate.of(2019, 10, 1);
+        String dateParam = getAttributeDecoded("date");
+
+        LocalDate date = parseDate(dateParam);
+
 
         //Read the format query parameter
         Format format = parseFormat(getQueryValue("format"));
@@ -42,6 +57,9 @@ public class ActualTotalLoadForSpecificDate extends EnergyResource {
                     resolution,
                     date
             );
+
+            if (result.isEmpty()) throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN);
+
             return format.generateRepresentation(result);
         } catch (Exception e) {
             throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e.getMessage(), e);

@@ -35,7 +35,9 @@ public class Login extends EnergyResource {
         if (!user.getPassword().equals(password))
           throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "Invalid password");
 
-        String token = AuthenticationService.createToken();
+        do {
+            String token = AuthenticationService.createToken();
+        } while (checkToken(token));
         dataAccess.createToken(token, username);
 
         Map<String, Object> map = new HashMap<>();
