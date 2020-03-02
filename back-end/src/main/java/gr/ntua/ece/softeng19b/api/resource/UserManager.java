@@ -67,7 +67,7 @@ public class UserManager extends EnergyResource {
           String newEmail = form.getFirstValue("email");
           int newQuota = Integer.parseInt(form.getFirstValue("quotas"));
 
-          int rows = jdbcTemplate.update("UPDATE User SET Password = ?, Email = ?, RequestsPerDayQuota = ? WHERE Username = ? ", new Object[] {newPass, newEmail, newQuota, username});
+          int rows = jdbcTemplate.update("UPDATE User SET Password = ?, Email = ?, RequestsPerDayQuota = ? WHERE Username = ? ", new Object[] {newPassw, newEmail, newQuota, username});
 
           return JsonMapRepresantation(map);
         }
