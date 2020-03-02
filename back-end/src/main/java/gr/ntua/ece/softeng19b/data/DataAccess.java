@@ -625,7 +625,9 @@ public class DataAccess {
       }
     }
 
-    public List<DayAheadTLFRecordForSpecificDay> fetchDayAheadTotalLoadForecastForSpecificDate(String areaName, String resolution, LocalDate date) throws DataAccessException {
+    public List<DayAheadTLForecastRecordForSpecificDay> fetchDayAheadTotalLoadForecastForSpecificDate(String areaName, String resolution, LocalDate date)
+
+    throws DataAccessException {
       Integer year = date.getYear();
       Integer month = date.getMonthValue();
       Integer day = date.getDayOfMonth();
@@ -646,7 +648,7 @@ public class DataAccess {
 
       try {
           return jdbcTemplate.query(sqlQuery, sqlParams, (ResultSet rs, int rowNum) -> {
-              DayAheadTLFRecordForSpecificDay dataLoad = new DayAheadTLFRecordForSpecificDay();
+              DayAheadTLForecastRecordForSpecificDay dataLoad = new DayAheadTLForecastRecordForSpecificDay();
               dataLoad.setAreaName(rs.getString(1)); //get the string located at the 1st column of the result set
               dataLoad.setAreaTypeCode(rs.getString(2));
               dataLoad.setMapCode(rs.getString(3));
@@ -665,7 +667,7 @@ public class DataAccess {
       }
     }
 
-    public List<DayAheadTLFRecordForSpecificMonth> fetchDayAheadTotalLoadForecastForSpecificMonth(String areaName, String resolution, YearMonth yearMonth)
+    public List<DayAheadTLForecastRecordForSpecificMonth> fetchDayAheadTotalLoadForecastForSpecificMonth(String areaName, String resolution, YearMonth yearMonth)
 
     throws DataAccessException {
       Integer year = yearMonth.getYear();
@@ -686,7 +688,7 @@ public class DataAccess {
 
       try {
           return jdbcTemplate.query(sqlQuery, sqlParams, (ResultSet rs, int rowNum) -> {
-              DayAheadTLFRecordForSpecificMonth dataLoad = new DayAheadTLFRecordForSpecificMonth();
+              DayAheadTLForecastRecordForSpecificMonth dataLoad = new DayAheadTLForecastRecordForSpecificMonth();
               dataLoad.setAreaName(rs.getString(1)); //get the string located at the 1st column of the result set
               dataLoad.setAreaTypeCode(rs.getString(2));
               dataLoad.setMapCode(rs.getString(3));
@@ -703,7 +705,7 @@ public class DataAccess {
       }
     }
 
-    public List<DayAheadTLFRecordForSpecificYear> fetchDayAheadTotalLoadForecastForSpecificYear(String areaName, String resolution, Integer year)
+    public List<DayAheadTLForecastRecordForSpecificYear> fetchDayAheadTotalLoadForecastForSpecificYear(String areaName, String resolution, Integer year)
 
     throws DataAccessException {
       //Integer year = date.getYear();
@@ -722,7 +724,7 @@ public class DataAccess {
 
       try {
           return jdbcTemplate.query(sqlQuery, sqlParams, (ResultSet rs, int rowNum) -> {
-              DayAheadTLFRecordForSpecificYear dataLoad = new DayAheadTLFRecordForSpecificYear();
+              DayAheadTLForecastRecordForSpecificYear dataLoad = new DayAheadTLForecastRecordForSpecificYear();
               dataLoad.setAreaName(rs.getString(1)); //get the string located at the 1st column of the result set
               dataLoad.setAreaTypeCode(rs.getString(2));
               dataLoad.setMapCode(rs.getString(3));

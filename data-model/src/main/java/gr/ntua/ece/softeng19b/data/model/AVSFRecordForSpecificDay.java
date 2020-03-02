@@ -25,7 +25,7 @@ public class AVSFRecordForSpecificDay extends AbstractEntsoeRecord {
     this.dateTime = dateTime;
   }
 
-  public Timestamp getDayTime() {
+  public Timestamp getDateTime() {
     return dateTime;
   }
 
@@ -35,6 +35,14 @@ public class AVSFRecordForSpecificDay extends AbstractEntsoeRecord {
 
   public double getActualTotalLoadValue() {
     return actualTotalLoadValue;
+  }
+  
+  public void setDayAheadTotalLoadForecastValue(double dayAheadTotalLoadForecastValue) {
+    this.dayAheadTotalLoadForecastValue = dayAheadTotalLoadForecastValue;
+  }
+  
+  public double getDayAheadTotalLoadForecastValue() {
+    return dayAheadTotalLoadForecastValue;
   }
 
 }

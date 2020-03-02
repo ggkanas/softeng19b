@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * The Restlet resource that deals with the /ActualDataLoad/... payloads.
  */
-public class ActualTotalLoadForSpecificDate extends EnergyResource {
+public class ActualTotalLoadForSpecificDay extends EnergyResource {
 
     private final DataAccess dataAccess = Configuration.getInstance().getDataAccess();
 
@@ -42,7 +42,7 @@ public class ActualTotalLoadForSpecificDate extends EnergyResource {
 
         //Use the EnergyResource.parseXXX methods to parse the dates and implement the required business logic
         //For the sake of this example, we hard-code a date
-        String dateParam = getAttributeDecoded("date");
+        //String dateParam = getAttributeDecoded("date");
 
         LocalDate date = parseDate(dateParam);
 
@@ -52,7 +52,7 @@ public class ActualTotalLoadForSpecificDate extends EnergyResource {
 
         try {
 
-            List<ATLRecordForSpecificDay> result = dataAccess.fetchActualDataLoadForSpecificDate(
+            List<ATLRecordForSpecificDay> result = dataAccess.fetchActualTotalLoadForSpecificDate(
                     areaName,
                     resolution,
                     date

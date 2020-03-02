@@ -30,7 +30,7 @@ public class AVSFRecordForSpecificYear extends AbstractEntsoeRecord {
     this.dayAheadTotalLoadForecastByMonthValue = dayAheadTotalLoadForecastByMonthValue;
   }
 
-  public double setDayAheadTotalLoadForecastByMonthValue() {
+  public double getDayAheadTotalLoadForecastByMonthValue() {
     return dayAheadTotalLoadForecastByMonthValue;
   }
 

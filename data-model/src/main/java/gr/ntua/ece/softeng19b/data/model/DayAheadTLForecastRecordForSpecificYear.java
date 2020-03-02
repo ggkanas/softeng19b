@@ -17,7 +17,7 @@ public class DayAheadTLForecastRecordForSpecificYear extends AbstractEntsoeRecor
         this.year = year;
     }
 
-    public double geDayAheadTotalLoadForecastByMonthValue() {
+    public double getDayAheadTotalLoadForecastByMonthValue() {
         return dayAheadTotalLoadForecastByMonthValue;
     }
 
