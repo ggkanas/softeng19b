@@ -4,11 +4,7 @@ public class ATLRecordForSpecificYear extends AbstractEntsoeRecord {
 
     private int year; // *** NEW ***
     private double actualDataLoadByMonthValue;
-
-    public ATLRecordForSpecificYear() {
-        super(DataSet.ActualTotalLoad);
-    }
-
+    
     public int getYear() {
         return year;
     }

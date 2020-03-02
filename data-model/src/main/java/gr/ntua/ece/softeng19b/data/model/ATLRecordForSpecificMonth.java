@@ -4,11 +4,7 @@ public class ATLRecordForSpecificMonth extends AbstractEntsoeRecord {
 
     private int month; //*** NEW ***
     private double actualTotalLoadByDayValue;
-
-    public ATLRecordForSpecificMonth() {
-        super(DataSet.ActualTotalLoad);
-    }
-
+    
     public int getMonth() {
         return month;
     }

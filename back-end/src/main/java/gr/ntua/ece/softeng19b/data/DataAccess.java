@@ -64,8 +64,8 @@ public class DataAccess {
             token
         };
         try {
-            return jdbcTemplate.query("SELECT * FROM User WHERE Token = ?", sqlParams, (ResultSet rs, int rowNum) -> {
-                return (rowNum > 0);
+            return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM User WHERE Token = ?", sqlParams, (ResultSet rs, int rowNum) -> {
+                return (rs.getInt(1) > 0);
             });
         }
         catch(Exception e) {
@@ -114,10 +114,10 @@ public class DataAccess {
     }
 
     public int getTotalRecordsInDatabase(String dataset) {
-        String sqlQuery = "SELECT * FROM " + dataset;
+        String sqlQuery = "SELECT COUNT(*) FROM " + dataset;
         try {
-            return jdbcTemplate.query(sqlQuery, (ResultSet rs, int rowNum) -> {
-                return rowNum;
+            return jdbcTemplate.queryForObject(sqlQuery, (ResultSet rs, int rowNum) -> {
+                return rs.getInt(1);
             });
         }
         catch(Exception e) {

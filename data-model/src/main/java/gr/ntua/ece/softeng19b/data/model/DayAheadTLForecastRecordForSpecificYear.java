@@ -3,26 +3,26 @@ package gr.ntua.ece.softeng19b.data.model;
 public class DayAheadTLForecastRecordForSpecificYear extends AbstractEntsoeRecord {
 
     private int year;
-    private double YearAheadTotalLoadForecastByMonthValue;
+    private double dayAheadTotalLoadForecastByMonthValue;
 
-    public DayAheadTotalLoadForecastRecordForSpecificYear() {
-        super(DataSet.DayAheadTotalLoad);
+    public DayAheadTLForecastRecordForSpecificYear() {
+        super(DataSet.DayAheadTotalLoadForecast);
     }
 
     public int getYear() {
-        return Year;
+        return year;
     }
 
     public void setYear(int year) {
         this.year = year;
     }
 
-    public double geDayAheadTLForecastByMonthValue() {
-        return DayAheadTLForecastByMonthValue;
+    public double geDayAheadTotalLoadForecastByMonthValue() {
+        return dayAheadTotalLoadForecastByMonthValue;
     }
 
 
-    public void setDayAheadTLForecastByMonthValue(double DayAheadTLForecastByMonthValueValue) {
-        this.DayAheadTLForecastByMonthValue = DayAheadTLForecastByMonthValue;
+    public void setDayAheadTotalLoadForecastByMonthValue(double dayAheadTotalLoadForecastByMonthValueValue) {
+        this.dayAheadTotalLoadForecastByMonthValue = dayAheadTotalLoadForecastByMonthValue;
     }
 }
