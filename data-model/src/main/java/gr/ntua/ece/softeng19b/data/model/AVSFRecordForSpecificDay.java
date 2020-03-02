@@ -9,6 +9,10 @@ public class AVSFRecordForSpecificDay extends AbstractEntsoeRecord {
   private double dayAheadTotalLoadForecastValue;
   private double actualTotalLoadValue;
 
+  public AVSFRecordForSpecificDay() {
+    super(DataSet.ActualVSForecastedTotalLoad);
+  }
+  
   public void setDay(int day) {
     this.day = day;
   }
