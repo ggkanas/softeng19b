@@ -11,7 +11,7 @@ public class AGPerTypeRecordForSpecificDay extends AbstractEntsoeRecord {
     private String productionType;
 
     public AGPerTypeRecordForSpecificDay() {
-        super(DataSet.ActualGenerationOutput);
+        super(DataSet.AggregatedGenerationPerType);
     }
 
     public String getProductionType() {
