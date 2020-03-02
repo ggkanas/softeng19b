@@ -350,37 +350,37 @@ public Representation generateRepresentation(List<AVSFRecordForSpecificYear> res
             return new CustomCsvRepresentation( (CsvWriter w) -> {
                 try {
                     StringBuilder sb = new StringBuilder();
-                    String[] values = {"Source","DataSet","AreaName","AreaTypeCode","MapCode","ResolutionCode",
-                        "Year","Month","Day","DateTime","ActualTotalLoadValue","UpdateTime"}
+                    String[] headers = {"Source","DataSet","AreaName","AreaTypeCode","MapCode","ResolutionCode",
+                        "Year","Month","Day","DateTime","ActualTotalLoadValue","UpdateTime"};
+                    w.writeRecord(headers);
 
-            for(ATLRecordForSpecificDay rec: result) {
-
-                sb.append(rec.getSource());
-                sb.append(',');
-                sb.append(rec.getDataSet());
-                sb.append(',');
-                sb.append(rec.getAreaName());
-                sb.append(',');
-                sb.append(rec.getAreaTypeCode());
-                sb.append(',');
-                sb.append(rec.getMapCode());
-                sb.append(',');
-                sb.append(rec.getResolutionCode());
-                sb.append(',');
-                sb.append(rec.getYear());
-                sb.append(',');
-                sb.append(rec.getMonth());
-                sb.append(',');
-                sb.append(rec.getDay());
-                sb.append(',');
-                sb.append(rec.getDateTime());
-                sb.append(',');
-                sb.append(rec.getActualTotalLoadValue());
-                sb.append(',');
-                sb.append(rec.getUpdateTime());
-                sb.append('\n');
+                        for(ATLRecordForSpecificDay rec: result) {
+                            String[] values = {
+                                rec.getSource(),
+                                rec.getDataSet(),
+                                rec.getAreaName(),
+                                rec.getAreaTypeCode(),
+                                rec.getMapCode(),
+                                rec.getResolutionCode(),
+                                rec.getYear(),
+                                rec.getMonth(),
+                                rec.getDay(),
+                                rec.getDateTime(),
+                                rec.getDataSet(),
+                                rec.getActualTotalLoadValue(),
+                                rec.getUpdateTime()
+                            };
+                            w.writeRecord(values);
+                            w.flush();
+                            //w.endRecord(); may or may not be needed here
+                        }
+                    } catch (IOException e) {
+                        throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+                    }
+                }
             }
-            return sb.toString();
+
+
         }
     };
 
