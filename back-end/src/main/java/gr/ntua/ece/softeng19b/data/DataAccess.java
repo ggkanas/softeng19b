@@ -179,7 +179,27 @@ public int addAggregatedGenerationPerType(String[] dataLine) {
             throw new DataAccessException(e.getMessage(), e);
         }
     }
-
+    
+    public int addUser(User user) {
+        Object[] sqlParams = new Object[] {
+            user.getUsername(),
+            user.getEmail(),
+            user.getPassword(),
+            user.getRequestsPerDayQuota(),
+            user.getPeriod(),
+            user.getRemainingRequests(),
+        };
+  
+        String sqlQuery = "insert into User (Username,Email,Password,RequestsPerDayQuota,Period,RemainingRequests) values(?,?,?,?,?,?)";
+        try {
+            return jdbcTemplate.update(sqlQuery, sqlParams);
+        }
+        catch(Exception e) {
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+    
+/* OLD addUser()
     public User addUser(String username, String password, String email, Integer requestsPerDayQuotas) {
 
             TransactionTemplate transactionTemplate = new TransactionTemplate(tm);
@@ -220,7 +240,7 @@ public int addAggregatedGenerationPerType(String[] dataLine) {
             );
 
             return user;
-        }
+        }*/
 
     public List<ATLRecordForSpecificDay> fetchActualTotalLoadForSpecificDate(String areaName, String resolution, LocalDate date)
           throws DataAccessException {
