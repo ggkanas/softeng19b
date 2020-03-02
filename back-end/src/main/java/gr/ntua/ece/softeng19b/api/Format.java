@@ -25,7 +25,7 @@ public enum Format implements RepresentationGenerator {
             for(ATLRecordForSpecificDay rec: result) {
                 w.beginObject(); // {
                 w.name("Source").value("entso-e");
-                w.name("DataSet").value("ActualTotalLoad");
+                w.name("DataSet").value(rec.getDataSet());
                 w.name("AreaName").value(rec.getAreaName());
                 w.name("AreaTypeCode").value(rec.getAreaTypeCode());
                 w.name("MapCode").value(rec.getMapCode());
@@ -105,7 +105,7 @@ public Representation generateRepresentation(List<AGPerTypeRecordForSpecificDay>
             for(AGPerTypeRecordForSpecificDay rec: result) {
                 w.beginObject(); // {
                 w.name("Source").value("entso-e");
-                w.name("DataSet").value("ActualTotalLoad");
+                w.name("DataSet").value(rec.getDataSet());
                 w.name("AreaName").value(rec.getAreaName());
                 w.name("AreaTypeCode").value(rec.getAreaTypeCode());
                 w.name("MapCode").value(rec.getMapCode());
@@ -134,7 +134,7 @@ public Representation generateRepresentation(List<AGPerTypeRecordForSpecificMont
             for(AGPerTypeRecordForSpecificMonth rec: result) {
                 w.beginObject(); // {
                 w.name("Source").value("entso-e");
-                w.name("DataSet").value("ActualTotalLoad");
+                w.name("DataSet").value(rec.getDataSet());
                 w.name("AreaName").value(rec.getAreaName());
                 w.name("AreaTypeCode").value(rec.getAreaTypeCode());
                 w.name("MapCode").value(rec.getMapCode());
@@ -161,7 +161,7 @@ public Representation generateRepresentation(List<AGPerTypeRecordForSpecificYear
             for(AGPerTypeRecordForSpecificYear rec: result) {
                 w.beginObject(); // {
                 w.name("Source").value("entso-e");
-                w.name("DataSet").value("ActualTotalLoad");
+                w.name("DataSet").value(rec.getDataSet());
                 w.name("AreaName").value(rec.getAreaName());
                 w.name("AreaTypeCode").value(rec.getAreaTypeCode());
                 w.name("MapCode").value(rec.getMapCode());
@@ -181,14 +181,14 @@ public Representation generateRepresentation(List<AGPerTypeRecordForSpecificYear
     });
 }
 
-public Representation generateRepresentation(List<DayAheadTLFRecordForSpecificDay> result) {
+public Representation generateRepresentation(List<DayAheadTLForecastRecordForSpecificDay> result) {
     return new CustomJsonRepresentation( (JsonWriter w) -> {
         try {
             w.beginArray(); // [
-            for(DayAheadTLFRecordForSpecificDay rec: result) {
+            for(DayAheadTLForecastRecordForSpecificDay rec: result) {
                 w.beginObject(); // {
                 w.name("Source").value("entso-e");
-                w.name("DataSet").value("ActualTotalLoad");
+                w.name("DataSet").value(rec.getDataSet());
                 w.name("AreaName").value(rec.getAreaName());
                 w.name("AreaTypeCode").value(rec.getAreaTypeCode());
                 w.name("MapCode").value(rec.getMapCode());
@@ -209,14 +209,14 @@ public Representation generateRepresentation(List<DayAheadTLFRecordForSpecificDa
     });
 }
 
-public Representation generateRepresentation(List<DayAheadTLFRecordForSpecificMonth> result) {
+public Representation generateRepresentation(List<DayAheadTLForecastRecordForSpecificMonth> result) {
     return new CustomJsonRepresentation( (JsonWriter w) -> {
         try {
             w.beginArray(); // [
-            for(DayAheadTLFRecordForSpecificMonth rec: result) {
+            for(DayAheadTLForecastRecordForSpecificMonth rec: result) {
                 w.beginObject(); // {
                 w.name("Source").value("entso-e");
-                w.name("DataSet").value("ActualTotalLoad");
+                w.name("DataSet").value(rec.getDataSet());
                 w.name("AreaName").value(rec.getAreaName());
                 w.name("AreaTypeCode").value(rec.getAreaTypeCode());
                 w.name("MapCode").value(rec.getMapCode());
@@ -235,14 +235,14 @@ public Representation generateRepresentation(List<DayAheadTLFRecordForSpecificMo
     });
 }
 
-public Representation generateRepresentation(List<DayAheadTLFRecordForSpecificYear> result) {
+public Representation generateRepresentation(List<DayAheadTLForecastRecordForSpecificYear> result) {
     return new CustomJsonRepresentation( (JsonWriter w) -> {
         try {
             w.beginArray(); // [
-            for(DayAheadTLFRecordForSpecificYear rec: result) {
+            for(DayAheadTLForecastRecordForSpecificYear rec: result) {
                 w.beginObject(); // {
                 w.name("Source").value("entso-e");
-                w.name("DataSet").value("ActualTotalLoad");
+                w.name("DataSet").value(rec.getDataSet());
                 w.name("AreaName").value(rec.getAreaName());
                 w.name("AreaTypeCode").value(rec.getAreaTypeCode());
                 w.name("MapCode").value(rec.getMapCode());
@@ -268,7 +268,7 @@ public Representation generateRepresentation(List<AVSFRecordForSpecificDay> resu
             for(AVSFRecordForSpecificDay rec: result) {
                 w.beginObject(); // {
                 w.name("Source").value("entso-e");
-                w.name("DataSet").value("ActualTotalLoad");
+                w.name("DataSet").value(rec.getDataSet());
                 w.name("AreaName").value(rec.getAreaName());
                 w.name("AreaTypeCode").value(rec.getAreaTypeCode());
                 w.name("MapCode").value(rec.getMapCode());
@@ -296,7 +296,7 @@ public Representation generateRepresentation(List<AVSFRecordForSpecificMonth> re
             for(AVSFRecordForSpecificMonth rec: result) {
                 w.beginObject(); // {
                 w.name("Source").value("entso-e");
-                w.name("DataSet").value("ActualTotalLoad");
+                w.name("DataSet").value(rec.getDataSet());
                 w.name("AreaName").value(rec.getAreaName());
                 w.name("AreaTypeCode").value(rec.getAreaTypeCode());
                 w.name("MapCode").value(rec.getMapCode());
@@ -323,7 +323,7 @@ public Representation generateRepresentation(List<AVSFRecordForSpecificYear> res
             for(AVSFRecordForSpecificYear rec: result) {
                 w.beginObject(); // {
                 w.name("Source").value("entso-e");
-                w.name("DataSet").value("ActualTotalLoad");
+                w.name("DataSet").value(rec.getDataSet());
                 w.name("AreaName").value(rec.getAreaName());
                 w.name("AreaTypeCode").value(rec.getAreaTypeCode());
                 w.name("MapCode").value(rec.getMapCode());
