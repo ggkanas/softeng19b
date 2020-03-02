@@ -1,6 +1,7 @@
 package gr.ntua.ece.softeng19b.api;
 
 import com.google.gson.stream.JsonWriter;
+import com.csvreader.CsvWriter;
 import gr.ntua.ece.softeng19b.api.representation.RepresentationGenerator;
 import gr.ntua.ece.softeng19b.data.model.ATLRecordForSpecificDay;
 import org.restlet.data.MediaType;
@@ -346,10 +347,14 @@ public Representation generateRepresentation(List<AVSFRecordForSpecificYear> res
     CSV {
         /*** ??? ***/
         public Representation generateRepresentation(List<ATLRecordForSpecificDay> result) {
-             StringBuilder sb = new StringBuilder();
-             sb.append("Source,DataSet,AreaName,AreaTypeCode,MapCode,ResolutionCode,
-                Year,Month,Day,DateTime,ActualTotalLoadValue,UpdateTime\n");
+            return new CustomCsvRepresentation( (CsvWriter w) -> {
+                try {
+                    StringBuilder sb = new StringBuilder();
+                    String[] values = {"Source","DataSet","AreaName","AreaTypeCode","MapCode","ResolutionCode",
+                        "Year","Month","Day","DateTime","ActualTotalLoadValue","UpdateTime"}
+
             for(ATLRecordForSpecificDay rec: result) {
+
                 sb.append(rec.getSource());
                 sb.append(',');
                 sb.append(rec.getDataSet());
@@ -406,7 +411,7 @@ public Representation generateRepresentation(List<AVSFRecordForSpecificYear> res
 
         @Override
         public void write(Writer writer) throws IOException {
-            CsvWriter csvWriter = new CsvWriter(writer);
+            CsvWriter csvWriter = new CsvWriter(writer, ',');
             consumer.accept(csvWriter);
         }
     }

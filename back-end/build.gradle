@@ -27,6 +27,7 @@ dependencies {
     compile "com.google.code.gson:gson:2.8.2"                  //json library
     compile "org.apache.commons:commons-dbcp2:2.7.0"           //db connection pool
     compile "org.springframework:spring-jdbc:5.2.2.RELEASE"    //spring JDBC classes
+    compile "com.csvreader.CsvWriter"                           //csv writer
 
     testCompile project(':rest-api-client')                    //for performing functional tests
     testCompile 'org.spockframework:spock-core:1.3-groovy-2.5' //spock testing framework
