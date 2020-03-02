@@ -46,7 +46,7 @@ public class ActualTotalLoadForSpecificMonth extends EnergyResource {
 
         try {
 
-            List<ATLRecordForSpecificMonth> result = dataAccess.fetchActualDataLoadForSpecificMonth(
+            List<ATLRecordForSpecificMonth> result = dataAccess.fetchActualTotalLoadForSpecificMonth(
                     areaName,
                     resolution,
                     yearMonth
