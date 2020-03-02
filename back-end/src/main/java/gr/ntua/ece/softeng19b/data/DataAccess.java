@@ -485,7 +485,7 @@ public class DataAccess {
         sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText, " +
         "Year, Month, Day, DateTime, ProductionTypeText, ActualGenerationOutput, UpdateTime from " +
         "AggregatedGenerationPerType as AGPT, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, ProductionType as PT where " +
-        "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PC.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
+        "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PT.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
         "AreaName = ? && ResolutionCodeText = ? && Year = ? && Month = ? and Day = ? group by AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText,ProductionTypeText, Year, Month, Day, DateTime,ActualGenerationOutput, UpdateTime";
       }
       else {
@@ -493,7 +493,7 @@ public class DataAccess {
         sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText, " +
         "Year, Month, Day, DateTime, ProductionTypeText, ActualGenerationOutput, UpdateTime from " +
         "AggregatedGenerationPerType as AGPT, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, ProductionType as PT where " +
-        "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PC.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
+        "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PT.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
         "AreaName = ? && ResolutionCodeText = ? && ProductionTypeText = ? && Year = ? && Month = ? and Day = ?";
       }
 
@@ -534,7 +534,7 @@ public class DataAccess {
         sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText, " +
         "Year, Month, Day, ProductionTypeText, sum(ActualGenerationOutput) from " +
         "AggregatedGenerationPerType as AGPT, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, ProductionType as PT where " +
-        "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PC.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
+        "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PT.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
         "AreaName = ? && ResolutionCodeText = ? && Year = ? && Month = ? group by AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText,ProductionTypeText, Year, Month,Day,ProductionTypeText";
       }
       else {
@@ -542,7 +542,7 @@ public class DataAccess {
         sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText, " +
         "Year, Month, Day, ProductionTypeText, sum(ActualGenerationOutput) from " +
         "AggregatedGenerationPerType as AGPT, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, ProductionType as PT where " +
-        "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PC.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
+        "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PT.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
         "AreaName = ? && ResolutionCodeText = ? && ProductionTypeText = ? && Year = ? && Month = ? group by AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText, Year, Month, Day, ProductionTypeText";
       }
 
@@ -581,7 +581,7 @@ public class DataAccess {
         sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText, " +
         "Year, Month, ProductionTypeText, sum(ActualGenerationOutput) from " +
         "AggregatedGenerationPerType as AGPT, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, ProductionType as PT where " +
-        "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PC.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
+        "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PT.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
         "AreaName = ? && ResolutionCodeText = ? && Year = ? group by AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText,ProductionTypeText,Year, Month";
       }
       else {
@@ -590,7 +590,7 @@ public class DataAccess {
         sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText, " +
         "Year, Month, ProductionTypeText, sum(ActualGenerationOutput) from " +
         "AggregatedGenerationPerType as AGPT, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, ProductionType as PT where " +
-        "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PC.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
+        "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PT.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
         "AreaName = ? && ResolutionCodeText = ? && ProductionTypeText = ? && Year = ? group by AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText,ProductionTypeText,Year, Month";
       }
 
