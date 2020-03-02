@@ -3,7 +3,7 @@ package gr.ntua.ece.softeng19b.data.model;
 public class ATLRecordForSpecificYear extends AbstractEntsoeRecord {
 
     private int year; // *** NEW ***
-    private double actualDataLoadByMonthValue;
+    private double actualTotalLoadByMonthValue;
     
     public int getYear() {
         return year;
@@ -18,11 +18,11 @@ public class ATLRecordForSpecificYear extends AbstractEntsoeRecord {
         super(DataSet.ActualTotalLoad);
     }
 
-    public double getActualDataLoadByMonthValue() {
-        return actualDataLoadByMonthValue;
+    public double getActualTotalLoadByMonthValue() {
+        return actualTotalLoadByMonthValue;
     }
 
-    public void setActualDataLoadByMonthValue(double actualDataLoadByMonthValue) {
-        this.actualDataLoadByMonthValue = actualDataLoadByMonthValue;
+    public void setActualTotalLoadByMonthValue(double actualTotalLoadByMonthValue) {
+        this.actualTotalLoadByMonthValue = actualTotalLoadByMonthValue;
     }
 }
