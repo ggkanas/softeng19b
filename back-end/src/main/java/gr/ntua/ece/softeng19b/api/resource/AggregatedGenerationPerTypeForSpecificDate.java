@@ -46,7 +46,7 @@ public class AggregatedGenerationPerTypeForSpecificDate extends EnergyResource {
 
         try {
 
-            List<AGPerTypeRecordForSpecificDay> result = dataAccess.fetchAggregatedGenerationPerType(
+            List<AGPerTypeRecordForSpecificDay> result = dataAccess.fetchAggregatedGenerationPerTypeForSpecificDate(
                     areaName,
                     resolution,
                     productionType,
