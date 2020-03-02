@@ -56,30 +56,6 @@ public class User {
     public int getRequestsPerDayQuota() {
         return requestsPerDayQuota;
     }
-    
-    public void setRemainingRequests(int remainingRequests) {
-        this.remainingRequests = remainingRequests;
-    }
-
-    public int getRemainingRequests() {
-        return remainingRequests;
-    }
-    
-    public Timestamp getPeriod() {
-        return period;
-    }
-    
-    public void setPeriod(Timestamp period) {
-        this.period = period;
-    }
-    
-    public String getToken() {
-        return token;
-    }
-    
-    public void setToken(String token) {
-        this.token = token;
-    }
 
     public void setRemainingRequests(int remainingRequests) {
         this.remainingRequests = remainingRequests;
@@ -104,5 +80,4 @@ public class User {
     public void setToken(String token) {
         this.token = token;
     }
-
 }
