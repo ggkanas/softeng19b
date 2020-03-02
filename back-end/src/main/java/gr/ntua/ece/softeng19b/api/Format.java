@@ -18,7 +18,7 @@ import java.util.function.Consumer;
 public enum Format implements RepresentationGenerator {
     JSON {
 
-        public Representation generateRepresentation(List<ATLRecordForSpecificDay> result) {
+        public Representation generateRepresentation1a(List<ATLRecordForSpecificDay> result) {
     return new CustomJsonRepresentation( (JsonWriter w) -> {
         try {
             w.beginArray(); // [
@@ -46,7 +46,7 @@ public enum Format implements RepresentationGenerator {
     });
 }
 
-public Representation generateRepresentation(List<ATLRecordForSpecificMonth> result) {
+public Representation generateRepresentation1b(List<ATLRecordForSpecificMonth> result) {
     return new CustomJsonRepresentation( (JsonWriter w) -> {
         try {
             w.beginArray(); // [
@@ -72,7 +72,7 @@ public Representation generateRepresentation(List<ATLRecordForSpecificMonth> res
     });
 }
 
-public Representation generateRepresentation(List<ATLRecordForSpecificYear> result) {
+public Representation generateRepresentation1c(List<ATLRecordForSpecificYear> result) {
     return new CustomJsonRepresentation( (JsonWriter w) -> {
         try {
             w.beginArray(); // [
@@ -97,7 +97,7 @@ public Representation generateRepresentation(List<ATLRecordForSpecificYear> resu
     });
 }
 
-public Representation generateRepresentation(List<AGPerTypeRecordForSpecificDay> result) {
+public Representation generateRepresentation2a(List<AGPerTypeRecordForSpecificDay> result) {
     return new CustomJsonRepresentation( (JsonWriter w) -> {
         try {
             w.beginArray(); // [
@@ -126,7 +126,7 @@ public Representation generateRepresentation(List<AGPerTypeRecordForSpecificDay>
     });
 }
 
-public Representation generateRepresentation(List<AGPerTypeRecordForSpecificMonth> result) {
+public Representation generateRepresentation2b(List<AGPerTypeRecordForSpecificMonth> result) {
     return new CustomJsonRepresentation( (JsonWriter w) -> {
         try {
             w.beginArray(); // [
@@ -153,7 +153,7 @@ public Representation generateRepresentation(List<AGPerTypeRecordForSpecificMont
     });
 }
 
-public Representation generateRepresentation(List<AGPerTypeRecordForSpecificYear> result) {
+public Representation generateRepresentation2c(List<AGPerTypeRecordForSpecificYear> result) {
     return new CustomJsonRepresentation( (JsonWriter w) -> {
         try {
             w.beginArray(); // [
@@ -180,7 +180,7 @@ public Representation generateRepresentation(List<AGPerTypeRecordForSpecificYear
     });
 }
 
-public Representation generateRepresentation(List<DayAheadTLForecastRecordForSpecificDay> result) {
+public Representation generateRepresentation3a(List<DayAheadTLForecastRecordForSpecificDay> result) {
     return new CustomJsonRepresentation( (JsonWriter w) -> {
         try {
             w.beginArray(); // [
@@ -208,7 +208,7 @@ public Representation generateRepresentation(List<DayAheadTLForecastRecordForSpe
     });
 }
 
-public Representation generateRepresentation(List<DayAheadTLForecastRecordForSpecificMonth> result) {
+public Representation generateRepresentation3b(List<DayAheadTLForecastRecordForSpecificMonth> result) {
     return new CustomJsonRepresentation( (JsonWriter w) -> {
         try {
             w.beginArray(); // [
@@ -234,7 +234,7 @@ public Representation generateRepresentation(List<DayAheadTLForecastRecordForSpe
     });
 }
 
-public Representation generateRepresentation(List<DayAheadTLForecastRecordForSpecificYear> result) {
+public Representation generateRepresentation3c(List<DayAheadTLForecastRecordForSpecificYear> result) {
     return new CustomJsonRepresentation( (JsonWriter w) -> {
         try {
             w.beginArray(); // [
@@ -259,7 +259,7 @@ public Representation generateRepresentation(List<DayAheadTLForecastRecordForSpe
     });
 }
 
-public Representation generateRepresentation(List<AVSFRecordForSpecificDay> result) {
+public Representation generateRepresentation4a(List<AVSFRecordForSpecificDay> result) {
     return new CustomJsonRepresentation( (JsonWriter w) -> {
         try {
             w.beginArray(); // [
@@ -287,7 +287,7 @@ public Representation generateRepresentation(List<AVSFRecordForSpecificDay> resu
     });
 }
 
-public Representation generateRepresentation(List<AVSFRecordForSpecificMonth> result) {
+public Representation generateRepresentation4b(List<AVSFRecordForSpecificMonth> result) {
     return new CustomJsonRepresentation( (JsonWriter w) -> {
         try {
             w.beginArray(); // [
@@ -314,7 +314,7 @@ public Representation generateRepresentation(List<AVSFRecordForSpecificMonth> re
     });
 }
 
-public Representation generateRepresentation(List<AVSFRecordForSpecificYear> result) {
+public Representation generateRepresentation4c(List<AVSFRecordForSpecificYear> result) {
     return new CustomJsonRepresentation( (JsonWriter w) -> {
         try {
             w.beginArray(); // [
@@ -343,7 +343,7 @@ public Representation generateRepresentation(List<AVSFRecordForSpecificYear> res
     },
     CSV {
         /*** ??? ***/
-        public Representation generateRepresentation(List<ATLRecordForSpecificDay> result) {
+        public Representation generateRepresentation1a(List<ATLRecordForSpecificDay> result) {
             return new CustomCsvRepresentation( (CsvWriter w) -> {
                 try {
                     StringBuilder sb = new StringBuilder();
@@ -376,7 +376,7 @@ public Representation generateRepresentation(List<AVSFRecordForSpecificYear> res
                 });
             }
 
-public Representation generateRepresentation(List<ATLRecordForSpecificMonth> result) {
+public Representation generateRepresentation1b(List<ATLRecordForSpecificMonth> result) {
     return new CustomCsvRepresentation( (CsvWriter w) -> {
         try {
             StringBuilder sb = new StringBuilder();
@@ -407,7 +407,7 @@ public Representation generateRepresentation(List<ATLRecordForSpecificMonth> res
         });
     }
 
-public Representation generateRepresentation(List<ATLRecordForSpecificYear> result) {
+public Representation generateRepresentation1c(List<ATLRecordForSpecificYear> result) {
     return new CustomCsvRepresentation( (CsvWriter w) -> {
         try {
             StringBuilder sb = new StringBuilder();
@@ -437,7 +437,7 @@ public Representation generateRepresentation(List<ATLRecordForSpecificYear> resu
         });
     }
 
-public Representation generateRepresentation(List<AGPerTypeRecordForSpecificDay> result) {
+public Representation generateRepresentation2a(List<AGPerTypeRecordForSpecificDay> result) {
     return new CustomCsvRepresentation( (CsvWriter w) -> {
         try {
             StringBuilder sb = new StringBuilder();
@@ -471,7 +471,7 @@ public Representation generateRepresentation(List<AGPerTypeRecordForSpecificDay>
         });
     }
 
-public Representation generateRepresentation(List<AGPerTypeRecordForSpecificMonth> result) {
+public Representation generateRepresentation2b(List<AGPerTypeRecordForSpecificMonth> result) {
     return new CustomCsvRepresentation( (CsvWriter w) -> {
         try {
             StringBuilder sb = new StringBuilder();
@@ -503,7 +503,7 @@ public Representation generateRepresentation(List<AGPerTypeRecordForSpecificMont
         });
     }
 
-public Representation generateRepresentation(List<AGPerTypeRecordForSpecificYear> result) {
+public Representation generateRepresentation2c(List<AGPerTypeRecordForSpecificYear> result) {
     return new CustomCsvRepresentation( (CsvWriter w) -> {
         try {
             StringBuilder sb = new StringBuilder();
@@ -535,7 +535,7 @@ public Representation generateRepresentation(List<AGPerTypeRecordForSpecificYear
         });
     }
 
-public Representation generateRepresentation(List<DayAheadTLForecastRecordForSpecificDay> result) {
+public Representation generateRepresentation3a(List<DayAheadTLForecastRecordForSpecificDay> result) {
     return new CustomCsvRepresentation( (CsvWriter w) -> {
         try {
             StringBuilder sb = new StringBuilder();
@@ -568,7 +568,7 @@ public Representation generateRepresentation(List<DayAheadTLForecastRecordForSpe
         });
     }
 
-public Representation generateRepresentation(List<DayAheadTLForecastRecordForSpecificMonth> result) {
+public Representation generateRepresentation3b(List<DayAheadTLForecastRecordForSpecificMonth> result) {
     return new CustomCsvRepresentation( (CsvWriter w) -> {
         try {
             StringBuilder sb = new StringBuilder();
@@ -599,7 +599,7 @@ public Representation generateRepresentation(List<DayAheadTLForecastRecordForSpe
         });
     }
 
-public Representation generateRepresentation(List<DayAheadTLForecastRecordForSpecificYear> result) {
+public Representation generateRepresentation3c(List<DayAheadTLForecastRecordForSpecificYear> result) {
     return new CustomCsvRepresentation( (CsvWriter w) -> {
         try {
             StringBuilder sb = new StringBuilder();
@@ -629,7 +629,7 @@ public Representation generateRepresentation(List<DayAheadTLForecastRecordForSpe
         });
     }
 
-public Representation generateRepresentation(List<AVSFRecordForSpecificDay> result) {
+public Representation generateRepresentation4a(List<AVSFRecordForSpecificDay> result) {
     return new CustomCsvRepresentation( (CsvWriter w) -> {
         try {
             StringBuilder sb = new StringBuilder();
@@ -662,7 +662,7 @@ public Representation generateRepresentation(List<AVSFRecordForSpecificDay> resu
         });
     }
 
-public Representation generateRepresentation(List<AVSFRecordForSpecificMonth> result) {
+public Representation generateRepresentation4b(List<AVSFRecordForSpecificMonth> result) {
     return new CustomCsvRepresentation( (CsvWriter w) -> {
         try {
             StringBuilder sb = new StringBuilder();
@@ -694,7 +694,7 @@ public Representation generateRepresentation(List<AVSFRecordForSpecificMonth> re
         });
     }
 
-public Representation generateRepresentation(List<AVSFRecordForSpecificYear> result) {
+public Representation generateRepresentation4c(List<AVSFRecordForSpecificYear> result) {
     return new CustomCsvRepresentation( (CsvWriter w) -> {
         try {
             StringBuilder sb = new StringBuilder();
