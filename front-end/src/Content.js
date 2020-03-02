@@ -270,13 +270,13 @@ export class Content extends Component {
     }
 
     doDisplay(json, err) {
-        var headContent = ["Source", "Dataset", "AreaName", "AreaTypeCode", "MapCode", "ResolutionCode", "Year", "Month"];
+        var headContent = ["Source", "DataSet", "AreaName", "AreaTypeCode", "MapCode", "ResolutionCode", "Year", "Month"];
         var tableContent = [];
         var flags = [false, false, false, false, false, false, false];
         if(err || json == null) {
                 json = ([ {
                     "Source" : "entso-e",
-                    "Dataset" : "ActualTotalLoad",
+                    "DataSet" : "ActualTotalLoad",
                     "AreaName" : "Greece",
                     "AreaTypeCode" : "CTY",
                     "MapCode" : "GR",
@@ -290,7 +290,7 @@ export class Content extends Component {
                 },
                 {
                     "Source" : "entso-e",
-                    "Dataset" : "ActualTotalLoad",
+                    "DataSet" : "ActualTotalLoad",
                     "AreaName" : "Greece",
                     "AreaTypeCode" : "CTY",
                     "MapCode" : "GR",
@@ -304,7 +304,7 @@ export class Content extends Component {
                 },
                 {
                     "Source" : "entso-e",
-                    "Dataset" : "ActualTotalLoad",
+                    "DataSet" : "ActualTotalLoad",
                     "AreaName" : "Greece",
                     "AreaTypeCode" : "CTY",
                     "MapCode" : "GR",
