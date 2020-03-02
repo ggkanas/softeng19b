@@ -33,7 +33,7 @@ public class ImportActualTotalLoadDataSet extends EnergyResource {
           totalRecordsInFile = totalRecordsInFile + 1;
           String[] dataLine = line.split(csvSplitBy);
 
-          if(dataAccess.AddActualTotalLoadRecord(dataLine) == 1) totalRecordsImported = totalRecordsImported + 1;
+          if(dataAccess.addActualTotalLoadRecord(dataLine) == 1) totalRecordsImported = totalRecordsImported + 1;
           else break;
         }
 
