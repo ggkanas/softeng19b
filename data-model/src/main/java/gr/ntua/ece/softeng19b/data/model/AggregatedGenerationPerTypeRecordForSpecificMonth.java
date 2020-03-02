@@ -7,7 +7,7 @@ public class AGPerTypeRecordForSpecificMonth extends AbstractEntsoeRecord {
     private String productionType;
     
     public AGPerTypeRecordForSpecificMonth() {
-        super(DataSet.actualGenerationOutputByDay);
+        super(DataSet.AggregatedGenerationPerType);
     }
    
     public String getProductionType() {
