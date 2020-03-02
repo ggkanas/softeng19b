@@ -84,34 +84,98 @@ public class DataAccess {
 
     public int addActualTotalLoadRecord(String[] dataLine) {
 
-            Object[] sqlParams = new Object[] {
-                Integer.parseInt(dataLine[0]),
-                Timestamp.ValueOf(dataLine[1]),
-                Timestamp.ValueOf(dataLine[2]),
-                Long.parseLong(dataLine[3]),
-                dataLine[4],
-                Integer.parseInt(dataLine[5]),
-                Integer.parseInt(dataLine[6]),
-                Integer.parseInt(dataLine[7]),
-                Timestamp.ValueOf(dataLine[8]),
-                dataLine[9],
-                Timestamp.ValueOf(dataLine[10]),
-                new BigDecimal(dataLine[11]),
-                Integer.parseInt(dataLine[12]),
-                Integer.parseInt(dataLine[13]),
-                Integer.parseInt(dataLine[14]),
-                Integer.parseInt(dataLine[15]),
-                dataLine[16]
-            };
+                Object[] sqlParams = new Object[] {
+                    Integer.parseInt(dataLine[0]),
+                    Timestamp.ValueOf(dataLine[1]),
+                    Timestamp.ValueOf(dataLine[2]),
+                    Long.parseLong(dataLine[3]),
+                    dataLine[4],
+                    Integer.parseInt(dataLine[5]),
+                    Integer.parseInt(dataLine[6]),
+                    Integer.parseInt(dataLine[7]),
+                    Timestamp.ValueOf(dataLine[8]),
+                    dataLine[9],
+                    Timestamp.ValueOf(dataLine[10]),
+                    new BigDecimal(dataLine[11]),
+                    Integer.parseInt(dataLine[12]),
+                    Integer.parseInt(dataLine[13]),
+                    Integer.parseInt(dataLine[14]),
+                    Integer.parseInt(dataLine[15]),
+                    dataLine[16]
+                };
 
-        String sqlQuery = "insert into ActualTotalLoad () values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try {
-            return jdbcTemplate.update(sqlQuery, sqlParams);
+            String sqlQuery = "insert into ActualTotalLoad () values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            try {
+                return jdbcTemplate.update(sqlQuery, sqlParams);
+            }
+            catch(Exception e) {
+                throw new DataAccessException(e.getMessage(), e);
+            }
         }
-        catch(Exception e) {
-            throw new DataAccessException(e.getMessage(), e);
+
+    public int addAggregatedGenerationPerType(String[] dataLine) {
+
+                Object[] sqlParams = new Object[] {
+                    Integer.parseInt(dataLine[0]),
+                    Timestamp.ValueOf(dataLine[1]),
+                    Timestamp.ValueOf(dataLine[2]),
+                    Long.parseLong(dataLine[3]),
+                    dataLine[4],
+                    Integer.parseInt(dataLine[5]),
+                    Integer.parseInt(dataLine[6]),
+                    Integer.parseInt(dataLine[7]),
+                    Timestamp.ValueOf(dataLine[8]),
+                    dataLine[9],
+                    Timestamp.ValueOf(dataLine[10]),
+                    new BigDecimal(dataLine[11]),
+                    new BigDecimal(dataLine[12]),
+                    Integer.parseInt(dataLine[13]),
+                    Integer.parseInt(dataLine[14]),
+                    Integer.parseInt(dataLine[15]),
+                    Integer.parseInt(dataLine[16]),
+                    Integer.parseInt(dataLine[17]),
+                    dataLine[18]
+                };
+
+            String sqlQuery = "insert into AggregatedGenerationPerType () values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            try {
+                return jdbcTemplate.update(sqlQuery, sqlParams);
+            }
+            catch(Exception e) {
+                throw new DataAccessException(e.getMessage(), e);
+            }
         }
-    }
+
+        public int addDayAheadTotalLoadForecast(String[] dataLine) {
+
+                Object[] sqlParams = new Object[] {
+                    Integer.parseInt(dataLine[0]),
+                    Timestamp.ValueOf(dataLine[1]),
+                    Timestamp.ValueOf(dataLine[2]),
+                    Long.parseLong(dataLine[3]),
+                    dataLine[4],
+                    Integer.parseInt(dataLine[5]),
+                    Integer.parseInt(dataLine[6]),
+                    Integer.parseInt(dataLine[7]),
+                    Timestamp.ValueOf(dataLine[8]),
+                    dataLine[9],
+                    Timestamp.ValueOf(dataLine[10]),
+                    new BigDecimal(dataLine[11]),
+                    Integer.parseInt(dataLine[12]),
+                    Integer.parseInt(dataLine[13]),
+                    Integer.parseInt(dataLine[14]),
+                    Integer.parseInt(dataLine[15]),
+                    dataLine[16]
+                };
+
+            String sqlQuery = "insert into DayAheadTotalLoadForecast () values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            try {
+                return jdbcTemplate.update(sqlQuery, sqlParams);
+            }
+            catch(Exception e) {
+                throw new DataAccessException(e.getMessage(), e);
+            }
+        }
 
     public int getTotalRecordsInDatabase(String dataset) {
         String sqlQuery = "SELECT COUNT(*) FROM " + dataset;
@@ -125,13 +189,30 @@ public class DataAccess {
         }
     }
 
-    public User addUser(String username, String password, String email, Integer requestsPerDayQuotas) {
+    public int addUser(User user) {
+        Object[] sqlParams = new Object[] {
+            user.getUsername(),
+            user.getEmail(),
+            user.getPassword(),
+            user.getRequestsPerDayQuota(),
+            user.getPeriod(),
+            user.getRemainingRequests(),
+        };
 
+        String sqlQuery = "insert into User (Username,Email,Password,RequestsPerDayQuota,Period,RemainingRequests) values(?,?,?,?,?,?)";
+        try {
+            return jdbcTemplate.update(sqlQuery, sqlParams);
+        }
+        catch(Exception e) {
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+/* OLD addUser()
+    public User addUser(String username, String password, String email, Integer requestsPerDayQuotas) {
             TransactionTemplate transactionTemplate = new TransactionTemplate(tm);
             transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-
             long id = transactionTemplate.execute((TransactionStatus status) -> {
-
                 //Create the new user record using a prepared statement
                 GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
                 int rowCount = jdbcTemplate.update((Connection con) -> {
@@ -145,16 +226,12 @@ public class DataAccess {
                     ps.setInteger(4, requestPerDayQuotas); //ελπίζω να υπάρχει αυτό
                     return ps;
                 }, keyHolder);
-
                 if (rowCount != 1) {
                     throw new RuntimeException("New user not inserted");
                 }
-
                 long newId = keyHolder.getKey().longValue();
-
                 return newId;
             });
-
             //New row has been added
             User user = new User(
                 id,
@@ -163,9 +240,8 @@ public class DataAccess {
                 email,
                 requestsPerDayQuotas
             );
-
             return user;
-        }
+        }*/
 
     public List<ATLRecordForSpecificDay> fetchActualTotalLoadForSpecificDate(String areaName, String resolution, LocalDate date)
           throws DataAccessException {
