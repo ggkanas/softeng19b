@@ -1,9 +1,9 @@
-package gr.ntua.ece.softeng18b.api;
+package gr.ntua.ece.softeng19b.api;
 
-import gr.ntua.ece.softeng18b.conf.Configuration;
-import gr.ntua.ece.softeng18b.data.DataAccess;
-import gr.ntua.ece.softeng18b.data.model.User;
-import gr.ntua.ece.softeng18b.AuthenticationService;
+import gr.ntua.ece.softeng19b.conf.Configuration;
+import gr.ntua.ece.softeng19b.data.DataAccess;
+import gr.ntua.ece.softeng19b.data.model.User;
+import gr.ntua.ece.softeng19b.api.AuthenticationService;
 
 
 import org.restlet.util.Series;

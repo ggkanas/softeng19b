@@ -61,7 +61,7 @@ public Representation generateRepresentation(List<ATLRecordForSpecificMonth> res
                 w.name("Year").value(rec.getYear());
                 w.name("Month").value(rec.getMonth());
                 w.name("Day").value(rec.getDay());
-                w.name("ActualTotalLoadByDayValue").value(rec.getActualTotalLoadByDayValue())
+                w.name("ActualTotalLoadByDayValue").value(rec.getActualTotalLoadByDayValue());
                 w.endObject(); // }
                 w.flush();
             }
@@ -377,14 +377,14 @@ public Representation generateRepresentation(List<AVSFRecordForSpecificYear> res
                     } catch (IOException e) {
                         throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
                     }
-                }
+                });
             }
 
 
         }
     };
 
-    private static final class CustomJsonRepresentation extends WriterRepresentation {
+    final class CustomJsonRepresentation extends WriterRepresentation {
 
         private final Consumer<JsonWriter> consumer;
 
@@ -400,7 +400,7 @@ public Representation generateRepresentation(List<AVSFRecordForSpecificYear> res
         }
     }
 
-    private static final class CustomCsvRepresentation extends WriterRepresentation {
+    final class CustomCsvRepresentation extends WriterRepresentation {
 
         private final Consumer<CsvWriter> consumer;
 
@@ -415,4 +415,3 @@ public Representation generateRepresentation(List<AVSFRecordForSpecificYear> res
             consumer.accept(csvWriter);
         }
     }
-}
