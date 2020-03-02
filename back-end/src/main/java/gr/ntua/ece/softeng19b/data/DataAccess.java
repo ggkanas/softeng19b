@@ -445,7 +445,7 @@ public class DataAccess {
     String sqlQuery = "select AreaName, AreaTypeCodeText, MapCodeText, ResolutionCodeText, Year, Month, sum(TotalLoadValue) " +
     "from ActualTotalLoad as ATL, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC " +
     "where ATL.MapCodeId = MC.Id && ATL.AreaTypeCodeId = ATC.Id && ATL.ResolutionCodeId = RC.Id && " +
-    "AreaName = ? && ResolutionCodetext = ? && Year = ? + group by Month";
+    "AreaName = ? && ResolutionCodetext = ? && Year = ? group by Month";
 
     try {
       return jdbcTemplate.query(sqlQuery, sqlParams, (ResultSet rs, int rowNum) -> {
@@ -705,7 +705,7 @@ public class DataAccess {
       };
 
       String sqlQuery = "select AreaName, AreaTypeCodeText, MapCodeText, ResolutionCodeText, Year, " +
-      "Month, Day, sum(TotalLoadValue) from " +
+      "Month, sum(TotalLoadValue) from " +
       "DayAheadTotalLoadForecast as DATLF, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC where " +
       "DATLF.AreaTypeCodeId = ATC.Id && DATLF.MapCodeId = MC.Id && DATLF.ResolutionCodeId = RC.Id && " +
       "AreaName = ? && ResolutionCodeText = ? Year = ? group by Month";
