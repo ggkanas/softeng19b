@@ -54,7 +54,7 @@ public class DayAheadTotalLoadForecastForSpecificDate extends EnergyResource {
 
             if (result.isEmpty()) throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN);
 
-            return format.generateRepresentation1c(result);
+            return format.generateRepresentation3c(result);
         } catch (Exception e) {
             throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e.getMessage(), e);
         }
