@@ -55,7 +55,7 @@ public class ActualTotalLoadVsDayAheadTotalLoadForecastForSpecificMonth extends 
 
             if (result.isEmpty()) throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN);
 
-            return format.generateRepresentation(result);
+            return format.generateRepresentation4b(result);
         } catch (Exception e) {
             throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e.getMessage(), e);
         }
