@@ -410,7 +410,7 @@ public class DataAccess {
     String sqlQuery = "select AreaName, AreaTypeCodeText, MapCodeText, ResolutionCodeText, Year, Month, Day, sum(TotalLoadValue) " +
     "from ActualTotalLoad as ATL, MapCode as MC, AreaTypeCode as ATC, " +
     "ResolutionCode as RC where ATL.MapCodeId = MC.Id && ATL.AreaTypeCodeId = ATC.Id && ATL.ResolutionCodeId = RC.Id && " +
-    "AreaName = ? && ResolutionCodeText = ? && Year = ? && Month = ? group by Day";
+    "AreaName = ? && ResolutionCodeText = ? && Year = ? && Month = ? group by AreaName, AreaTypeCodeText, MapCodeText, ResolutionCodeText, Year, Month, Day";
 
 
     try {
@@ -446,7 +446,7 @@ public class DataAccess {
     String sqlQuery = "select AreaName, AreaTypeCodeText, MapCodeText, ResolutionCodeText, Year, Month, sum(TotalLoadValue) " +
     "from ActualTotalLoad as ATL, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC " +
     "where ATL.MapCodeId = MC.Id && ATL.AreaTypeCodeId = ATC.Id && ATL.ResolutionCodeId = RC.Id && " +
-    "AreaName = ? && ResolutionCodetext = ? && Year = ? + group by Month";
+    "AreaName = ? && ResolutionCodetext = ? && Year = ? group by AreaName, AreaTypeCodeText, MapCodeText, ResolutionCodeText, Year, Month";
 
     try {
       return jdbcTemplate.query(sqlQuery, sqlParams, (ResultSet rs, int rowNum) -> {
@@ -486,15 +486,15 @@ public class DataAccess {
         sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText, " +
         "Year, Month, Day, DateTime, ProductionTypeText, ActualGenerationOutput, UpdateTime from " +
         "AggregatedGenerationPerType as AGPT, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, ProductionType as PT where " +
-        "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PC.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
-        "AreaName = ? && ResolutionCodeText = ? && Year = ? && Month = ? and Day = ? group by ProductionTypeText";
+        "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PT.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
+        "AreaName = ? && ResolutionCodeText = ? && Year = ? && Month = ? and Day = ? group by AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText,ProductionTypeText, Year, Month, Day, DateTime,ActualGenerationOutput, UpdateTime";
       }
       else {
 
         sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText, " +
         "Year, Month, Day, DateTime, ProductionTypeText, ActualGenerationOutput, UpdateTime from " +
         "AggregatedGenerationPerType as AGPT, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, ProductionType as PT where " +
-        "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PC.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
+        "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PT.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
         "AreaName = ? && ResolutionCodeText = ? && ProductionTypeText = ? && Year = ? && Month = ? and Day = ?";
       }
 
@@ -535,16 +535,16 @@ public class DataAccess {
         sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText, " +
         "Year, Month, Day, ProductionTypeText, sum(ActualGenerationOutput) from " +
         "AggregatedGenerationPerType as AGPT, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, ProductionType as PT where " +
-        "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PC.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
-        "AreaName = ? && ResolutionCodeText = ? && Year = ? && Month = ? group by ProductionTypeText, Day";
+        "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PT.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
+        "AreaName = ? && ResolutionCodeText = ? && Year = ? && Month = ? group by AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText,ProductionTypeText, Year, Month,Day,ProductionTypeText";
       }
       else {
 
         sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText, " +
         "Year, Month, Day, ProductionTypeText, sum(ActualGenerationOutput) from " +
         "AggregatedGenerationPerType as AGPT, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, ProductionType as PT where " +
-        "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PC.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
-        "AreaName = ? && ResolutionCodeText = ? && ProductionTypeText = ? && Year = ? && Month = ? group by Day";
+        "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PT.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
+        "AreaName = ? && ResolutionCodeText = ? && ProductionTypeText = ? && Year = ? && Month = ? group by AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText, Year, Month, Day, ProductionTypeText";
       }
 
       try {
@@ -580,19 +580,19 @@ public class DataAccess {
 
 
         sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText, " +
-        "Year, Month, Day, ProductionTypeText, sum(ActualGenerationOutput) from " +
+        "Year, Month, ProductionTypeText, sum(ActualGenerationOutput) from " +
         "AggregatedGenerationPerType as AGPT, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, ProductionType as PT where " +
-        "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PC.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
-        "AreaName = ? && ResolutionCodeText = ? && Year = ? group by ProductionTypeText, Month";
+        "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PT.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
+        "AreaName = ? && ResolutionCodeText = ? && Year = ? group by AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText,ProductionTypeText,Year, Month";
       }
       else {
 
 
         sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText, " +
-        "Year, Month, Day, ProductionTypeText, sum(ActualGenerationOutput) from " +
+        "Year, Month, ProductionTypeText, sum(ActualGenerationOutput) from " +
         "AggregatedGenerationPerType as AGPT, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, ProductionType as PT where " +
-        "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PC.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
-        "AreaName = ? && ResolutionCodeText = ? && ProductionTypeText = ? && Year = ? group by Month";
+        "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PT.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
+        "AreaName = ? && ResolutionCodeText = ? && ProductionTypeText = ? && Year = ? group by AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText,ProductionTypeText,Year, Month";
       }
 
       try {
@@ -673,7 +673,7 @@ public class DataAccess {
       "Month, Day, sum(TotalLoadValue) from " +
       "DayAheadTotalLoadForecast as DATLF, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC where " +
       "DATLF.AreaTypeCodeId = ATC.Id && DATLF.MapCodeId = MC.Id && DATLF.ResolutionCodeId = RC.Id && " +
-      "AreaName = ? && ResolutionCodeText = ? Year = ? && Month = ? group by Day";
+      "AreaName = ? && ResolutionCodeText = ? Year = ? && Month = ? group by AreaName, AreaTypeCodeText, MapCodeText, ResolutionCodeText, Year,Month, Day";
 
       try {
           return jdbcTemplate.query(sqlQuery, sqlParams, (ResultSet rs, int rowNum) -> {
@@ -706,10 +706,10 @@ public class DataAccess {
       };
 
       String sqlQuery = "select AreaName, AreaTypeCodeText, MapCodeText, ResolutionCodeText, Year, " +
-      "Month, Day, sum(TotalLoadValue) from " +
+      "Month, sum(TotalLoadValue) from " +
       "DayAheadTotalLoadForecast as DATLF, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC where " +
       "DATLF.AreaTypeCodeId = ATC.Id && DATLF.MapCodeId = MC.Id && DATLF.ResolutionCodeId = RC.Id && " +
-      "AreaName = ? && ResolutionCodeText = ? Year = ? group by Month";
+      "AreaName = ? && ResolutionCodeText = ? Year = ? group by AreaName, AreaTypeCodeText, MapCodeText, ResolutionCodeText, Year,Month";
 
       try {
           return jdbcTemplate.query(sqlQuery, sqlParams, (ResultSet rs, int rowNum) -> {
@@ -787,7 +787,7 @@ public class DataAccess {
       "from ActualTotalLoad as ATL, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, DayAheadTotalLoadForecast as DATLF where" +
       "ATL.AreaTypeCodeId = ATC.Id && DATLF.AreaTypeCodeId = ATC.Id && ATL.MapCodeId = MC.Id && DATLF.MapCodeId = MC.Id && ATL.ResolutionCodeId = RC.Id && " +
       "DATLF.ResolutionCodeId = RC.Id && ATL.AreaName = ? && ATL.ResolutionCodeText = ? && ATL.Year = ? && ATL.Month = ?  && " +
-      "ATL.AreaName = DATLF.AreaName && ATL.ResolutionCodeText = DATLF.ResolutionCodeText && ATL.Year = DATLF.Year && ATL.Month = DATLF.Month group by Day";
+      "ATL.AreaName = DATLF.AreaName && ATL.ResolutionCodeText = DATLF.ResolutionCodeText && ATL.Year = DATLF.Year && ATL.Month = DATLF.Month group by AreaName, AreaTypeCodeText, MapCodeText, ResolutionCodeText, Year, Month, Day";
 
       try {
           return jdbcTemplate.query(sqlQuery, sqlParams, (ResultSet rs, int rowNum) -> {
@@ -822,7 +822,7 @@ public class DataAccess {
       "from ActualTotalLoad as ATL, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, DayAheadTotalLoadForecast as DATLF where" +
       "ATL.AreaTypeCodeId = ATC.Id && DATLF.AreaTypeCodeId = ATC.Id && ATL.MapCodeId = MC.Id && DATLF.MapCodeId = MC.Id && ATL.ResolutionCodeId = RC.Id && " +
       "DATLF.ResolutionCodeId = RC.Id && ATL.AreaName = ? && ATL.ResolutionCodeText = ? && ATL.Year = ? && " +
-      "ATL.AreaName = DATLF.AreaName && ATL.ResolutionCodeText = DATLF.ResolutionCodeText && ATL.Year = DATLF.Year group by Month";
+      "ATL.AreaName = DATLF.AreaName && ATL.ResolutionCodeText = DATLF.ResolutionCodeText && ATL.Year = DATLF.Year group by AreaName, AreaTypeCodeText, MapCodeText, ResolutionCodeText, Year, Month";
 
       try {
           return jdbcTemplate.query(sqlQuery, sqlParams, (ResultSet rs, int rowNum) -> {
