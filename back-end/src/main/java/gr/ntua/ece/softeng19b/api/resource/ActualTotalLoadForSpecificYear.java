@@ -50,7 +50,7 @@ public class ActualTotalLoadForSpecificYear extends EnergyResource {
 
         try {
 
-            List<ATLRecordForSpecificYear> result = dataAccess.fetchActualDataLoadForSpecificYear(
+            List<ATLRecordForSpecificYear> result = dataAccess.fetchActualTotalLoadForSpecificYear(
                     areaName,
                     resolution,
                     year
