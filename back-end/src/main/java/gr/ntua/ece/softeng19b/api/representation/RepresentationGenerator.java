@@ -1,17 +1,6 @@
 package gr.ntua.ece.softeng19b.api.representation;
 
-import gr.ntua.ece.softeng19b.data.model.ATLRecordForSpecificDay;
-import gr.ntua.ece.softeng19b.data.model.ATLRecordForSpecificMonth;
-import gr.ntua.ece.softeng19b.data.model.ATLRecordForSpecificYear;
-import gr.ntua.ece.softeng19b.data.model.AGPerTypeRecordForSpecificDay;
-import gr.ntua.ece.softeng19b.data.model.AGPerTypeRecordForSpecificMonth;
-import gr.ntua.ece.softeng19b.data.model.AGPerTypeRecordForSpecificYear;
-import gr.ntua.ece.softeng19b.data.model.DayAheadTLForecastRecordForSpecificDay;
-import gr.ntua.ece.softeng19b.data.model.DayAheadTLForecastRecordForSpecificMonth;
-import gr.ntua.ece.softeng19b.data.model.DayAheadTLForecastRecordForSpecificYear;
-import gr.ntua.ece.softeng19b.data.model.AVSFRecordForSpecificDay;
-import gr.ntua.ece.softeng19b.data.model.AVSFRecordForSpecificMonth;
-import gr.ntua.ece.softeng19b.data.model.AVSFRecordForSpecificYear;
+import gr.ntua.ece.softeng19b.data.model.*
 
 import org.restlet.representation.Representation;
 
