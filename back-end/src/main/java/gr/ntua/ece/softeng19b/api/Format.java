@@ -366,7 +366,6 @@ public Representation generateRepresentation(List<AVSFRecordForSpecificYear> res
                                 rec.getMonth(),
                                 rec.getDay(),
                                 rec.getDateTime(),
-                                rec.getDataSet(),
                                 rec.getActualTotalLoadValue(),
                                 rec.getUpdateTime()
                             };
