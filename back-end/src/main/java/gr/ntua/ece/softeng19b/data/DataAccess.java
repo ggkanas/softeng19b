@@ -4,10 +4,12 @@ import gr.ntua.ece.softeng19b.data.model.*;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import org.restlet.data.Status;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.lang.*;
+import java.util.Date;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -107,6 +109,7 @@ public class DataAccess {
         };
         try {
             return jdbcTemplate.queryForObject("SELECT RemainingRequests, Period FROM User WHERE Token = ?", sqlParams, (ResultSet rs, int rowNum) -> {
+                Date date = new Date();
                 cal.setTime(date);
                 cal.add(Calendar.DAY_OF_MONTH, -1);
                 Date newDate = cal.getTime();
@@ -126,6 +129,7 @@ public class DataAccess {
         boolean notExpired;
         try {
             notExpired = jdbcTemplate.queryForObject("SELECT Period FROM User WHERE Token = ?", sqlParams, (ResultSet rs, int rowNum) -> {
+                Date date = new Date();
                 cal.setTime(date);
                 cal.add(Calendar.DAY_OF_MONTH, -1);
                 Date newDate = cal.getTime();
@@ -139,7 +143,7 @@ public class DataAccess {
         if (notExpired) {
             String sqlQuery = "UPDATE User SET PERIOD=CURRENT_TIMESTAMP(), RemainingRequests=RequestsPerDayQuota-1 WHERE Token = ?";
             try {
-                notExpired = jdbcTemplate.update(sqlQuery, sqlParams);
+                jdbcTemplate.update(sqlQuery, sqlParams);
             }
             catch(Exception e) {
                 throw new DataAccessException(e.getMessage(), e);
@@ -148,7 +152,7 @@ public class DataAccess {
         else {
             String sqlQuery = "UPDATE User SET RemainingRequests=RemainingRequests-1 WHERE Token = ?";
             try {
-                notExpired = jdbcTemplate.update(sqlQuery, sqlParams);
+                jdbcTemplate.update(sqlQuery, sqlParams);
             }
             catch(Exception e) {
                 throw new DataAccessException(e.getMessage(), e);
@@ -160,16 +164,16 @@ public class DataAccess {
 
                 Object[] sqlParams = new Object[] {
                     Integer.parseInt(dataLine[0]),
-                    Timestamp.ValueOf(dataLine[1]),
-                    Timestamp.ValueOf(dataLine[2]),
+                    Timestamp.valueOf(dataLine[1]),
+                    Timestamp.valueOf(dataLine[2]),
                     Long.parseLong(dataLine[3]),
                     dataLine[4],
                     Integer.parseInt(dataLine[5]),
                     Integer.parseInt(dataLine[6]),
                     Integer.parseInt(dataLine[7]),
-                    Timestamp.ValueOf(dataLine[8]),
+                    Timestamp.valueOf(dataLine[8]),
                     dataLine[9],
-                    Timestamp.ValueOf(dataLine[10]),
+                    Timestamp.valueOf(dataLine[10]),
                     new BigDecimal(dataLine[11]),
                     Integer.parseInt(dataLine[12]),
                     Integer.parseInt(dataLine[13]),
@@ -191,16 +195,16 @@ public class DataAccess {
 
                 Object[] sqlParams = new Object[] {
                     Integer.parseInt(dataLine[0]),
-                    Timestamp.ValueOf(dataLine[1]),
-                    Timestamp.ValueOf(dataLine[2]),
+                    Timestamp.valueOf(dataLine[1]),
+                    Timestamp.valueOf(dataLine[2]),
                     Long.parseLong(dataLine[3]),
                     dataLine[4],
                     Integer.parseInt(dataLine[5]),
                     Integer.parseInt(dataLine[6]),
                     Integer.parseInt(dataLine[7]),
-                    Timestamp.ValueOf(dataLine[8]),
+                    Timestamp.valueOf(dataLine[8]),
                     dataLine[9],
-                    Timestamp.ValueOf(dataLine[10]),
+                    Timestamp.valueOf(dataLine[10]),
                     new BigDecimal(dataLine[11]),
                     new BigDecimal(dataLine[12]),
                     Integer.parseInt(dataLine[13]),
@@ -224,16 +228,16 @@ public class DataAccess {
 
                 Object[] sqlParams = new Object[] {
                     Integer.parseInt(dataLine[0]),
-                    Timestamp.ValueOf(dataLine[1]),
-                    Timestamp.ValueOf(dataLine[2]),
+                    Timestamp.valueOf(dataLine[1]),
+                    Timestamp.valueOf(dataLine[2]),
                     Long.parseLong(dataLine[3]),
                     dataLine[4],
                     Integer.parseInt(dataLine[5]),
                     Integer.parseInt(dataLine[6]),
                     Integer.parseInt(dataLine[7]),
-                    Timestamp.ValueOf(dataLine[8]),
+                    Timestamp.valueOf(dataLine[8]),
                     dataLine[9],
-                    Timestamp.ValueOf(dataLine[10]),
+                    Timestamp.valueOf(dataLine[10]),
                     new BigDecimal(dataLine[11]),
                     Integer.parseInt(dataLine[12]),
                     Integer.parseInt(dataLine[13]),
@@ -264,7 +268,7 @@ public class DataAccess {
     }
 
     public User getUser(String username) throws DataAccessException, ResourceException {
-        sqlQuery = "select * from User where User.Username = ?";
+        String sqlQuery = "select * from User where User.Username = ?";
 
         try {
             return jdbcTemplate.queryForObject(sqlQuery, new Object[] { username }, (ResultSet rs, int rownum) ->
@@ -378,9 +382,9 @@ public class DataAccess {
                     dataLoad.setYear(rs.getInt(5)); //get the int located at the 2nd column of the result set
                     dataLoad.setMonth(rs.getInt(6));
                     dataLoad.setDay(rs.getInt(7));
-                    dataLoad.setDateTime(new DateTime(rs.getTimestamp(8).getTime()));
+                    dataLoad.setDateTime(new Timestamp(rs.getTimestamp(8).getTime()));
                     dataLoad.setActualTotalLoadValue(rs.getDouble(9));
-                    dataLoad.setUpdateTime(new DateTime(rs.getTimestamp(10).getTime()));
+                    dataLoad.setUpdateTime(new Timestamp(rs.getTimestamp(10).getTime()));
                     return dataLoad;
                 });
             }
@@ -418,7 +422,7 @@ public class DataAccess {
         dataLoad.setYear(rs.getInt(5));
         dataLoad.setMonth(rs.getInt(6));
         dataLoad.setDay(rs.getInt(7));
-        dataLoad.setActualTotalLoadValueByDayValue(rs.getDouble(9));
+        dataLoad.setActualTotalLoadByDayValue(rs.getDouble(9));
         return dataLoad;
       });
     }
@@ -452,7 +456,7 @@ public class DataAccess {
         dataLoad.setResolutionCode(rs.getString(4));
         dataLoad.setYear(rs.getInt(5));
         dataLoad.setMonth(rs.getInt(6));
-        dataLoad.setActualTotalLoadValueByMonthValue(rs.getDouble(7));
+        dataLoad.setActualTotalLoadByMonthValue(rs.getDouble(7));
         return dataLoad;
       });
     }
@@ -466,33 +470,27 @@ public class DataAccess {
       Integer year = date.getYear();
       Integer month = date.getMonthValue();
       Integer day = date.getDayOfMonth();
+      String sqlQuery;
+      Object[] sqlParams = new Object[] {
+        areaName,
+        resolution,
+        year,
+        month,
+        day
+      };
 
       if(productionType == "AllTypes") {
-        Object[] sqlParams = new Object[] {
-          areaName,
-          resolution,
-          year,
-          month,
-          day
-        };
 
-        String sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText, " +
+
+        sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText, " +
         "Year, Month, Day, DateTime, ProductionTypeText, ActualGenerationOutput, UpdateTime from " +
         "AggregatedGenerationPerType as AGPT, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, ProductionType as PT where " +
         "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PC.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
         "AreaName = ? && ResolutionCodeText = ? && Year = ? && Month = ? and Day = ? group by ProductionTypeText";
       }
       else {
-        Object[] sqlParams = new Object[] {
-          areaName,
-          resolution,
-          productionType,
-          year,
-          month,
-          day
-        };
 
-        String sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText, " +
+        sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText, " +
         "Year, Month, Day, DateTime, ProductionTypeText, ActualGenerationOutput, UpdateTime from " +
         "AggregatedGenerationPerType as AGPT, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, ProductionType as PT where " +
         "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PC.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
@@ -509,10 +507,10 @@ public class DataAccess {
               dataLoad.setYear(rs.getInt(5));
               dataLoad.setMonth(rs.getInt(6));
               dataLoad.setDay(rs.getInt(7));
-              dataLoad.setDateTime(new DateTime(rs.getTimestamp(8).getTime()));
+              dataLoad.setDateTime(new Timestamp(rs.getTimestamp(8).getTime()));
               dataLoad.setProductionType(rs.getString(9));
               dataLoad.setActualGenerationOutputValue(rs.getDouble(10));
-              dataLoad.setUpdateTime(new DateTime(rs.getTimestamp(11).getTime()));
+              dataLoad.setUpdateTime(new Timestamp(rs.getTimestamp(11).getTime()));
               return dataLoad;
           });
       }
@@ -524,31 +522,24 @@ public class DataAccess {
     public List<AGPerTypeRecordForSpecificMonth> fetchAggregatedGenerationPerTypeForSpecificMonth(String areaName, String productionType, String resolution, YearMonth yearMonth) throws DataAccessException {
       Integer year = yearMonth.getYear();
       Integer month = yearMonth.getMonthValue();
+      String sqlQuery;
+      Object[] sqlParams = new Object[] {
+        areaName,
+        resolution,
+        year,
+        month
+      };
 
       if(productionType == "AllTypes") {
-        Object[] sqlParams = new Object[] {
-          areaName,
-          resolution,
-          year,
-          month
-        };
-
-        String sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText, " +
+        sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText, " +
         "Year, Month, Day, ProductionTypeText, sum(ActualGenerationOutput) from " +
         "AggregatedGenerationPerType as AGPT, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, ProductionType as PT where " +
         "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PC.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
         "AreaName = ? && ResolutionCodeText = ? && Year = ? && Month = ? group by ProductionTypeText, Day";
       }
       else {
-        Object[] sqlParams = new Object[] {
-          areaName,
-          resolution,
-          productionType,
-          year,
-          month
-        };
 
-        String sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText, " +
+        sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText, " +
         "Year, Month, Day, ProductionTypeText, sum(ActualGenerationOutput) from " +
         "AggregatedGenerationPerType as AGPT, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, ProductionType as PT where " +
         "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PC.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
@@ -577,29 +568,26 @@ public class DataAccess {
 
     public List<AGPerTypeRecordForSpecificYear> fetchAggregatedGenerationPerTypeForSpecificYear(String areaName, String productionType, String resolution, Integer year) throws DataAccessException {
       //Integer year = date.getYear();
+      Object[] sqlParams = new Object[] {
+        areaName,
+        resolution,
+        year
+      };
+      String sqlQuery;
 
       if(productionType == "AllTypes") {
-        Object[] sqlParams = new Object[] {
-          areaName,
-          resolution,
-          year
-        };
 
-        String sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText, " +
+
+        sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText, " +
         "Year, Month, Day, ProductionTypeText, sum(ActualGenerationOutput) from " +
         "AggregatedGenerationPerType as AGPT, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, ProductionType as PT where " +
         "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PC.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
         "AreaName = ? && ResolutionCodeText = ? && Year = ? group by ProductionTypeText, Month";
       }
       else {
-        Object[] sqlParams = new Object[] {
-          areaName,
-          resolution,
-          productionType,
-          year
-        };
 
-        String sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText, " +
+
+        sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText, " +
         "Year, Month, Day, ProductionTypeText, sum(ActualGenerationOutput) from " +
         "AggregatedGenerationPerType as AGPT, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, ProductionType as PT where " +
         "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PC.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
@@ -615,7 +603,6 @@ public class DataAccess {
               dataLoad.setResolutionCode(rs.getString(4));
               dataLoad.setYear(rs.getInt(5));
               dataLoad.setMonth(rs.getInt(6));
-              dataLoad.setDay(rs.getInt(7));
               dataLoad.setProductionType(rs.getString(8));
               dataLoad.setActualGenerationOutputByMonthValue(rs.getDouble(9));
               return dataLoad;
@@ -657,9 +644,9 @@ public class DataAccess {
               dataLoad.setYear(rs.getInt(5)); //get the int located at the 2nd column of the result set
               dataLoad.setMonth(rs.getInt(6));
               dataLoad.setDay(rs.getInt(7));
-              dataLoad.setDateTime(new DateTime(rs.getTimestamp(8).getTime()));
+              dataLoad.setDateTime(new Timestamp(rs.getTimestamp(8).getTime()));
               dataLoad.setDayAheadTotalLoadForecastValue(rs.getDouble(9));
-              dataLoad.setUpdateTime(new DateTime(rs.getTimestamp(10).getTime()));
+              dataLoad.setUpdateTime(new Timestamp(rs.getTimestamp(10).getTime()));
               return dataLoad;
           });
       }
@@ -697,7 +684,7 @@ public class DataAccess {
               dataLoad.setYear(rs.getInt(5)); //get the int located at the 2nd column of the result set
               dataLoad.setMonth(rs.getInt(6));
               dataLoad.setDay(rs.getInt(7));
-              dataLoad.setDayAheadTotalLoadForecastByDayValue(rs.getDouble(8));
+              dataLoad.setDayAheadTLForecastByDayValue(rs.getDouble(8));
               return dataLoad;
           });
       }
@@ -732,7 +719,6 @@ public class DataAccess {
               dataLoad.setResolutionCode(rs.getString(4));
               dataLoad.setYear(rs.getInt(5)); //get the int located at the 2nd column of the result set
               dataLoad.setMonth(rs.getInt(6));
-              dataLoad.setDay(rs.getInt(7));
               dataLoad.setDayAheadTotalLoadForecastByMonthValue(rs.getDouble(8));
               return dataLoad;
           });
@@ -774,7 +760,7 @@ public class DataAccess {
               dataLoad.setYear(rs.getInt(5)); //get the int located at the 2nd column of the result set
               dataLoad.setMonth(rs.getInt(6));
               dataLoad.setDay(rs.getInt(7));
-              dataLoad.setDateTime(new DateTime(rs.getTimestamp(8).getTime()));
+              dataLoad.setDateTime(new Timestamp(rs.getTimestamp(8).getTime()));
               dataLoad.setActualTotalLoadValue(rs.getDouble(9));
               dataLoad.setDayAheadTotalLoadForecastValue(rs.getDouble(10));
               return dataLoad;
@@ -812,7 +798,6 @@ public class DataAccess {
               dataLoad.setYear(rs.getInt(5)); //get the int located at the 2nd column of the result set
               dataLoad.setMonth(rs.getInt(6));
               dataLoad.setDay(rs.getInt(7));
-              dataLoad.setDateTime(new DateTime(rs.getTimestamp(8).getTime()));
               dataLoad.setActualTotalLoadByDayValue(rs.getDouble(9));
               dataLoad.setDayAheadTotalLoadForecastByDayValue(rs.getDouble(10));
               return dataLoad;
@@ -834,7 +819,7 @@ public class DataAccess {
               year
       };
 
-      String sqlQuery = "select AreaName, AreaTypeCodeText, MapCodeText, ResolutionCodeText, Year, Month, Day, sum(ATL.TotalLoadValue), sum(DATLF.TotalLoadValue) " +
+      String sqlQuery = "select AreaName, AreaTypeCodeText, MapCodeText, ResolutionCodeText, Year, Month, sum(ATL.TotalLoadValue), sum(DATLF.TotalLoadValue) " +
       "from ActualTotalLoad as ATL, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, DayAheadTotalLoadForecast as DATLF where" +
       "ATL.AreaTypeCodeId = ATC.Id && DATLF.AreaTypeCodeId = ATC.Id && ATL.MapCodeId = MC.Id && DATLF.MapCodeId = MC.Id && ATL.ResolutionCodeId = RC.Id && " +
       "DATLF.ResolutionCodeId = RC.Id && ATL.AreaName = ? && ATL.ResolutionCodeText = ? && ATL.Year = ? && " +
@@ -849,8 +834,6 @@ public class DataAccess {
               dataLoad.setResolutionCode(rs.getString(4));
               dataLoad.setYear(rs.getInt(5)); //get the int located at the 2nd column of the result set
               dataLoad.setMonth(rs.getInt(6));
-              dataLoad.setDay(rs.getInt(7));
-              dataLoad.setDateTime(new DateTime(rs.getTimestamp(8).getTime()));
               dataLoad.setActualTotalLoadByMonthValue(rs.getDouble(9));
               dataLoad.setDayAheadTotalLoadForecastByMonthValue(rs.getDouble(10));
               return dataLoad;
@@ -863,9 +846,7 @@ public class DataAccess {
 
     public int deleteATL() {
         try {
-            return jdbcTemplate.update("DELETE FROM ActualTotalLoad", (ResultSet rs, int rowNum) -> {
-                return rowNum;
-            });
+            return jdbcTemplate.update("DELETE FROM ActualTotalLoad");
         }
         catch(Exception e) {
             throw new DataAccessException(e.getMessage(), e);
@@ -874,9 +855,7 @@ public class DataAccess {
 
     public int deleteAGPT() {
         try {
-            return jdbcTemplate.update("DELETE FROM AggregatedGenerationPerType", (ResultSet rs, int rowNum) -> {
-                return rowNum;
-            });
+            return jdbcTemplate.update("DELETE FROM AggregatedGenerationPerType");
         }
         catch(Exception e) {
             throw new DataAccessException(e.getMessage(), e);
@@ -885,9 +864,7 @@ public class DataAccess {
 
     public int deleteDATLF() {
         try {
-            return jdbcTemplate.update("DELETE FROM DayAheadTotalLoadForecast", (ResultSet rs, int rowNum) -> {
-                return rowNum;
-            });
+            return jdbcTemplate.update("DELETE FROM DayAheadTotalLoadForecast");
         }
         catch(Exception e) {
             throw new DataAccessException(e.getMessage(), e);
@@ -896,9 +873,7 @@ public class DataAccess {
 
     public int deleteUsers() {
         try {
-            return jdbcTemplate.update("DELETE FROM User WHERE Username != 'admin'", (ResultSet rs, int rowNum) -> {
-                return rowNum;
-            });
+            return jdbcTemplate.update("DELETE FROM User WHERE Username != 'admin'");
         }
         catch(Exception e) {
             throw new DataAccessException(e.getMessage(), e);

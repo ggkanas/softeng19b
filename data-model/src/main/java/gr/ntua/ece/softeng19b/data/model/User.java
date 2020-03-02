@@ -25,6 +25,16 @@ public class User {
         this.remainingRequests = remainingRequests;
     }
 
+    public User(String username, String email, String password, int requestsPerDayQuota, Timestamp period, int remainingRequests, String token) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.requestsPerDayQuota = requestsPerDayQuota;
+        this.period = period;
+        this.remainingRequests = remainingRequests;
+        this.token = token;
+    }
+
     public String getUsername() {
         return username;
     }

@@ -25,7 +25,7 @@ public class ImportDayAheadTotalLoadForecastDataSet extends EnergyResource {
     @Override
     protected Representation post(Representation entity) throws ResourceException {
 
-        Form form = new form(entity);
+        Form form = new Form(entity);
 
         Series headers = (Series) getRequestAttributes().get("org.restlet.http.headers");
         String token = headers.getFirstValue("X-OBSERVATORY-AUTH"); //to be confirmed

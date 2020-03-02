@@ -2,15 +2,15 @@ package gr.ntua.ece.softeng19b.data.model;
 
 public class ATLRecordForSpecificMonth extends AbstractEntsoeRecord {
 
-    private int month; //*** NEW ***
+    private int day; //*** NEW ***
     private double actualTotalLoadByDayValue;
-    
-    public int getMonth() {
-        return month;
+
+    public int getDay() {
+        return day;
     }
 
-    public void setMonth(int month) {
-        this.month = month;
+    public void setDay(int day) {
+        this.day = day;
     }
 
 
