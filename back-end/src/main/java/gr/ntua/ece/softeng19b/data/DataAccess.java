@@ -579,7 +579,7 @@ public class DataAccess {
 
 
         sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText, " +
-        "Year, Month, Day, ProductionTypeText, sum(ActualGenerationOutput) from " +
+        "Year, Month, ProductionTypeText, sum(ActualGenerationOutput) from " +
         "AggregatedGenerationPerType as AGPT, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, ProductionType as PT where " +
         "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PC.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
         "AreaName = ? && ResolutionCodeText = ? && Year = ? group by ProductionTypeText, Month";
@@ -588,7 +588,7 @@ public class DataAccess {
 
 
         sqlQuery = "AreaName, AreaTypeCodetext, MapCodeText, ResolutionCodeText, " +
-        "Year, Month, Day, ProductionTypeText, sum(ActualGenerationOutput) from " +
+        "Year, Month, ProductionTypeText, sum(ActualGenerationOutput) from " +
         "AggregatedGenerationPerType as AGPT, AreaTypeCode as ATC, MapCode as MC, ResolutionCode as RC, ProductionType as PT where " +
         "AGPT.AreaTypeCodeId = ATC.Id && AGPT.ProductionTypeId = PC.Id && AGPT.ResolutionCodeId = RC.Id && AGPT.MapCodeId = MC.Id && " +
         "AreaName = ? && ResolutionCodeText = ? && ProductionTypeText = ? && Year = ? group by Month";
