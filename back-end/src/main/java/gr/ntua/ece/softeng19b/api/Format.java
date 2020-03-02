@@ -3,7 +3,7 @@ package gr.ntua.ece.softeng19b.api;
 import com.google.gson.stream.JsonWriter;
 import com.csvreader.CsvWriter;
 import gr.ntua.ece.softeng19b.api.representation.RepresentationGenerator;
-import gr.ntua.ece.softeng19b.data.model.ATLRecordForSpecificDay;
+import gr.ntua.ece.softeng19b.data.model.*;
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
@@ -375,7 +375,7 @@ public Representation generateRepresentation(List<AVSFRecordForSpecificYear> res
                     }
                 });
             }
-        
+
 public Representation generateRepresentation(List<ATLRecordForSpecificMonth> result) {
     return new CustomCsvRepresentation( (CsvWriter w) -> {
         try {
@@ -406,7 +406,7 @@ public Representation generateRepresentation(List<ATLRecordForSpecificMonth> res
             }
         });
     }
-        
+
 public Representation generateRepresentation(List<ATLRecordForSpecificYear> result) {
     return new CustomCsvRepresentation( (CsvWriter w) -> {
         try {
@@ -436,7 +436,7 @@ public Representation generateRepresentation(List<ATLRecordForSpecificYear> resu
             }
         });
     }
-        
+
 public Representation generateRepresentation(List<AGPerTypeRecordForSpecificDay> result) {
     return new CustomCsvRepresentation( (CsvWriter w) -> {
         try {
@@ -470,7 +470,7 @@ public Representation generateRepresentation(List<AGPerTypeRecordForSpecificDay>
             }
         });
     }
-     
+
 public Representation generateRepresentation(List<AGPerTypeRecordForSpecificMonth> result) {
     return new CustomCsvRepresentation( (CsvWriter w) -> {
         try {
@@ -502,7 +502,7 @@ public Representation generateRepresentation(List<AGPerTypeRecordForSpecificMont
             }
         });
     }
-        
+
 public Representation generateRepresentation(List<AGPerTypeRecordForSpecificYear> result) {
     return new CustomCsvRepresentation( (CsvWriter w) -> {
         try {
@@ -534,14 +534,14 @@ public Representation generateRepresentation(List<AGPerTypeRecordForSpecificYear
             }
         });
     }
-        
+
 public Representation generateRepresentation(List<DayAheadTLForecastRecordForSpecificDay> result) {
     return new CustomCsvRepresentation( (CsvWriter w) -> {
         try {
             StringBuilder sb = new StringBuilder();
             String[] headers = {"Source","DataSet","AreaName","AreaTypeCode","MapCode","ResolutionCode",
                 "Year","Month","Day","DateTime","DayAheadTotalLoadForecastValue","UpdateTime"};
-            w.writeRecord(headers);1
+            w.writeRecord(headers);
 
                 for(DayAheadTLForecastRecordForSpecificDay rec: result) {
                     String[] values = {
@@ -567,14 +567,14 @@ public Representation generateRepresentation(List<DayAheadTLForecastRecordForSpe
             }
         });
     }
-        
+
 public Representation generateRepresentation(List<DayAheadTLForecastRecordForSpecificMonth> result) {
     return new CustomCsvRepresentation( (CsvWriter w) -> {
         try {
             StringBuilder sb = new StringBuilder();
             String[] headers = {"Source","DataSet","AreaName","AreaTypeCode","MapCode","ResolutionCode",
                 "Year","Month","Day","DayAheadTotalLoadForecastByDayValue"};
-            w.writeRecord(headers);1
+            w.writeRecord(headers);
 
                 for(DayAheadTLForecastRecordForSpecificMonth rec: result) {
                     String[] values = {
@@ -598,14 +598,14 @@ public Representation generateRepresentation(List<DayAheadTLForecastRecordForSpe
             }
         });
     }
-        
+
 public Representation generateRepresentation(List<DayAheadTLForecastRecordForSpecificYear> result) {
     return new CustomCsvRepresentation( (CsvWriter w) -> {
         try {
             StringBuilder sb = new StringBuilder();
             String[] headers = {"Source","DataSet","AreaName","AreaTypeCode","MapCode","ResolutionCode",
                 "Year","Month","DayAheadTotalLoadForecastByMonthValue"};
-            w.writeRecord(headers);1
+            w.writeRecord(headers);
 
                 for(DayAheadTLForecastRecordForSpecificYear rec: result) {
                     String[] values = {
@@ -628,7 +628,7 @@ public Representation generateRepresentation(List<DayAheadTLForecastRecordForSpe
             }
         });
     }
-        
+
 public Representation generateRepresentation(List<AVSFRecordForSpecificDay> result) {
     return new CustomCsvRepresentation( (CsvWriter w) -> {
         try {
@@ -661,7 +661,7 @@ public Representation generateRepresentation(List<AVSFRecordForSpecificDay> resu
             }
         });
     }
-        
+
 public Representation generateRepresentation(List<AVSFRecordForSpecificMonth> result) {
     return new CustomCsvRepresentation( (CsvWriter w) -> {
         try {
@@ -692,8 +692,8 @@ public Representation generateRepresentation(List<AVSFRecordForSpecificMonth> re
                 throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
             }
         });
-    }        
-        
+    }
+
 public Representation generateRepresentation(List<AVSFRecordForSpecificYear> result) {
     return new CustomCsvRepresentation( (CsvWriter w) -> {
         try {

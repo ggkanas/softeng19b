@@ -53,7 +53,7 @@ public class ImportDayAheadTotalLoadForecastDataSet extends EnergyResource {
           totalRecordsInFile = totalRecordsInFile + 1;
           String[] dataLine = line.split(csvSplitBy);
 
-          if(dataAccess.addDayAheadTotalLoadForecastRecord(dataLine) == 1) totalRecordsImported = totalRecordsImported + 1;
+          if(dataAccess.addDayAheadTotalLoadForecast(dataLine) == 1) totalRecordsImported = totalRecordsImported + 1;
           else break;
         }
 

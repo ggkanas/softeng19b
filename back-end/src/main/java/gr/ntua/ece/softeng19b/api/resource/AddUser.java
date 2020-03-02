@@ -38,7 +38,7 @@ public class AddUser extends EnergyResource {
 
         // πρ΄έπει να προστεθεί και έλεγχος για τον χρ΄ήστη
 
-        User user = dataAccess.addUser(user);
+        dataAccess.addUser(user);
 
         return new EmptyRepresantation();
     }

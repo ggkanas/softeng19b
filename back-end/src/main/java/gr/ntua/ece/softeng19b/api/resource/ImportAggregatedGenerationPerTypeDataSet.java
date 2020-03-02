@@ -47,7 +47,7 @@ public class ImportAggregatedGenerationPerTypeDataSet extends EnergyResource {
         br = new BufferedReader(new FileReader(csvFile));
 
         line = br.readLine();
-        String[] dataLine = line.split(csvSplitBy);
+        line.split(csvSplitBy);
 
         while((line = br.readLine()) != null) {
           totalRecordsInFile = totalRecordsInFile + 1;
