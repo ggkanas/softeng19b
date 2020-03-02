@@ -378,7 +378,355 @@ public Representation generateRepresentation(List<AVSFRecordForSpecificYear> res
                     }
                 });
             }
+        
+public Representation generateRepresentation(List<ATLRecordForSpecificMonth> result) {
+    return new CustomCsvRepresentation( (CsvWriter w) -> {
+        try {
+            StringBuilder sb = new StringBuilder();
+            String[] headers = {"Source","DataSet","AreaName","AreaTypeCode","MapCode","ResolutionCode",
+                "Year","Month","Day","ActualTotalLoadByDayValue"};
+            w.writeRecord(headers);
 
+                for(ATLRecordForSpecificMonth rec: result) {
+                    String[] values = {
+                        rec.getSource(),
+                        rec.getDataSet(),
+                        rec.getAreaName(),
+                        rec.getAreaTypeCode(),
+                        rec.getMapCode(),
+                        rec.getResolutionCode(),
+                        rec.getYear(),
+                        rec.getMonth(),
+                        rec.getDay(),
+                        rec.getActualTotalLoadByDayValue(),
+                    };
+                    w.writeRecord(values);
+                    w.flush();
+                    //w.endRecord(); may or may not be needed here
+                }
+            } catch (IOException e) {
+                throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+            }
+        });
+    }
+        
+public Representation generateRepresentation(List<ATLRecordForSpecificYear> result) {
+    return new CustomCsvRepresentation( (CsvWriter w) -> {
+        try {
+            StringBuilder sb = new StringBuilder();
+            String[] headers = {"Source","DataSet","AreaName","AreaTypeCode","MapCode","ResolutionCode",
+                "Year","Month","ActualTotalLoadByMonthValue"};
+            w.writeRecord(headers);
+
+                for(ATLRecordForSpecificYear rec: result) {
+                    String[] values = {
+                        rec.getSource(),
+                        rec.getDataSet(),
+                        rec.getAreaName(),
+                        rec.getAreaTypeCode(),
+                        rec.getMapCode(),
+                        rec.getResolutionCode(),
+                        rec.getYear(),
+                        rec.getMonth(),
+                        rec.getActualTotalLoadByMonthValue(),
+                    };
+                    w.writeRecord(values);
+                    w.flush();
+                    //w.endRecord(); may or may not be needed here
+                }
+            } catch (IOException e) {
+                throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+            }
+        });
+    }
+        
+public Representation generateRepresentation(List<AGPerTypeRecordForSpecificDay> result) {
+    return new CustomCsvRepresentation( (CsvWriter w) -> {
+        try {
+            StringBuilder sb = new StringBuilder();
+            String[] headers = {"Source","DataSet","AreaName","AreaTypeCode","MapCode","ResolutionCode",
+                "Year","Month","Day","DateTime","ProductionType", "ActualGenerationOutputValue","UpdateTime"};
+            w.writeRecord(headers);
+
+                for(AGPerTypeRecordForSpecificDay rec: result) {
+                    String[] values = {
+                        rec.getSource(),
+                        rec.getDataSet(),
+                        rec.getAreaName(),
+                        rec.getAreaTypeCode(),
+                        rec.getMapCode(),
+                        rec.getResolutionCode(),
+                        rec.getYear(),
+                        rec.getMonth(),
+                        rec.getDay(),
+                        rec.getDateTime(),
+                        rec.getProductionType(),
+                        rec.getActualGenerationOutputValue(),
+                        rec.getUpdateTime()
+                    };
+                    w.writeRecord(values);
+                    w.flush();
+                    //w.endRecord(); may or may not be needed here
+                }
+            } catch (IOException e) {
+                throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+            }
+        });
+    }
+     
+public Representation generateRepresentation(List<AGPerTypeRecordForSpecificMonth> result) {
+    return new CustomCsvRepresentation( (CsvWriter w) -> {
+        try {
+            StringBuilder sb = new StringBuilder();
+            String[] headers = {"Source","DataSet","AreaName","AreaTypeCode","MapCode","ResolutionCode",
+                "Year","Month","Day","ProductionType", "ActualGenerationOutputByDayValue"};
+            w.writeRecord(headers);
+
+                for(AGPerTypeRecordForSpecificMonth rec: result) {
+                    String[] values = {
+                        rec.getSource(),
+                        rec.getDataSet(),
+                        rec.getAreaName(),
+                        rec.getAreaTypeCode(),
+                        rec.getMapCode(),
+                        rec.getResolutionCode(),
+                        rec.getYear(),
+                        rec.getMonth(),
+                        rec.getDay(),
+                        rec.getProductionType(),
+                        rec.getActualGenerationOutputByDayValue(),
+                    };
+                    w.writeRecord(values);
+                    w.flush();
+                    //w.endRecord(); may or may not be needed here
+                }
+            } catch (IOException e) {
+                throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+            }
+        });
+    }
+        
+public Representation generateRepresentation(List<AGPerTypeRecordForSpecificYear> result) {
+    return new CustomCsvRepresentation( (CsvWriter w) -> {
+        try {
+            StringBuilder sb = new StringBuilder();
+            String[] headers = {"Source","DataSet","AreaName","AreaTypeCode","MapCode","ResolutionCode",
+                "Year","Month","Day","ProductionType", "ActualGenerationOutputByMonthValue"};
+            w.writeRecord(headers);
+
+                for(AGPerTypeRecordForSpecificYear rec: result) {
+                    String[] values = {
+                        rec.getSource(),
+                        rec.getDataSet(),
+                        rec.getAreaName(),
+                        rec.getAreaTypeCode(),
+                        rec.getMapCode(),
+                        rec.getResolutionCode(),
+                        rec.getYear(),
+                        rec.getMonth(),
+                        rec.getDay(),
+                        rec.getProductionType(),
+                        rec.getActualGenerationOutputByMonthValue(),
+                    };
+                    w.writeRecord(values);
+                    w.flush();
+                    //w.endRecord(); may or may not be needed here
+                }
+            } catch (IOException e) {
+                throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+            }
+        });
+    }
+        
+public Representation generateRepresentation(List<DayAheadTLForecastRecordForSpecificDay> result) {
+    return new CustomCsvRepresentation( (CsvWriter w) -> {
+        try {
+            StringBuilder sb = new StringBuilder();
+            String[] headers = {"Source","DataSet","AreaName","AreaTypeCode","MapCode","ResolutionCode",
+                "Year","Month","Day","DateTime","DayAheadTotalLoadForecastValue","UpdateTime"};
+            w.writeRecord(headers);1
+
+                for(DayAheadTLForecastRecordForSpecificDay rec: result) {
+                    String[] values = {
+                        rec.getSource(),
+                        rec.getDataSet(),
+                        rec.getAreaName(),
+                        rec.getAreaTypeCode(),
+                        rec.getMapCode(),
+                        rec.getResolutionCode(),
+                        rec.getYear(),
+                        rec.getMonth(),
+                        rec.getDay(),
+                        rec.getDateTime(),
+                        rec.getDayAheadTotalLoadForecastValue(),
+                        rec.getUpdateTime()
+                    };
+                    w.writeRecord(values);
+                    w.flush();
+                    //w.endRecord(); may or may not be needed here
+                }
+            } catch (IOException e) {
+                throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+            }
+        });
+    }
+        
+public Representation generateRepresentation(List<DayAheadTLForecastRecordForSpecificMonth> result) {
+    return new CustomCsvRepresentation( (CsvWriter w) -> {
+        try {
+            StringBuilder sb = new StringBuilder();
+            String[] headers = {"Source","DataSet","AreaName","AreaTypeCode","MapCode","ResolutionCode",
+                "Year","Month","Day","DayAheadTotalLoadForecastByDayValue"};
+            w.writeRecord(headers);1
+
+                for(DayAheadTLForecastRecordForSpecificMonth rec: result) {
+                    String[] values = {
+                        rec.getSource(),
+                        rec.getDataSet(),
+                        rec.getAreaName(),
+                        rec.getAreaTypeCode(),
+                        rec.getMapCode(),
+                        rec.getResolutionCode(),
+                        rec.getYear(),
+                        rec.getMonth(),
+                        rec.getDay(),
+                        rec.getDayAheadTotalLoadForecastByDayValue(),
+                    };
+                    w.writeRecord(values);
+                    w.flush();
+                    //w.endRecord(); may or may not be needed here
+                }
+            } catch (IOException e) {
+                throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+            }
+        });
+    }
+        
+public Representation generateRepresentation(List<DayAheadTLForecastRecordForSpecificYear> result) {
+    return new CustomCsvRepresentation( (CsvWriter w) -> {
+        try {
+            StringBuilder sb = new StringBuilder();
+            String[] headers = {"Source","DataSet","AreaName","AreaTypeCode","MapCode","ResolutionCode",
+                "Year","Month","DayAheadTotalLoadForecastByMonthValue"};
+            w.writeRecord(headers);1
+
+                for(DayAheadTLForecastRecordForSpecificYear rec: result) {
+                    String[] values = {
+                        rec.getSource(),
+                        rec.getDataSet(),
+                        rec.getAreaName(),
+                        rec.getAreaTypeCode(),
+                        rec.getMapCode(),
+                        rec.getResolutionCode(),
+                        rec.getYear(),
+                        rec.getMonth(),
+                        rec.getDayAheadTotalLoadForecastByMonthValue(),
+                    };
+                    w.writeRecord(values);
+                    w.flush();
+                    //w.endRecord(); may or may not be needed here
+                }
+            } catch (IOException e) {
+                throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+            }
+        });
+    }
+        
+public Representation generateRepresentation(List<AVSFRecordForSpecificDay> result) {
+    return new CustomCsvRepresentation( (CsvWriter w) -> {
+        try {
+            StringBuilder sb = new StringBuilder();
+            String[] headers = {"Source","DataSet","AreaName","AreaTypeCode","MapCode","ResolutionCode",
+                "Year","Month","Day","DateTime","DayAheadTotalLoadForecastValue","ActualTotalLoadValue"};
+            w.writeRecord(headers);
+
+                for(AVSFRecordForSpecificDay rec: result) {
+                    String[] values = {
+                        rec.getSource(),
+                        rec.getDataSet(),
+                        rec.getAreaName(),
+                        rec.getAreaTypeCode(),
+                        rec.getMapCode(),
+                        rec.getResolutionCode(),
+                        rec.getYear(),
+                        rec.getMonth(),
+                        rec.getDay(),
+                        rec.getDateTime(),
+                        rec.getDayAheadTotalLoadForecastValue(),
+                        rec.getActualTotalLoadValue()
+                    };
+                    w.writeRecord(values);
+                    w.flush();
+                    //w.endRecord(); may or may not be needed here
+                }
+            } catch (IOException e) {
+                throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+            }
+        });
+    }
+        
+public Representation generateRepresentation(List<AVSFRecordForSpecificMonth> result) {
+    return new CustomCsvRepresentation( (CsvWriter w) -> {
+        try {
+            StringBuilder sb = new StringBuilder();
+            String[] headers = {"Source","DataSet","AreaName","AreaTypeCode","MapCode","ResolutionCode",
+                "Year","Month","Day","DayAheadTotalLoadForecastByDayValue","ActualTotalLoadByDayValue"};
+            w.writeRecord(headers);
+
+                for(AVSFRecordForSpecificMonth rec: result) {
+                    String[] values = {
+                        rec.getSource(),
+                        rec.getDataSet(),
+                        rec.getAreaName(),
+                        rec.getAreaTypeCode(),
+                        rec.getMapCode(),
+                        rec.getResolutionCode(),
+                        rec.getYear(),
+                        rec.getMonth(),
+                        rec.getDay(),
+                        rec.getDayAheadTotalLoadForecastByDayValue(),
+                        rec.getActualTotalLoadByDayValue()
+                    };
+                    w.writeRecord(values);
+                    w.flush();
+                    //w.endRecord(); may or may not be needed here
+                }
+            } catch (IOException e) {
+                throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+            }
+        });
+    }        
+        
+public Representation generateRepresentation(List<AVSFRecordForSpecificYear> result) {
+    return new CustomCsvRepresentation( (CsvWriter w) -> {
+        try {
+            StringBuilder sb = new StringBuilder();
+            String[] headers = {"Source","DataSet","AreaName","AreaTypeCode","MapCode","ResolutionCode",
+                "Year","Month","DayAheadTotalLoadForecastByMonthValue","ActualTotalLoadByMonthValue"};
+            w.writeRecord(headers);
+
+                for(AVSFRecordForSpecificYear rec: result) {
+                    String[] values = {
+                        rec.getSource(),
+                        rec.getDataSet(),
+                        rec.getAreaName(),
+                        rec.getAreaTypeCode(),
+                        rec.getMapCode(),
+                        rec.getResolutionCode(),
+                        rec.getYear(),
+                        rec.getMonth(),
+                        rec.getDayAheadTotalLoadForecastByMonthValue(),
+                        rec.getActualTotalLoadByMonthValue()
+                    };
+                    w.writeRecord(values);
+                    w.flush();
+                    //w.endRecord(); may or may not be needed here
+                }
+            } catch (IOException e) {
+                throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+            }
+        });
+    }
 
         }
     };
