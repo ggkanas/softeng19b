@@ -1,6 +1,6 @@
 package gr.ntua.ece.softeng19b.api.representation;
 
-import gr.ntua.ece.softeng19b.data.model.*
+import gr.ntua.ece.softeng19b.data.model.*;
 
 import org.restlet.representation.Representation;
 
