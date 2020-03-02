@@ -49,7 +49,7 @@ public class ActualTotalLoadVsDayAheadTotalLoadForecastForSpecificMonth extends 
             List<AVSFRecordForSpecificMonth> result = dataAccess.fetchActualTotalLoadVsDayAheadTotalLoadForecastForSpecificMonth(
                     areaName,
                     resolution,
-                    date
+                    yearMonth
             );
             
             if (result.isEmpty()) throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN);            
