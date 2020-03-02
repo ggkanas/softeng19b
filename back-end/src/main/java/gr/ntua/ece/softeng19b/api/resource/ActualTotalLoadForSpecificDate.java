@@ -52,7 +52,7 @@ public class ActualTotalLoadForSpecificDay extends EnergyResource {
 
         try {
 
-            List<ATLRecordForSpecificDay> result = dataAccess.fetchActualDataLoadForSpecificDate(
+            List<ATLRecordForSpecificDay> result = dataAccess.fetchActualTotalLoadForSpecificDate(
                     areaName,
                     resolution,
                     date
