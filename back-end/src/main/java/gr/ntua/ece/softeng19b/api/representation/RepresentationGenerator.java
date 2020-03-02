@@ -7,28 +7,28 @@ import java.util.List;
 
 public interface RepresentationGenerator {
 
-    Representation generateRepresentation(List<ATLRecordForSpecificDay> result);
+    Representation generateRepresentation1a(List<ATLRecordForSpecificDay> result);
 
-    Representation generateRepresentation(List<ATLRecordForSpecificMonth> result);
+    Representation generateRepresentation1b(List<ATLRecordForSpecificMonth> result);
 
-    Representation generateRepresentation(List<ATLRecordForSpecificYear> result);
+    Representation generateRepresentation1c(List<ATLRecordForSpecificYear> result);
 
-    Representation generateRepresentation(List<AGPerTypeRecordForSpecificDay> result);
+    Representation generateRepresentation2a(List<AGPerTypeRecordForSpecificDay> result);
 
-    Representation generateRepresentation(List<AGPerTypeRecordForSpecificMonth> result);
+    Representation generateRepresentation2b(List<AGPerTypeRecordForSpecificMonth> result);
 
-    Representation generateRepresentation(List<AGPerTypeRecordForSpecificYear> result);
+    Representation generateRepresentation2c(List<AGPerTypeRecordForSpecificYear> result);
 
-    Representation generateRepresentation(List<DayAheadTLForecastRecordForSpecificDay> result);
+    Representation generateRepresentation3a(List<DayAheadTLForecastRecordForSpecificDay> result);
 
-    Representation generateRepresentation(List<DayAheadTLForecastRecordForSpecificMonth> result);
+    Representation generateRepresentation3b(List<DayAheadTLForecastRecordForSpecificMonth> result);
 
-    Representation generateRepresentation(List<DayAheadTLForecastRecordForSpecificYear> result);
+    Representation generateRepresentation3c(List<DayAheadTLForecastRecordForSpecificYear> result);
 
-    Representation generateRepresentation(List<AVSFRecordForSpecificDay> result);
+    Representation generateRepresentation4a(List<AVSFRecordForSpecificDay> result);
 
-    Representation generateRepresentation(List<AVSFRecordForSpecificMonth> result);
+    Representation generateRepresentation4b(List<AVSFRecordForSpecificMonth> result);
 
-    Representation generateRepresentation(List<AVSFRecordForSpecificYear> result);
+    Representation generateRepresentation4c(List<AVSFRecordForSpecificYear> result);
 
 }
