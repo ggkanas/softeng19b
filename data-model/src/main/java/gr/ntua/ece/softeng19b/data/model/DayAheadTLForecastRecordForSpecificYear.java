@@ -1,6 +1,6 @@
 package gr.ntua.ece.softeng19b.data.model;
 
-public class DayAheadTLForecastRecordForSpecificYear extends AbstractEntsoeRecord {
+public class DayAheadTLFRecordForSpecificYear extends AbstractEntsoeRecord {
 
     private int year;
     private double dayAheadTotalLoadForecastByMonthValue;
