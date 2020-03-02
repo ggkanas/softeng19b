@@ -46,7 +46,7 @@ public class DayAheadTotalLoadForecastForSpecificMonth extends EnergyResource {
             List<DayAheadTLForecastRecordForSpecificMonth> result = dataAccess.fetchDayAheadTotalLoadForecastForSpecificMonth(
                     areaName,
                     resolution,
-                    month
+                    yearMonth
             );
             
             if (result.isEmpty()) throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN);            
