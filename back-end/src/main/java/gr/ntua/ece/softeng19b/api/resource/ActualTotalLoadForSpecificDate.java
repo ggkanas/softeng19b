@@ -5,6 +5,7 @@ import gr.ntua.ece.softeng19b.conf.Configuration;
 import gr.ntua.ece.softeng19b.data.model.ATLRecordForSpecificDay;
 import gr.ntua.ece.softeng19b.data.DataAccess;
 import org.restlet.data.Status;
+import org.restlet.util.Series;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ResourceException;
 
@@ -21,6 +22,20 @@ public class ActualTotalLoadForSpecificDate extends EnergyResource {
     @Override
     protected Representation get() throws ResourceException {
 
+
+        Series headers = (Series) getRequestAttributes().get("org.restlet.http.headers");
+        String token = headers.getFirstValue("X-OBSERVATORY-AUTH"); //to be confirmed
+        try {
+        if (!dataAccess.checkToken(token))
+            throw new ResourceException(Status.CLIENT_ERROR_UNAUTHORIZED);
+
+        if (!dataAccess.hasRemaining(token))
+            throw new ResourceException(Status.CLIENT_ERROR_PAYMENT_REQUIRED);
+        dataAccess.changeRemaining(token);
+        } catch (Exception e) {
+            throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+        }
+
         //Read the mandatory URI attributes
         String areaName = getMandatoryAttribute("AreaName", "AreaName is missing");
         String resolution = getMandatoryAttribute("Resolution", "Resolution is missing");
@@ -30,19 +45,25 @@ public class ActualTotalLoadForSpecificDate extends EnergyResource {
 
         //Use the EnergyResource.parseXXX methods to parse the dates and implement the required business logic
         //For the sake of this example, we hard-code a date
-        LocalDate date = LocalDate.of(2019, 10, 1);
+        //String dateParam = getAttributeDecoded("date");
+
+        LocalDate date = parseDate(dateParam);
+
 
         //Read the format query parameter
         Format format = parseFormat(getQueryValue("format"));
 
         try {
 
-            List<ATLRecordForSpecificDay> result = dataAccess.fetchActualDataLoadForSpecificDate(
+            List<ATLRecordForSpecificDay> result = dataAccess.fetchActualTotalLoadForSpecificDate(
                     areaName,
                     resolution,
                     date
             );
-            return format.generateRepresentation(result);
+
+            if (result.isEmpty()) throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN);
+
+            return format.generateRepresentation1a(result);
         } catch (Exception e) {
             throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e.getMessage(), e);
         }

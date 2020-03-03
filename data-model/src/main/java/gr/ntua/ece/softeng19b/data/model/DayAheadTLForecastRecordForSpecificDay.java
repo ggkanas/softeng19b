@@ -1,14 +1,16 @@
 package gr.ntua.ece.softeng19b.data.model;
 
+import java.sql.Timestamp;
+
 public class DayAheadTLForecastRecordForSpecificDay extends AbstractEntsoeRecord {
 
     private int day;
-    private DateTime dateTime; 
-    private double dayAheadTotalLoadValue;
-    private DateTime UpdateTime;
+    private Timestamp dateTime;
+    private double dayAheadTotalLoadForecastValue;
+    private Timestamp updateTime;
 
-    public DayAheadTotalLoadForecastRecordForSpecificDay() {
-        super(DataSet.dayAheadTotalLoad);
+    public DayAheadTLForecastRecordForSpecificDay() {
+        super(DataSet.DayAheadTotalLoadForecast);
     }
 
     public int getDay() {
@@ -20,26 +22,26 @@ public class DayAheadTLForecastRecordForSpecificDay extends AbstractEntsoeRecord
     }
 
     public double getDayAheadTotalLoadForecastValue() {
-        return actualTotalLoadForecastValue;
+        return dayAheadTotalLoadForecastValue;
     }
 
-    public DateTime getDateTime() {
+    public Timestamp getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(DateTime dateTime) {
+    public void setDateTime(Timestamp dateTime) {
         this.dateTime = dateTime;
     }
 
-    public DateTime getUpdateTime() {
-        return UpdateTime;
+    public Timestamp getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUpdateTime(DateTime UpdateTime) {
-        this.UpdateTime = UpdateTime;
+    public void setUpdateTime(Timestamp updateTime) {
+        this.updateTime = updateTime;
     }
 
-    public void setDayAheadTotalLoadForecastValue(double DayAheadTotalLoadForecastValue) {
-        this.DayAheadTotalLoadForecastValue = DayAheadTotalLoadForecastValue;
+    public void setDayAheadTotalLoadForecastValue(double dayAheadTotalLoadForecastValue) {
+        this.dayAheadTotalLoadForecastValue = dayAheadTotalLoadForecastValue;
     }
 }

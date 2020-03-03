@@ -13,9 +13,9 @@ import java.util.Map;
  */
 public class JsonMapRepresentation extends WriterRepresentation {
 
-    private final Map map;
+    private final Map<String, Object> map;
 
-    public JsonMapRepresentation(Map map) {
+    public JsonMapRepresentation(Map<String, Object> map) {
         super(MediaType.APPLICATION_JSON);
         this.map = map;
     }

@@ -1,11 +1,13 @@
 package gr.ntua.ece.softeng19b.data.model;
 
+import java.sql.Timestamp;
+
 public class ATLRecordForSpecificDay extends AbstractEntsoeRecord {
 
     private int day;
-    private DateTime dateTime; //*** NEW ***
+    private Timestamp dateTime; //*** NEW ***
     private double actualTotalLoadValue;
-    private DateTime UpdateTime;
+    private Timestamp updateTime;
 
     public ATLRecordForSpecificDay() {
         super(DataSet.ActualTotalLoad);
@@ -23,20 +25,20 @@ public class ATLRecordForSpecificDay extends AbstractEntsoeRecord {
         return actualTotalLoadValue;
     }
     //*** NEW ***
-    public DateTime getDateTime() {
+    public Timestamp getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(DateTime dateTime) {
+    public void setDateTime(Timestamp dateTime) {
         this.dateTime = dateTime;
     }
 
-    public DateTime getUpdateTime() {
-        return UpdateTime;
+    public Timestamp getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUpdateTime(DateTime UpdateTime) {
-        this.UpdateTime = UpdateTime;
+    public void setUpdateTime(Timestamp UpdateTime) {
+        this.updateTime = updateTime;
     }
 
     public void setActualTotalLoadValue(double actualTotalLoadValue) {
