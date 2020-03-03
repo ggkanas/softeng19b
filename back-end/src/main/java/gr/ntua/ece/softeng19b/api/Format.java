@@ -747,7 +747,7 @@ public Representation generateRepresentation4c(List<AVSFRecordForSpecificYear> r
         private final Consumer<CsvWriter> consumer;
 
         CustomCsvRepresentation(Consumer<CsvWriter> consumer) {
-            super(MediaType.TEXT_PLAIN);
+            super(MediaType.MULTIPART_FORM_DATA);
             this.consumer = consumer;
         }
 

@@ -33,7 +33,7 @@ public class Login extends EnergyResource {
         User user = optional.orElseThrow(() -> new ResourceException(Status.CLIENT_ERROR_NOT_FOUND, "User: " + username + " not found")); //ίσως το exception να πρέπει να έχει άλλη μορφή
 
         if (!user.getPassword().equals(password))
-          throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "Invalid password");
+          throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN, "Invalid password");
         String token;
         do {
             token = AuthenticationService.createToken();

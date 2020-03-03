@@ -17,6 +17,9 @@ import org.restlet.resource.ResourceException;
 import org.restlet.util.Series;
 import java.io.BufferedReader;
 import java.io.StringReader;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.restlet.ext.fileupload.RestletFileUpload;
+import org.apache.commons.fileupload.FileItem;
 
 public class ImportAggregatedGenerationPerTypeDataSet extends EnergyResource {
 
@@ -39,13 +42,29 @@ public class ImportAggregatedGenerationPerTypeDataSet extends EnergyResource {
         //if (!dataAccess.checkToken(form.getFirstValue("X-OBSERVATORY-AUTH"))) //to be confirmed
         //    throw new ResourceException(Status.CLIENT_ERROR_UNAUTHORIZED);
 
-        String csvFile = form.getFirstValue("file");
+        String csvFile;
         int totalRecordsInFile = 0;
         int totalRecordsImported = 0;
         int totalRecordsInDatabase;
         BufferedReader br = null;
         String line = "";
         String csvSplitBy = ",";
+
+        // 1/ Create a factory for disk-based file items
+        DiskFileItemFactory factory = new DiskFileItemFactory();
+        factory.setSizeThreshold(1000240);
+
+        // 2/ Create a new file upload handler
+        RestletFileUpload upload = new RestletFileUpload(factory);
+        FileItem item;
+        // 3/ Request is parsed by the handler which generates a list of FileItems
+        try {
+            item = upload.parseRequest(getRequest()).get(0);
+
+            csvFile = new String(item.get(), "UTF-8");
+        } catch (Exception e) {
+            throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e.getMessage(), e);
+        }
 
         br = new BufferedReader(new StringReader(csvFile));
 

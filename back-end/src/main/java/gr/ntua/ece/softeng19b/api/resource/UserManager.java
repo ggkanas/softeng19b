@@ -96,6 +96,7 @@ public class UserManager extends EnergyResource {
           user.setPassword(form.getFirstValue("password"));
           user.setEmail(form.getFirstValue("email"));
           user.setRequestsPerDayQuota(Integer.parseInt(form.getFirstValue("quotas")));
+          user.setRemainingRequests(user.getRequestsPerDayQuota());
 
           dataAccess.updateUser(user);
         } catch (Exception e) {

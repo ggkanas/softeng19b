@@ -5,6 +5,7 @@ import gr.ntua.ece.softeng19b.data.DataAccess;
 import gr.ntua.ece.softeng19b.data.model.User;
 import gr.ntua.ece.softeng19b.api.AuthenticationService;
 import gr.ntua.ece.softeng19b.api.representation.*;
+//import gr.ntua.ece.softeng19b.api.representation.JsonMapRepresentation;
 
 
 import java.util.HashMap;
@@ -17,7 +18,13 @@ import org.restlet.representation.Representation;
 import org.restlet.resource.ResourceException;
 import org.restlet.util.Series;
 import java.io.BufferedReader;
-import java.io.StringReader;
+import java.io.FileReader;
+import java.io.File;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.restlet.ext.fileupload.RestletFileUpload;
+import org.apache.commons.fileupload.FileItem;
+
+import java.util.List;
 
 import com.google.gson.Gson;
 import org.restlet.data.MediaType;
@@ -30,7 +37,7 @@ import java.util.Map;
 /**
  * A generic json representation of a java.util.Map object.
  */
- class JsonMapRepresentation extends WriterRepresentation {
+class JsonMapRepresentation extends WriterRepresentation {
 
     private final Map<String, Object> map;
 
@@ -45,6 +52,7 @@ import java.util.Map;
         writer.write(gson.toJson(map));
     }
 }
+
 
 public class ImportActualTotalLoadDataSet extends EnergyResource {
 
@@ -67,7 +75,7 @@ public class ImportActualTotalLoadDataSet extends EnergyResource {
         //if (!dataAccess.checkToken(form.getFirstValue("X-OBSERVATORY-AUTH"))) //to be confirmed
         //    throw new ResourceException(Status.CLIENT_ERROR_UNAUTHORIZED);
 
-        String csvFile = form.getFirstValue("file");
+        //String csvFile;
         int totalRecordsInFile = 0;
         int totalRecordsImported = 0;
 
@@ -76,8 +84,37 @@ public class ImportActualTotalLoadDataSet extends EnergyResource {
         String csvSplitBy = ",";
         int totalRecordsInDatabase;
 
-        br = new BufferedReader(new StringReader(csvFile));
+        // 1/ Create a factory for disk-based file items
+        DiskFileItemFactory factory = new DiskFileItemFactory();
+        factory.setSizeThreshold(1000240);
+
+        // 2/ Create a new file upload handler
+        RestletFileUpload upload = new RestletFileUpload(factory);
+        FileItem item;
+        List<FileItem> items;
+        File file;
+        // 3/ Request is parsed by the handler which generates a list of FileItems
         try {
+
+            items = upload.parseRepresentation(entity);
+        }catch (Exception e) {
+            throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e.getMessage(), e);
+        }
+        try {
+            item = items.get(0);
+            item.getFieldName();
+            String tempDir = System.getProperty("java.io.tmpdir");
+            file = new File(tempDir + File.separator + "file.txt");
+            item.getInputStream();
+            item.write(file);
+        } catch (Exception e) {
+            throw new ResourceException(Status.SERVER_ERROR_INTERNAL, "First Message " + e.getMessage(), e);
+        }
+
+
+
+        try {
+            br = new BufferedReader(new FileReader(file));
             line = br.readLine();
             line.split(csvSplitBy);
             while((line = br.readLine()) != null) {

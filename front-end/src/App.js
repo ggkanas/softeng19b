@@ -26,7 +26,7 @@ class App extends Component {
   }
 
   renderProtectedComponent(ProtectedComponent) {
-    if (true || this.state.username !== null) {
+    if (this.state.username !== null) {
       return  (props) => <ProtectedComponent {...props} />;
     }
     else {

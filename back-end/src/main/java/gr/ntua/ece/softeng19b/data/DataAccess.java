@@ -291,8 +291,8 @@ public class DataAccess {
 
     public void updateUser(User user) throws DataAccessException {
         try {
-            jdbcTemplate.update("UPDATE User SET Password = ?, Email = ?, RequestsPerDayQuota = ? WHERE Username = ? ",
-                new Object[] {user.getPassword(), user.getEmail(), user.getRequestsPerDayQuota(), user.getUsername()});
+            jdbcTemplate.update("UPDATE User SET Password = ?, Email = ?, RequestsPerDayQuota = ?, RemainingRequests = ?, WHERE Username = ? ",
+                new Object[] {user.getPassword(), user.getEmail(), user.getRequestsPerDayQuota(), user.getRemainingRequests(), user.getUsername()});
         } catch(Exception e) {
             throw new DataAccessException(e.getMessage(), e);
         }
@@ -369,7 +369,7 @@ public class DataAccess {
             };
 
             String sqlQuery = "select AreaName, AreaTypeCodeText, MapCodeText, ResolutionCodeText, Year, Month, Day, DateTime, TotalLoadValue, UpdateTime " +
-            "from ActualTotalLoad as ATL, MapCode as MC, AreadTypeCode as ATC, " +
+            "from ActualTotalLoad as ATL, MapCode as MC, AreaTypeCode as ATC, " +
             "ResolutionCode as RC where ATL.MapCodeId = MC.Id && ATL.AreaTypeCodeId = ATC.Id && ATL.ResolutionCodeId = RC.Id && " +
                               "AreaName = ? && ResolutionCodeText = ? && Year = ? && Month = ? && Day = ?";
 

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { UserContext } from './UserContext';
+import {ErrorHandler} from './ErrorHandler';
 
 /*const ProductionTypeEnum = Object.freeze({"AllTypes":0, "Fossil Gas":1, "Hydro Run-of-river and poundage":2, "Hydro Pumped Storage":3,
     "Hydro Water Reservoir":4, "Fossil Hard coal": 5, "Nuclear":6, "Fossil Brown coal/Lignite":7, "Fossil Oil":8,
@@ -115,11 +116,11 @@ class FormSubmit extends Component {
             url += 'year/' + this.year.current.value;
         }
         else if(this.day.current.value == null) {
-            url += 'month/' + this.year.current.value + '-' + this.month.current.value;
+            url += 'month/' + this.year.current.value + '-' + this.month.current.value.toString().padStart(2, "0");
         }
         else {
-            url += 'date/' + this.year.current.value + '-' + this.month.current.value + '-';
-            url += this.day.current.value;
+            url += 'date/' + this.year.current.value + '-' + this.month.current.value.toString().padStart(2, "0") + '-';
+            url += this.day.current.value.toString().padStart(2, "0");
         }
         fetch(url,{
             method: 'GET',
@@ -127,8 +128,8 @@ class FormSubmit extends Component {
                 'X-OBSERVATORY-AUTH': this.context.token,
                 'Content-Type':'application/x-www-form-urlencoded',
             },
-        }).then((response) => response.json(), json => this.props.doDisplay(json, 1))
-        .then(json => this.props.doDisplay(json, 0));
+        }).then((response) => {if(!response.ok) throw Error(response.status); else return response.json();})
+        .then(json => this.props.doDisplay(json, 0)).catch((error) => {console.log("Error ", error); ErrorHandler.handleErrors(error);});;
     }
 
     dataTypeChange() {
